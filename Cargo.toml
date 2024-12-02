@@ -9,7 +9,13 @@ license = "BSD-2-Clause"
 
 [dependencies]
 
-# this lets you use `cargo fix`!
+[lib]
+name = "hal"
+path = "src/lib/hal/hal.rs"
+bench = false
+test = false
+
+
 [[bin]]
 name = "app"
 test = false

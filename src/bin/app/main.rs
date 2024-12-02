@@ -3,6 +3,9 @@
 
 use core::panic::PanicInfo;
 
+use hal;
+use hal::led;
+
 mod startup;
 
 #[panic_handler]
@@ -13,5 +16,9 @@ fn panic(_panic: &PanicInfo) -> ! {
 #[no_mangle]
 #[export_name = "main"]
 pub extern "C" fn main() -> ! {
+    hal::init();
+
+    led::set(led::Color::Green);
+
     loop {}
 }
