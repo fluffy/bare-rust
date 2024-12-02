@@ -3,6 +3,8 @@
 
 use core::panic::PanicInfo;
 
+mod startup;
+
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
     loop {}
@@ -10,6 +12,7 @@ fn panic(_panic: &PanicInfo) -> ! {
 
 #[no_mangle]
 #[export_name = "main"]
-pub extern "C" fn main() -> ! {
+pub extern "C"
+fn main() -> ! {
   loop {}
 }
