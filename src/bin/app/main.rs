@@ -12,7 +12,6 @@ fn panic(_panic: &PanicInfo) -> ! {
 
 #[no_mangle]
 #[export_name = "main"]
-pub extern "C"
-fn main() -> ! {
-  loop {}
+pub extern "C" fn main() -> ! {
+    loop {}
 }
