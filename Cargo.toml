@@ -1,6 +1,6 @@
 [package]
 authors = ["Cullen Jennings <fluffy@iii.ca>"]
-edition = "2024"
+edition = "2021"
 readme = "README.md"
 name = "app"
 version = "0.1.0"
