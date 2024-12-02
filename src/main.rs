@@ -8,6 +8,8 @@ fn panic(_panic: &PanicInfo) -> ! {
     loop {}
 }
 
-pub fn main() -> ! {
+#[no_mangle]
+#[export_name = "main"]
+pub extern "C" fn main() -> ! {
   loop {}
 }
