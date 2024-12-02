@@ -1,10 +1,7 @@
-
 use core::ptr;
-
 
 extern "C" {
     fn main() -> !;
-
 }
 
 extern "C" {
@@ -16,7 +13,6 @@ extern "C" {
     static _estack: u8;
     static _heap_start: u8;
 }
-
 
 #[no_mangle]
 #[allow(static_mut_refs)]
@@ -32,3 +28,52 @@ pub extern "C" fn Reset_Handler() -> ! {
 
     unsafe { main() }
 }
+
+#[no_mangle]
+pub extern "C" fn Default_Handler() -> ! {
+    loop {}
+}
+
+#[link_section = ".vector_table.reset_vector"]
+#[no_mangle]
+pub static Reset_Vector: extern "C" fn() -> ! = Reset_Handler;
+
+pub union IrqVector {
+    not_used: u32,
+    handler: unsafe extern "C" fn() -> !,
+}
+
+#[link_section = ".vector_table.exceptions"]
+#[no_mangle]
+pub static Exceptions: [IrqVector; 14] = [
+    IrqVector {
+        handler: Default_Handler,
+    }, // NMI
+    IrqVector {
+        handler: Default_Handler,
+    }, // hard fault
+    IrqVector {
+        handler: Default_Handler,
+    }, // mem manager
+    IrqVector {
+        handler: Default_Handler,
+    }, // bus fault
+    IrqVector {
+        handler: Default_Handler,
+    }, // usage
+    IrqVector { not_used: 0 },
+    IrqVector { not_used: 0 },
+    IrqVector { not_used: 0 },
+    IrqVector { not_used: 0 },
+    IrqVector {
+        handler: Default_Handler,
+    }, // SVC
+    IrqVector { not_used: 0 }, // ebug mon
+    IrqVector { not_used: 0 },
+    IrqVector {
+        handler: Default_Handler,
+    }, // Pend  SV
+    IrqVector {
+        handler: Default_Handler,
+    }, // Sys Timer
+];
