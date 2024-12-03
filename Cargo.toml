@@ -11,10 +11,9 @@ license = "BSD-2-Clause"
 
 [lib]
 name = "hal"
-path = "src/lib/hal/hal.rs"
+path = "src/hal.rs"
 bench = false
 test = false
-
 
 [[bin]]
 name = "app"

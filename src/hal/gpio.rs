@@ -1,3 +1,4 @@
+// use super::hal;
 
 mod gpio {
     pub enum Bank {

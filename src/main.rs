@@ -8,6 +8,7 @@ use hal::led;
 use hal::led::Color;
 
 mod startup;
+mod hal;
 
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {

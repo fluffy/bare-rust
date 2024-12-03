@@ -1,10 +1,13 @@
+//use super::hal;
+
+//use super::hal::gpio;
+//use gpio;
+
+mod gpio;
 
 
-use hal;
-use hal::gpio;
+        //use super::gpio;
 
-mod hal {
-    pub mod led {
         pub fn init() {}
 
         pub enum Color {
@@ -18,7 +21,7 @@ mod hal {
             PC5 is green
             PA1 is blue
              */
-            let red = gpio::Pin(A, 6);
+            //let red = gpio::Pin( A, 6);
 
             match c {
                 Color::Red => {}
@@ -27,5 +30,3 @@ mod hal {
                 _ => { todo!(); }
             }
         }
-    }
-}
