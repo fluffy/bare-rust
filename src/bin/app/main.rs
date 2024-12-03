@@ -5,6 +5,7 @@ use core::panic::PanicInfo;
 
 use hal;
 use hal::led;
+use hal::led::Color;
 
 mod startup;
 
@@ -18,7 +19,7 @@ fn panic(_panic: &PanicInfo) -> ! {
 pub extern "C" fn main() -> ! {
     hal::init();
 
-    led::set(led::Color::Green);
+    led::set( Color::Green);
 
     loop {}
 }

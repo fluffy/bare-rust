@@ -1,8 +1,13 @@
 #![no_std]
 
-mod gpio;
-pub mod led;
+//use led;
 
-pub fn init() {
-    led::init();
+mod hal {
+//    pub mod led;
+
+    pub fn init() {
+
+        //led::init();
+    }
+
 }
