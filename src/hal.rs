@@ -1,17 +1,16 @@
 #![no_std]
 
-mod hal::gpio;
-mod led;
+ //mod crate::gpio;
+ //mod crate::led;
 
-use crate::hal::led;
-use crate::hal::gpio;
+//use crate::led;
+//use crate::gpio;
 
-
-   // pub mod led;
-   // pub mod gpio;
+pub mod led;
+pub mod gpio;
 
     pub fn init() {
-
-        //led::init();
+gpio::init();
+        led::init();
     }
 

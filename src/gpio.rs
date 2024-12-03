@@ -1,6 +1,7 @@
 // use super::hal;
 
-mod gpio {
+pub fn init() {}
+
     pub enum Bank {
         A,
         B,
@@ -14,8 +15,7 @@ mod gpio {
             return Pin(b, p);
         }
 
-        pub fn high(&self) {}
+        pub fn high(&self) { }
         pub fn low(&self) {}
     }
 
-}
