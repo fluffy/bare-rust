@@ -1,10 +1,14 @@
 /* Info for STM32F405RGTx */
+
+_Min_Heap_Size = 0x0;
+_Min_Stack_Size = 0x800;
+
 MEMORY
 {
-  FLASH : ORIGIN = 0x08000000, LENGTH = 1024K
-  RAM   : ORIGIN = 0x20000000, LENGTH = 112K
-  RAM2  : ORIGIN = 0x2001C000, LENGTH = 16K
-  CCRAM2: ORIGIN = 0x10000000, LENGTH = 64K
+  FLASH  (RX) : ORIGIN = 0x08000000, LENGTH = 1024K
+  RAM    (XRW): ORIGIN = 0x20000000, LENGTH = 112K
+  RAM2   (XRW): ORIGIN = 0x2001C000, LENGTH = 16K
+  CCRAM2 (XRW): ORIGIN = 0x10000000, LENGTH = 64K
 }
 
 ENTRY(Reset_Handler);
@@ -47,6 +51,12 @@ SECTIONS
       _ebss = .;
    } > RAM
 
-   . = ALIGN(4);
-   _heap_start = .;
+
+   ._heap_start :
+   {
+    . = ALIGN(4);
+    . = . + _Min_Heap_Size;
+    . = . + _Min_Stack_Size;
+    . = ALIGN(4);
+   }
 }
