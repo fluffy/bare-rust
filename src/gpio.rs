@@ -32,13 +32,25 @@ fn gpio(b: Bank) -> *mut GpioReg {
     return gpio_ptr;
 }
 
+fn write_2bits(addr: *mut u32, num: u8, data: u32) {
+    assert!(num < 16);
+    assert!(data <= 0x11);
+    unsafe {
+        let mut v: u32 = ptr::read_volatile(addr);
+
+        v = v & !(0x11 << (num * 2));
+        v = v | (data << (num * 2));
+
+        ptr::write_volatile(addr, v);
+    }
+}
 fn init_output(p: Pin) {
     let gpio = gpio(p.0);
     let pin_num = p.1;
 
     unsafe {
-        // set mode to output 
-        ptr::write_volatile(((*gpio).moder) as *mut u32, 0x01 << (pin_num * 2));
+        // set mode to output
+        write_2bits(ptr::addr_of_mut!((*gpio).moder), pin_num, 0x10);
     }
 }
 
