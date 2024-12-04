@@ -133,5 +133,5 @@ pub fn init() {
     Pin::new( GPIO_C, 5).output(); // green LED
     Pin::new( GPIO_A, 1).output(); // blue LED
 
-    //Pin(GPIO_A, 2).input();
+    Pin::new( GPIO_C, 0).input(); // PTT
 }
