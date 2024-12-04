@@ -41,8 +41,8 @@ fn priv_write_1bits(addr: *mut u32, num: u8, data: u32) {
     unsafe {
         let mut v: u32 = ptr::read_volatile(addr);
 
-        v = v & !(0x1<< num );
-        v = v | (data << num );
+        v = v & !(0x1 << num);
+        v = v | (data << num);
 
         ptr::write_volatile(addr, v);
     }
@@ -52,7 +52,7 @@ fn priv_read_1bits(addr: *mut u32, num: u8) -> bool {
     unsafe {
         let mut v: u32 = ptr::read_volatile(addr);
 
-        v = v & !(0x1<< num );
+        v = v & !(0x1 << num);
 
         return v != 0;
     }
@@ -70,14 +70,11 @@ macro_rules! write_1bits {
 }
 macro_rules! read_1bits {
     ($x:ident.$y:ident, $bit_num:expr ) => {
-        unsafe { priv_read_1bits(ptr::addr_of_mut!((*$x).$y), $bit_num ) }
+        unsafe { priv_read_1bits(ptr::addr_of_mut!((*$x).$y), $bit_num) }
     };
 }
 
-pub fn init() {
-    Pin(GPIO_A, 1).output();
-    Pin(GPIO_A, 2).input();
-}
+
 
 impl Pin {
     pub fn new(gpio: *mut GpioReg, p: u8) -> Pin {
@@ -90,13 +87,13 @@ impl Pin {
         let pin_num = self.1;
 
         // set output as low
-        write_1bits!(gpio.odr , pin_num, 0x0);
+        write_1bits!(gpio.odr, pin_num, 0x0);
         // set as push pull
-        write_1bits!(gpio.otyper  , pin_num, 0x0);
+        write_1bits!(gpio.otyper, pin_num, 0x0);
         // set no pull up , no pull down
-        write_2bits!(gpio.pupdr , pin_num, 0x00);
+        write_2bits!(gpio.pupdr, pin_num, 0x00);
         // set speed to slow
-        write_2bits!(gpio.ospeedr , pin_num, 0x00);
+        write_2bits!(gpio.ospeedr, pin_num, 0x00);
         // set mode to output
         write_2bits!(gpio.moder, pin_num, 0x10);
     }
@@ -106,7 +103,7 @@ impl Pin {
         let pin_num = self.1;
 
         // set to pull down
-        write_2bits!(gpio.pupdr , pin_num, 0x10);
+        write_2bits!(gpio.pupdr, pin_num, 0x10);
         // set mode to input
         write_2bits!(gpio.moder, pin_num, 0x00);
     }
@@ -114,19 +111,27 @@ impl Pin {
         let gpio = self.0;
         let pin_num = self.1;
 
-        write_1bits!(gpio.bsrr , pin_num + 16 , 0x1);
+        write_1bits!(gpio.bsrr, pin_num + 16, 0x1);
     }
     pub fn low(&self) {
         let gpio = self.0;
         let pin_num = self.1;
 
-        write_1bits!(gpio.bsrr , pin_num, 0x1);
+        write_1bits!(gpio.bsrr, pin_num, 0x1);
     }
 
-    pub fn read(&self) -> bool{
+    pub fn read(&self) -> bool {
         let gpio = self.0;
         let pin_num = self.1;
 
-        return read_1bits!(gpio.idr , pin_num );
+        return read_1bits!(gpio.idr, pin_num);
     }
+}
+
+pub fn init() {
+    Pin::new( GPIO_A, 6).output(); // red LED
+    Pin::new( GPIO_C, 5).output(); // green LED
+    Pin::new( GPIO_A, 1).output(); // blue LED
+
+    //Pin(GPIO_A, 2).input();
 }
