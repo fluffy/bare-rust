@@ -14,7 +14,7 @@ pub fn set(c: Color) {
     PC5 is green
     PA1 is blue
      */
-    let red = gpio::Pin::new(gpio::Bank::A, 6);
+    let red = gpio::Pin::new( gpio::GPIO_A, 6);
 
     match c {
         Color::Red => {
