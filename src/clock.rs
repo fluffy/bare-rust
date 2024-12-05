@@ -60,6 +60,7 @@ macro_rules! write_bits {
 }
 
 pub fn init() {
+    // setup main PLL timing for external HSE
     let mut val: u32 = 0;
     let mut mask: u32 = 0;
 
@@ -80,11 +81,29 @@ pub fn init() {
     assert!(pll_m <= 63);
 
     mask |= 0b1111 << 24;
-    mask |= 0x7FFF << 0;
-
     val |= pll_q << 24;
+
+    mask |= 0x7FFF << 0;
     val |= pll_n << 6;
     val |= pll_m;
 
     write_bits!(RCC.pllcfgr, mask, val);
+
+    // setup clock usage and dividers
+    let mut val: u32 = 0;
+    let mut mask: u32 = 0;
+
+    mask |= 0b11 << 0;
+    val |= 0b10 << 0; // switch clock to PLL
+
+    mask |= 0b1111 << 4;
+    val |= 0b0000 << 4; // AHB Clk Div = 1
+
+    mask |= 0b111 << 10;
+    val |= 0b100 << 10; // APB1 CLk Div = 2
+
+    mask |= 0b111 << 13;
+    val |= 0b101 << 13; // APB2 Clk Div = 4
+
+    write_bits!(RCC.cfgr, mask, val);
 }
