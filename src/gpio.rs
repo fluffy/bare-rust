@@ -126,10 +126,20 @@ impl Pin {
     }
 }
 
+#[cfg(feature = "brd-hactar10")]
 pub fn init() {
     Pin::new(GPIO_A, 6).output(); // red LED
     Pin::new(GPIO_C, 5).output(); // green LED
     Pin::new(GPIO_A, 1).output(); // blue LED
 
     Pin::new(GPIO_C, 0).input(); // PTT
+}
+
+#[cfg(feature = "brd-blink1")]
+pub fn init() {
+    Pin::new(GPIO_A, 12).output(); // red LED
+    Pin::new(GPIO_A, 11).output(); // green LED
+    Pin::new(GPIO_B, 7).output(); // blue LED
+
+    Pin::new(GPIO_C, 13).input(); // PTT
 }

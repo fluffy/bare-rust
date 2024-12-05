@@ -21,4 +21,19 @@ test = false
 bench = false
 
 [profile.release]
+debug = "limited"
+opt-level = 3
+lto = "fat"
+panic = "abort"
+
+[profile.dev]
+opt-level = 3
 debug = true
+strip = "none"
+
+[features]
+default = [ "brd-blink1" ]
+brd-hactar10 = []
+brd-blink1 = []
+
+

@@ -58,7 +58,7 @@ pub struct RccReg {
     pli2scfgr: u32,
 }
 
-pub const RCC: *mut RccReg = 0x4002_3800  as *mut RccReg;
+pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
 
 macro_rules! write_bits {
     ($x:ident.$y:ident, $mask:expr, $data:expr  ) => {
@@ -77,7 +77,10 @@ pub fn init() {
     let mut val: u32 = 0;
     let mut mask: u32 = 0;
 
+    #[cfg(feature = "brd-hactar10")]
     let pll_m: u32 = 12;
+    #[cfg(feature = "brd-blink1")]
+    let pll_m: u32 = 8;
     let pll_n: u32 = 168;
     let pll_q: u32 = 4;
 
@@ -113,8 +116,8 @@ pub fn init() {
     // enable data, instruction, prefetch cache
     mask |= 0b111 << 8;
     val |= 0b111 << 8;
-    
-    write_bits!( FLASH.acr, mask, val);
+
+    write_bits!(FLASH.acr, mask, val);
 
     // setup clock usage and dividers
     let mut val: u32 = 0;

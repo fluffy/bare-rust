@@ -11,9 +11,22 @@ pub enum Color {
     Blue,
 }
 pub fn set(c: Color) {
-    let red = gpio::Pin::new(gpio::GPIO_A, 6);
-    let green = gpio::Pin::new(gpio::GPIO_C, 5);
-    let blue = gpio::Pin::new(gpio::GPIO_A, 1);
+    let red: gpio::Pin;
+    let green: gpio::Pin;
+    let blue: gpio::Pin;
+
+    #[cfg(feature = "brd-hactar10")]
+    {
+        red = gpio::Pin::new(gpio::GPIO_A, 6);
+        green = gpio::Pin::new(gpio::GPIO_C, 5);
+        blue = gpio::Pin::new(gpio::GPIO_A, 1);
+    }
+    #[cfg(feature = "brd-blink1")]
+    {
+        red = gpio::Pin::new(gpio::GPIO_A, 12); // red LED
+        green = gpio::Pin::new(gpio::GPIO_A, 11); // green LED
+        blue = gpio::Pin::new(gpio::GPIO_B, 7); // blue LED
+    }
 
     match c {
         Color::Red => {
