@@ -1,9 +1,7 @@
 use super::gpio;
 
 pub fn init() {
-
-
-    set( Color::Black );
+    set(Color::Black);
 }
 
 pub enum Color {

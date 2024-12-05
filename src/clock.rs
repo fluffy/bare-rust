@@ -47,28 +47,44 @@ pub struct RccReg {
 
 pub const RCC: *mut RccReg = 0x4002_1000 as *mut RccReg;
 
+macro_rules! write_bits {
+    ($x:ident.$y:ident, $mask:expr, $data:expr  ) => {
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            let mut v: u32 = ptr::read_volatile(addr);
+            v &= !$mask;
+            v |= $data;
+            ptr::write_volatile(addr, v);
+        }
+    };
+}
+
 pub fn init() {
-    unsafe {
-        let addr = ptr::addr_of_mut!((*RCC).pllcfgr);
-        let mut val: u32 = ptr::read_volatile(addr);
+    let mut val: u32 = 0;
+    let mut mask: u32 = 0;
 
-        let pll_m: u32 = 12;
-        let pll_n: u32 = 168;
-        let pll_q: u32 = 4;
-        val |= 0x1 << 22 ; // select HSE
-        val |= 0x00 << 16; // set main division factor to 2
+    let pll_m: u32 = 12;
+    let pll_n: u32 = 168;
+    let pll_q: u32 = 4;
 
-        assert!(pll_q >= 2);
-        assert!(pll_q <= 0xF);
-        assert!(pll_n >= 50);
-        assert!(pll_n <= 432);
-        assert!(pll_m >= 2);
-        assert!(pll_m <= 63);
+    mask |= 0b1 << 22;
+    val |= 0b1 << 22; // select HSE
+    mask |= 0b11 << 16;
+    val |= 0b00 << 16; // set main division factor to 2
 
-        val |= pll_q << 24;
-        val |= pll_n << 6;
-        val |= pll_m;
+    assert!(pll_q >= 2);
+    assert!(pll_q <= 0xF);
+    assert!(pll_n >= 50);
+    assert!(pll_n <= 432);
+    assert!(pll_m >= 2);
+    assert!(pll_m <= 63);
 
-        ptr::write_volatile(addr, val);
-    }
+    mask |= 0b1111 << 24;
+    mask |= 0x7FFF << 0;
+
+    val |= pll_q << 24;
+    val |= pll_n << 6;
+    val |= pll_m;
+
+    write_bits!(RCC.pllcfgr, mask, val);
 }
