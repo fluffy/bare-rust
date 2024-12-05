@@ -1,4 +1,17 @@
 use core::ptr;
+
+#[repr(C)]
+pub struct FlashReg {
+    pub acr: u32,
+    pub keyr: u32,
+    pub optkeyr: u32,
+    pub sr: u32,
+    pub cr: u32,
+    pub optcr: u32,
+}
+
+pub const FLASH: *mut FlashReg = 0x4002_3C00 as *mut FlashReg;
+
 #[repr(C)]
 pub struct RccReg {
     pub cr: u32,
@@ -45,7 +58,7 @@ pub struct RccReg {
     pli2scfgr: u32,
 }
 
-pub const RCC: *mut RccReg = 0x4002_1000 as *mut RccReg;
+pub const RCC: *mut RccReg = 0x4002_3800  as *mut RccReg;
 
 macro_rules! write_bits {
     ($x:ident.$y:ident, $mask:expr, $data:expr  ) => {
@@ -89,6 +102,9 @@ pub fn init() {
 
     write_bits!(RCC.pllcfgr, mask, val);
 
+    // setup flash wait states
+    todo!();
+
     // setup clock usage and dividers
     let mut val: u32 = 0;
     let mut mask: u32 = 0;
@@ -106,4 +122,6 @@ pub fn init() {
     val |= 0b101 << 13; // APB2 Clk Div = 4
 
     write_bits!(RCC.cfgr, mask, val);
+
+
 }

@@ -18,9 +18,9 @@ pub struct GpioReg {
     brr: u32,
 }
 
-pub const GPIO_A: *mut GpioReg = (0x4800_0800 + 0x400 * 0) as *mut GpioReg;
-pub const GPIO_B: *mut GpioReg = (0x4800_0800 + 0x400 * 1) as *mut GpioReg;
-pub const GPIO_C: *mut GpioReg = (0x4800_0800 + 0x400 * 2) as *mut GpioReg;
+pub const GPIO_A: *mut GpioReg = 0x4002_0000 as *mut GpioReg;
+pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
+pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
 fn priv_write_2bits(addr: *mut u32, num: u8, data: u32) {
     assert!(num < 16);
