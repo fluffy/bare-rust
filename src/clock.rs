@@ -103,7 +103,18 @@ pub fn init() {
     write_bits!(RCC.pllcfgr, mask, val);
 
     // setup flash wait states
-    todo!();
+    let mut val: u32 = 0;
+    let mut mask: u32 = 0;
+
+    // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
+    mask |= 0b111 << 0;
+    val |= 0b101 << 0;
+
+    // enable data, instruction, prefetch cache
+    mask |= 0b111 << 8;
+    val |= 0b111 << 8;
+    
+    write_bits!( FLASH.acr, mask, val);
 
     // setup clock usage and dividers
     let mut val: u32 = 0;
@@ -122,6 +133,4 @@ pub fn init() {
     val |= 0b101 << 13; // APB2 Clk Div = 4
 
     write_bits!(RCC.cfgr, mask, val);
-
-
 }
