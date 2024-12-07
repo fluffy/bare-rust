@@ -32,8 +32,9 @@ debug = true
 strip = "none"
 
 [features]
-default = [ "brd-blink1" ]
-brd-hactar10 = []
-brd-blink1 = []
+default = [ "brd-blink-clk-a" ]
+#default = [ "brd-hactar-10" ]
+brd-hactar-10 = []
+brd-blink-clk-a = []
 
 

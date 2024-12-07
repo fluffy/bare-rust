@@ -73,67 +73,82 @@ macro_rules! write_bits {
 }
 
 pub fn init() {
-    // setup main PLL timing for external HSE
-    let mut val: u32 = 0;
-    let mut mask: u32 = 0;
+    //#[cfg(feature = "none")]
+    {
+        // setup main PLL timing for external HSE
+        let mut val: u32 = 0;
+        let mut mask: u32 = 0;
 
-    #[cfg(feature = "brd-hactar10")]
-    let pll_m: u32 = 12;
-    #[cfg(feature = "brd-blink1")]
-    let pll_m: u32 = 8;
-    let pll_n: u32 = 168;
-    let pll_q: u32 = 4;
+        #[cfg(feature = "brd-hactar-10")]
+        let pll_m: u32 = 12;
+        #[cfg(feature = "brd-blink-clk-a")]
+        let pll_m: u32 = 8;
+        let pll_n: u32 = 168;
+        let pll_q: u32 = 4;
 
-    mask |= 0b1 << 22;
-    val |= 0b1 << 22; // select HSE
-    mask |= 0b11 << 16;
-    val |= 0b00 << 16; // set main division factor to 2
+        mask |= 0b1 << 22;
+        val |= 0b1 << 22; // select HSE
+        mask |= 0b11 << 16;
+        val |= 0b00 << 16; // set main division factor to 2
 
-    assert!(pll_q >= 2);
-    assert!(pll_q <= 0xF);
-    assert!(pll_n >= 50);
-    assert!(pll_n <= 432);
-    assert!(pll_m >= 2);
-    assert!(pll_m <= 63);
+        assert!(pll_q >= 2);
+        assert!(pll_q <= 0xF);
+        assert!(pll_n >= 50);
+        assert!(pll_n <= 432);
+        assert!(pll_m >= 2);
+        assert!(pll_m <= 63);
 
-    mask |= 0b1111 << 24;
-    val |= pll_q << 24;
+        mask |= 0b1111 << 24;
+        val |= pll_q << 24;
 
-    mask |= 0x7FFF << 0;
-    val |= pll_n << 6;
-    val |= pll_m;
+        mask |= 0x7FFF << 0;
+        val |= pll_n << 6;
+        val |= pll_m;
 
-    write_bits!(RCC.pllcfgr, mask, val);
+        write_bits!(RCC.pllcfgr, mask, val);
 
-    // setup flash wait states
-    let mut val: u32 = 0;
-    let mut mask: u32 = 0;
+        // setup flash wait states
+        let mut val: u32 = 0;
+        let mut mask: u32 = 0;
 
-    // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
-    mask |= 0b111 << 0;
-    val |= 0b101 << 0;
+        // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
+        mask |= 0b111 << 0;
+        val |= 0b101 << 0;
 
-    // enable data, instruction, prefetch cache
-    mask |= 0b111 << 8;
-    val |= 0b111 << 8;
+        // enable data, instruction, prefetch cache
+        mask |= 0b111 << 8;
+        val |= 0b111 << 8;
 
-    write_bits!(FLASH.acr, mask, val);
+        write_bits!(FLASH.acr, mask, val);
 
-    // setup clock usage and dividers
-    let mut val: u32 = 0;
-    let mut mask: u32 = 0;
+        // setup clock usage and dividers
+        let mut val: u32 = 0;
+        let mut mask: u32 = 0;
 
-    mask |= 0b11 << 0;
-    val |= 0b10 << 0; // switch clock to PLL
+        mask |= 0b11 << 0;
+        val |= 0b10 << 0; // switch clock to PLL
 
-    mask |= 0b1111 << 4;
-    val |= 0b0000 << 4; // AHB Clk Div = 1
+        mask |= 0b1111 << 4;
+        val |= 0b0000 << 4; // AHB Clk Div = 1
 
-    mask |= 0b111 << 10;
-    val |= 0b100 << 10; // APB1 CLk Div = 2
+        mask |= 0b111 << 10;
+        val |= 0b100 << 10; // APB1 CLk Div = 2
 
-    mask |= 0b111 << 13;
-    val |= 0b101 << 13; // APB2 Clk Div = 4
+        mask |= 0b111 << 13;
+        val |= 0b101 << 13; // APB2 Clk Div = 4
 
-    write_bits!(RCC.cfgr, mask, val);
+        write_bits!(RCC.cfgr, mask, val);
+    }
+
+    {
+        // enable clocks for GPIO A,B,C
+
+        let mut val: u32 = 0;
+        let mut mask: u32 = 0;
+
+        mask |= 0b111 << 0;
+        val |= 0b111 << 0; // switch clock to PLL
+
+        write_bits!(RCC.ahb1enr, mask, val);
+    }
 }

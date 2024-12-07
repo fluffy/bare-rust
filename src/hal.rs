@@ -10,6 +10,6 @@ pub fn init() {
     // Do after clock and memory is set up
     gpio::init();
 
-    // Do after GPIO is setup
+    // Do after GPIO is up
     led::init();
 }

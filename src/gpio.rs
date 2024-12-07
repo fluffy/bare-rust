@@ -36,7 +36,7 @@ fn priv_write_2bits(addr: *mut u32, num: u8, data: u32) {
 }
 
 fn priv_write_1bits(addr: *mut u32, num: u8, data: u32) {
-    assert!(num < 16);
+    assert!(num < 32);
     assert!(data <= 0b1);
     unsafe {
         let mut v: u32 = ptr::read_volatile(addr);
@@ -47,8 +47,13 @@ fn priv_write_1bits(addr: *mut u32, num: u8, data: u32) {
         ptr::write_volatile(addr, v);
     }
 }
+fn priv_write_reg(addr: *mut u32, data: u32) {
+    unsafe {
+        ptr::write_volatile(addr, data);
+    }
+}
 fn priv_read_1bits(addr: *mut u32, num: u8) -> bool {
-    assert!(num < 16);
+    assert!(num < 32);
     unsafe {
         let mut v: u32 = ptr::read_volatile(addr);
 
@@ -68,6 +73,12 @@ macro_rules! write_1bits {
         unsafe { priv_write_1bits(ptr::addr_of_mut!((*$x).$y), $bit_num, $val) }
     };
 }
+macro_rules! write_reg {
+    ($x:ident.$y:ident, $data:expr ) => {
+        unsafe { priv_write_reg(ptr::addr_of_mut!((*$x).$y), $data) }
+    };
+}
+
 macro_rules! read_1bits {
     ($x:ident.$y:ident, $bit_num:expr ) => {
         unsafe { priv_read_1bits(ptr::addr_of_mut!((*$x).$y), $bit_num) }
@@ -84,16 +95,16 @@ impl Pin {
         let gpio = self.0;
         let pin_num = self.1;
 
+        // set mode to output
+        write_2bits!(gpio.moder, pin_num, 0b01);
         // set output as low
         write_1bits!(gpio.odr, pin_num, 0b0);
-        // set as push pull
+        // set as push-pull
         write_1bits!(gpio.otyper, pin_num, 0b0);
         // set no pull up , no pull down
         write_2bits!(gpio.pupdr, pin_num, 0b00);
         // set speed to slow
         write_2bits!(gpio.ospeedr, pin_num, 0b00);
-        // set mode to output
-        write_2bits!(gpio.moder, pin_num, 0b10);
     }
 
     fn input(&self) {
@@ -105,17 +116,21 @@ impl Pin {
         // set mode to input
         write_2bits!(gpio.moder, pin_num, 0b00);
     }
-    pub fn high(&self) {
-        let gpio = self.0;
-        let pin_num = self.1;
-
-        write_1bits!(gpio.bsrr, pin_num + 16, 0b1);
-    }
+    
     pub fn low(&self) {
         let gpio = self.0;
         let pin_num = self.1;
 
-        write_1bits!(gpio.bsrr, pin_num, 0b1);
+        write_reg!(gpio.bsrr, 0b1 << (pin_num + 16));
+        //write_1bits!(gpio.odr, pin_num, 0b0);
+    }
+
+    pub fn high(&self) {
+        let gpio = self.0;
+        let pin_num = self.1;
+
+        write_reg!(gpio.bsrr, 0b1 << (pin_num + 0));
+        //write_1bits!(gpio.odr, pin_num, 0b1);
     }
 
     pub fn read(&self) -> bool {
@@ -126,7 +141,7 @@ impl Pin {
     }
 }
 
-#[cfg(feature = "brd-hactar10")]
+#[cfg(feature = "brd-hactar-10")]
 pub fn init() {
     Pin::new(GPIO_A, 6).output(); // red LED
     Pin::new(GPIO_C, 5).output(); // green LED
@@ -135,7 +150,7 @@ pub fn init() {
     Pin::new(GPIO_C, 0).input(); // PTT
 }
 
-#[cfg(feature = "brd-blink1")]
+#[cfg(feature = "brd-blink-clk-a")]
 pub fn init() {
     Pin::new(GPIO_A, 12).output(); // red LED
     Pin::new(GPIO_A, 11).output(); // green LED
