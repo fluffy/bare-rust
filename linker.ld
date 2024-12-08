@@ -58,4 +58,10 @@ SECTIONS
     . = . + _Min_Stack_Size;
     . = ALIGN(4);
    }
+
+   .stack_sizes (INFO) :
+   {
+     KEEP(*(.stack_sizes));
+   }
+
 }

@@ -30,6 +30,8 @@ panic = "abort"
 opt-level = 3
 debug = true
 strip = "none"
+lto = "fat"
+panic = "abort"
 
 [features]
 default = [ "brd-blink-clk-a" ]
