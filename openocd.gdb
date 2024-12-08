@@ -3,9 +3,11 @@ set confirm off
 
 load
 
-stepi
+# break at start of program
+# stepi
+break main
 
 set print asm-demangle on
 
-break rust_begin_unwind
+#break rust_begin_unwind
 break Default_Handler
