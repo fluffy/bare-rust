@@ -1,7 +1,6 @@
 use core::ptr;
 
-use crate::gen_cpu::* ;
-
+use crate::gen_cpu::*;
 
 #[repr(C)]
 pub struct FlashReg {
@@ -57,8 +56,8 @@ pub struct RccReg {
     reserved10: u32,
     reserved11: u32,
 
-    sscgr: u32,
-    pli2scfgr: u32,
+    pub sscgr: u32,
+    pub pli2scfgr: u32,
 }
 
 pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
@@ -75,26 +74,26 @@ macro_rules! write_bits {
     };
 }
 
-
 macro_rules! reg_set_bit {
-    ($x:ident.$y:ident[$z:ident],  $data:expr  ) => {
+    ($x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
         let offset = $x::$y::$z;
         //let offset = concat_idents!( $x, _, $y, _, $z );
-        let mask = 1 << offset;
-        let val = $data << offset;
-         unsafe {
+        let mut mask = (1u32 << $w) -1;
+        let mut val = $data & mask;
+        mask = mask << offset;
+        val = val << offset;
+        unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
             let mut v: u32 = ptr::read_volatile(addr);
-             v &= ! mask;
+            v &= !mask;
             v |= val;
             ptr::write_volatile(addr, v);
         }
     };
 }
 
-
 macro_rules! read_bits {
-    ($x:ident.$y:ident, $mask:expr  ) =>  {
+    ($x:ident.$y:ident, $mask:expr  ) => {
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
             let mut v: u32 = ptr::read_volatile(addr);
@@ -104,13 +103,18 @@ macro_rules! read_bits {
     };
 }
 
+#[allow(non_snake_case)]
 mod FLASH {
     pub mod acr {
-        pub const PRFTEN: u32 = 7;
-        pub const ICEN: u32 = 7;
-        pub const DCEN: u32 = 7;
+        
+        pub const PRFTEN: u32 = 8;
+        pub const ICEN: u32 = 9;
+        pub const DCEN: u32 = 10;
     }
 }
+
+
+
 pub fn init() {
     //#[cfg(feature = "none")]
     {
@@ -122,13 +126,11 @@ pub fn init() {
         mask |= 0b111 << FLASH_ACR_LATENCY;
         val |= 0b101 << FLASH_ACR_LATENCY;
         write_bits!(FLASH.acr, mask, val);
-                 
+
         // enable data, instruction, prefetch cache
-        reg_set_bit!( FLASH.acr[PRFTEN], 1 );
-        reg_set_bit!( FLASH.acr[ICEN], 1 );
-        reg_set_bit!( FLASH.acr[DCEN], 1 );
-        
-       
+        reg_set_bit!(FLASH.acr[PRFTEN;1], 1);
+        reg_set_bit!(FLASH.acr[ICEN;1], 1);
+        reg_set_bit!(FLASH.acr[DCEN;1], 1);
     }
 
     //#[cfg(feature = "none")]
@@ -189,7 +191,7 @@ pub fn init() {
                 break;
             }
         }
-        
+
         // setup clock usage and dividers
         let mut val: u32 = 0;
         let mut mask: u32 = 0;
@@ -208,10 +210,10 @@ pub fn init() {
 
         write_bits!(RCC.cfgr, mask, val);
 
-        // wait for clock to switch to PLL 
+        // wait for clock to switch to PLL
         loop {
             let mask: u32 = 0b11 << 2;
-            let val : u32 = read_bits!(RCC.cfgr, mask);
+            let val: u32 = read_bits!(RCC.cfgr, mask);
             if val == (0b10 << 2) {
                 break;
             }
@@ -225,7 +227,7 @@ pub fn init() {
         let mut mask: u32 = 0;
 
         mask |= 0b111 << 0;
-        val |= 0b111 << 0; 
+        val |= 0b111 << 0;
 
         write_bits!(RCC.ahb1enr, mask, val);
     }
