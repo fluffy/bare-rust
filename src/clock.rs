@@ -74,10 +74,12 @@ macro_rules! write_bits {
     };
 }
 
+//#[allow(concat_idents)]
 macro_rules! reg_set_bit {
     ($x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
-        let offset = $x::$y::$z;
-        //let offset = concat_idents!( $x, _, $y, _, $z );
+        //let offset = $x::$y::$z;
+
+        let offset = concat_idents!( $x, _, $y, _, $z );
         let mut mask = (1u32 << $w) -1;
         let mut val = $data & mask;
         mask = mask << offset;
@@ -106,6 +108,7 @@ macro_rules! read_bits {
 #[allow(non_snake_case)]
 mod FLASH {
     pub mod acr {
+        #![allow(unused)]
         
         pub const PRFTEN: u32 = 8;
         pub const ICEN: u32 = 9;
@@ -123,8 +126,8 @@ pub fn init() {
         let mut mask: u32 = 0;
 
         // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
-        mask |= 0b111 << FLASH_ACR_LATENCY;
-        val |= 0b101 << FLASH_ACR_LATENCY;
+        mask |= 0b111 << FLASH_acr_LATENCY;
+        val |= 0b101 << FLASH_acr_LATENCY;
         write_bits!(FLASH.acr, mask, val);
 
         // enable data, instruction, prefetch cache
@@ -138,8 +141,8 @@ pub fn init() {
         // enable HSE
         let mut val: u32 = 0;
         let mut mask: u32 = 0;
-        mask |= 0b1 << RCC_CR_HSEON;
-        val |= 0b1 << RCC_CR_HSEON;
+        mask |= 0b1 << RCC_cr_HSEON;
+        val |= 0b1 << RCC_cr_HSEON;
         write_bits!(RCC.cr, mask, val);
 
         // wait for HSE to be ready

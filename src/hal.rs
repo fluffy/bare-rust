@@ -1,5 +1,5 @@
 #![no_std]
-//#![feature(concat_idents)]
+#![feature(concat_idents)]
 
 
 pub mod clock;
