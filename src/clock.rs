@@ -62,25 +62,14 @@ pub struct RccReg {
 
 pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
 
-macro_rules! write_bits {
-    ($x:ident.$y:ident, $mask:expr, $data:expr  ) => {
-        unsafe {
-            let addr = ptr::addr_of_mut!((*$x).$y);
-            let mut v: u32 = ptr::read_volatile(addr);
-            v &= !$mask;
-            v |= $data;
-            ptr::write_volatile(addr, v);
-        }
-    };
-}
 
 //#[allow(concat_idents)]
 macro_rules! reg_set_bit {
     ($x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
         //let offset = $x::$y::$z;
 
-        let offset = concat_idents!( $x, _, $y, _, $z );
-        let mut mask = (1u32 << $w) -1;
+        let offset = concat_idents!($x, _, $y, _, $z);
+        let mut mask = (1u32 << $w) - 1;
         let mut val = $data & mask;
         mask = mask << offset;
         val = val << offset;
@@ -94,41 +83,43 @@ macro_rules! reg_set_bit {
     };
 }
 
-macro_rules! read_bits {
-    ($x:ident.$y:ident, $mask:expr  ) => {
+macro_rules! reg_get_bit {
+    ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
+        // TODO why is {{ needed here
+        //let offset = $x::$y::$z;
+
+        let offset: i32 = concat_idents!($x, _, $y, _, $z);
+        let mask = (1u32 << $w) - 1;
+        let mut val;
+
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
-            let mut v: u32 = ptr::read_volatile(addr);
-            v &= !$mask;
-            v
+            val = ptr::read_volatile(addr);
         }
-    };
+        val = val >> offset;
+        val = val & mask;
+        val
+    }};
 }
+
+
 
 #[allow(non_snake_case)]
 mod FLASH {
     pub mod acr {
         #![allow(unused)]
-        
+
         pub const PRFTEN: u32 = 8;
         pub const ICEN: u32 = 9;
         pub const DCEN: u32 = 10;
     }
 }
 
-
-
 pub fn init() {
-    //#[cfg(feature = "none")]
+    // setup flash wait states and cache
     {
-        // setup flash wait states and cache
-        let mut val: u32 = 0;
-        let mut mask: u32 = 0;
-
         // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
-        mask |= 0b111 << FLASH_acr_LATENCY;
-        val |= 0b101 << FLASH_acr_LATENCY;
-        write_bits!(FLASH.acr, mask, val);
+        reg_set_bit!(FLASH.acr[LATENCY;3], 5);
 
         // enable data, instruction, prefetch cache
         reg_set_bit!(FLASH.acr[PRFTEN;1], 1);
@@ -136,39 +127,21 @@ pub fn init() {
         reg_set_bit!(FLASH.acr[DCEN;1], 1);
     }
 
-    //#[cfg(feature = "none")]
+    // set up external clock and PLL
     {
         // enable HSE
-        let mut val: u32 = 0;
-        let mut mask: u32 = 0;
-        mask |= 0b1 << RCC_cr_HSEON;
-        val |= 0b1 << RCC_cr_HSEON;
-        write_bits!(RCC.cr, mask, val);
+        reg_set_bit!(RCC.cr[HSEON;1], 1);
 
         // wait for HSE to be ready
-        loop {
-            let mask: u32 = 0b1 << 17;
-            let val: u32 = read_bits!(RCC.cr, mask);
-            if val != 0 {
-                break;
-            }
-        }
+        while (reg_get_bit!(RCC.cr[HSERDY;1]) != 1) {}
 
         // setup main PLL timing for external HSE
-        let mut val: u32 = 0;
-        let mut mask: u32 = 0;
-
         #[cfg(feature = "brd-hactar-10")]
         let pll_m: u32 = 12;
         #[cfg(feature = "brd-blink-clk-a")]
         let pll_m: u32 = 8;
         let pll_n: u32 = 168;
         let pll_q: u32 = 4;
-
-        mask |= 0b1 << 22;
-        val |= 0b1 << 22; // select HSE
-        mask |= 0b11 << 16;
-        val |= 0b00 << 16; // set main division factor to 2
 
         assert!(pll_q >= 2);
         assert!(pll_q <= 0xF);
@@ -177,61 +150,36 @@ pub fn init() {
         assert!(pll_m >= 2);
         assert!(pll_m <= 63);
 
-        mask |= 0b1111 << 24;
-        val |= pll_q << 24;
+        reg_set_bit!(RCC.pllcfgr[PLLQ0;4], pll_q );
+        reg_set_bit!(RCC.pllcfgr[PLLM0;5], pll_m );
+        reg_set_bit!(RCC.pllcfgr[PLLN0;9], pll_n );
+        // set main division factor to 2
+        reg_set_bit!(RCC.pllcfgr[PLLP0;2], 0b00);
+        // select HSE
+        reg_set_bit!(RCC.pllcfgr[PLLSRC;2], 0b01);
 
-        mask |= 0x7FFF << 0;
-        val |= pll_n << 6;
-        val |= pll_m;
-
-        write_bits!(RCC.pllcfgr, mask, val);
-
+        // enable PLL
+        reg_set_bit!(RCC.cr[PLLON;1], 0b1);
         // wait for PLL to be ready
-        loop {
-            let mask: u32 = 0b1 << 25;
-            let val = read_bits!(RCC.cr, mask);
-            if val != 0 {
-                break;
-            }
-        }
+        while (reg_get_bit!(RCC.cr[PLLRDY;1]) != 1) {}
 
         // setup clock usage and dividers
-        let mut val: u32 = 0;
-        let mut mask: u32 = 0;
-
-        mask |= 0b11 << 0;
-        val |= 0b10 << 0; // switch clock to PLL
-
-        mask |= 0b1111 << 4;
-        val |= 0b0000 << 4; // AHB Clk Div = 1
-
-        mask |= 0b111 << 10;
-        val |= 0b100 << 10; // APB1 CLk Div = 2
-
-        mask |= 0b111 << 13;
-        val |= 0b101 << 13; // APB2 Clk Div = 4
-
-        write_bits!(RCC.cfgr, mask, val);
+        reg_set_bit!(RCC.cfgr[HPRE;4], 0b0000);
+        // APB1 Clk Div = 1
+        reg_set_bit!(RCC.cfgr[PPRE1;3], 0b100);
+        // APB2 Clk Div = 4
+        reg_set_bit!(RCC.cfgr[PPRE2;3], 0b101);
+        // switch clock to PLL
+        reg_set_bit!(RCC.cfgr[SW0;2], 0b10 );
 
         // wait for clock to switch to PLL
-        loop {
-            let mask: u32 = 0b11 << 2;
-            let val: u32 = read_bits!(RCC.cfgr, mask);
-            if val == (0b10 << 2) {
-                break;
-            }
-        }
+        while (reg_get_bit!(RCC.cfgr[SWS0;2]) != 0b10) {}
     }
 
     {
         // enable clocks for GPIO A,B,C
-
-        let mut val: u32 = 0;
-        let mut mask: u32 = 0;
-
-        mask |= 0b111 << 0;
-        val |= 0b111 << 0;
-
-        write_bits!(RCC.ahb1enr, mask, val);
+        reg_set_bit!(RCC.ahb1enr[GPIOAEN;1], 1 );
+        reg_set_bit!(RCC.ahb1enr[GPIOBEN;1], 1 );
+        reg_set_bit!(RCC.ahb1enr[GPIOCEN;1], 1 );
     }
 }
