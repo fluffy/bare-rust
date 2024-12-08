@@ -22,7 +22,7 @@ bench = false
 
 [profile.release]
 debug = "limited"
-opt-level = 3
+opt-level = "s"
 lto = "fat"
 panic = "abort"
 

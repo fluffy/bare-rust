@@ -4,6 +4,10 @@ pub mod clock;
 pub mod gpio;
 pub mod led;
 
+mod gen_cpu;
+
+
+#[inline(never)] 
 pub fn init() {
     clock::init();
 

@@ -1,5 +1,8 @@
 use core::ptr;
 
+use crate::gen_cpu as cpu;
+
+
 #[repr(C)]
 pub struct FlashReg {
     pub acr: u32,
@@ -71,10 +74,53 @@ macro_rules! write_bits {
         }
     };
 }
+macro_rules! read_bits {
+    ($x:ident.$y:ident, $mask:expr  ) =>  {
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            let mut v: u32 = ptr::read_volatile(addr);
+            v &= !$mask;
+            v
+        }
+    };
+}
 
 pub fn init() {
     //#[cfg(feature = "none")]
     {
+        // setup flash wait states and cache
+        let mut val: u32 = 0;
+        let mut mask: u32 = 0;
+
+        // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
+        mask |= 0b111 << 0;
+        val |= 0b101 << 0;
+
+        // enable data, instruction, prefetch cache
+        mask |= 0b111 << 8;
+        val |= 0b111 << 8;
+
+        write_bits!(FLASH.acr, mask, val);
+    }
+
+    //#[cfg(feature = "none")]
+    {
+        // enable HSE
+        let mut val: u32 = 0;
+        let mut mask: u32 = 0;
+        mask |= 0b1 << 16;
+        val |= 0b1 << 16;
+        write_bits!(RCC.cr, mask, val);
+
+        // wait for HSE to be ready
+        loop {
+            let mask: u32 = 0b1 << 17;
+            let val: u32 = read_bits!(RCC.cr, mask);
+            if val != 0 {
+                break;
+            }
+        }
+
         // setup main PLL timing for external HSE
         let mut val: u32 = 0;
         let mut mask: u32 = 0;
@@ -107,20 +153,15 @@ pub fn init() {
 
         write_bits!(RCC.pllcfgr, mask, val);
 
-        // setup flash wait states
-        let mut val: u32 = 0;
-        let mut mask: u32 = 0;
-
-        // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
-        mask |= 0b111 << 0;
-        val |= 0b101 << 0;
-
-        // enable data, instruction, prefetch cache
-        mask |= 0b111 << 8;
-        val |= 0b111 << 8;
-
-        write_bits!(FLASH.acr, mask, val);
-
+        // wait for PLL to be ready
+        loop {
+            let mask: u32 = 0b1 << 25;
+            let val = read_bits!(RCC.cr, mask);
+            if val != 0 {
+                break;
+            }
+        }
+        
         // setup clock usage and dividers
         let mut val: u32 = 0;
         let mut mask: u32 = 0;
@@ -138,6 +179,15 @@ pub fn init() {
         val |= 0b101 << 13; // APB2 Clk Div = 4
 
         write_bits!(RCC.cfgr, mask, val);
+
+        // wait for clock to switch to PLL 
+        loop {
+            let mask: u32 = 0b11 << 2;
+            let val : u32 = read_bits!(RCC.cfgr, mask);
+            if val == (0b10 << 2) {
+                break;
+            }
+        }
     }
 
     {
@@ -147,7 +197,7 @@ pub fn init() {
         let mut mask: u32 = 0;
 
         mask |= 0b111 << 0;
-        val |= 0b111 << 0; // switch clock to PLL
+        val |= 0b111 << 0; 
 
         write_bits!(RCC.ahb1enr, mask, val);
     }
