@@ -1,13 +1,13 @@
 use core::ptr;
 
-use crate::gen_cpu as cpu;
+use crate::gen_cpu::* ;
 
 
 #[repr(C)]
 pub struct FlashReg {
     pub acr: u32,
     pub keyr: u32,
-    pub optkeyr: u32,
+    pub opkeyr: u32,
     pub sr: u32,
     pub cr: u32,
     pub optcr: u32,
@@ -74,6 +74,25 @@ macro_rules! write_bits {
         }
     };
 }
+
+
+macro_rules! reg_set_bit {
+    ($x:ident.$y:ident[$z:ident],  $data:expr  ) => {
+        let offset = $x::$y::$z;
+        //let offset = concat_idents!( $x, _, $y, _, $z );
+        let mask = 1 << offset;
+        let val = $data << offset;
+         unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            let mut v: u32 = ptr::read_volatile(addr);
+             v &= ! mask;
+            v |= val;
+            ptr::write_volatile(addr, v);
+        }
+    };
+}
+
+
 macro_rules! read_bits {
     ($x:ident.$y:ident, $mask:expr  ) =>  {
         unsafe {
@@ -85,6 +104,13 @@ macro_rules! read_bits {
     };
 }
 
+mod FLASH {
+    pub mod acr {
+        pub const PRFTEN: u32 = 7;
+        pub const ICEN: u32 = 7;
+        pub const DCEN: u32 = 7;
+    }
+}
 pub fn init() {
     //#[cfg(feature = "none")]
     {
@@ -93,14 +119,16 @@ pub fn init() {
         let mut mask: u32 = 0;
 
         // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
-        mask |= 0b111 << 0;
-        val |= 0b101 << 0;
-
-        // enable data, instruction, prefetch cache
-        mask |= 0b111 << 8;
-        val |= 0b111 << 8;
-
+        mask |= 0b111 << FLASH_ACR_LATENCY;
+        val |= 0b101 << FLASH_ACR_LATENCY;
         write_bits!(FLASH.acr, mask, val);
+                 
+        // enable data, instruction, prefetch cache
+        reg_set_bit!( FLASH.acr[PRFTEN], 1 );
+        reg_set_bit!( FLASH.acr[ICEN], 1 );
+        reg_set_bit!( FLASH.acr[DCEN], 1 );
+        
+       
     }
 
     //#[cfg(feature = "none")]
@@ -108,8 +136,8 @@ pub fn init() {
         // enable HSE
         let mut val: u32 = 0;
         let mut mask: u32 = 0;
-        mask |= 0b1 << 16;
-        val |= 0b1 << 16;
+        mask |= 0b1 << RCC_CR_HSEON;
+        val |= 0b1 << RCC_CR_HSEON;
         write_bits!(RCC.cr, mask, val);
 
         // wait for HSE to be ready
