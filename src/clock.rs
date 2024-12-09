@@ -156,7 +156,7 @@ pub fn init() {
         // set main division factor to 2
         reg_set_bit!(RCC.pllcfgr[PLLP0;2], 0b00);
         // select HSE
-        reg_set_bit!(RCC.pllcfgr[PLLSRC;2], 0b01);
+        reg_set_bit!(RCC.pllcfgr[PLLSRC;1], 0b1);
 
         // enable PLL
         reg_set_bit!(RCC.cr[PLLON;1], 0b1);
@@ -164,11 +164,13 @@ pub fn init() {
         while (reg_get_bit!(RCC.cr[PLLRDY;1]) != 1) {}
 
         // setup clock usage and dividers
+        // sys clock div 1
         reg_set_bit!(RCC.cfgr[HPRE;4], 0b0000);
-        // APB1 Clk Div = 1
+        // APB1 Clk Div = 2
         reg_set_bit!(RCC.cfgr[PPRE1;3], 0b100);
         // APB2 Clk Div = 4
         reg_set_bit!(RCC.cfgr[PPRE2;3], 0b101);
+
         // switch clock to PLL
         reg_set_bit!(RCC.cfgr[SW0;2], 0b10 );
 
