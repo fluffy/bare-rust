@@ -99,4 +99,6 @@ pub fn init() {
     Pin::new(GPIO_B, 7).output(); // blue LED
 
     Pin::new(GPIO_C, 13).input(); // PTT
+
+    Pin::new(GPIO_A, 8).output(); // PPS Out
 }

@@ -5,6 +5,7 @@
 mod cpu;
 //pub mod clock;
 pub mod clock;
+pub mod debug;
 pub mod gpio;
 pub mod led;
 //}
@@ -18,4 +19,5 @@ pub fn init() {
 
     // Do after GPIO is up
     led::init();
+    debug::init();
 }

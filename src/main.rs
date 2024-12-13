@@ -4,6 +4,7 @@
 use core::panic::PanicInfo;
 
 use hal;
+use hal::debug;
 use hal::led;
 use hal::led::Color;
 
@@ -21,12 +22,18 @@ fn panic(_panic: &PanicInfo) -> ! {
 pub extern "C" fn main() -> ! {
     hal::init();
 
-    led::set(Color::Blue);
-    fib(34);
-    //fib(34);
-    led::set(Color::Green);
+    loop {
+        led::set(Color::Blue);
+        debug::set(0, true);
 
-    loop {}
+        // getting 1.630 seconds
+        fib(34);
+
+        debug::set(0, false);
+        led::set(Color::Red);
+
+        fib(33);
+    }
 }
 
 pub fn fib(x: usize) -> u32 {
