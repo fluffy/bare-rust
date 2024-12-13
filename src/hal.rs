@@ -1,21 +1,21 @@
 #![no_std]
 #![feature(concat_idents)]
 
+pub mod hal {
+    mod cpu;
+    //pub mod clock;
+    pub mod gpio;
+    pub mod led;
+    pub mod clock;
+}
 
-pub mod clock;
-pub mod gpio;
-pub mod led;
-
-mod cpu;
-
-
-#[inline(never)] 
+#[inline(never)]
 pub fn init() {
-    clock::init();
+    hal::clock::init();
 
     // Do after clock and memory is set up
-    gpio::init();
+    hal::gpio::init();
 
     // Do after GPIO is up
-    led::init();
+    hal::led::init();
 }

@@ -1,7 +1,7 @@
 use core::ptr;
 
 //use crate::cpu::gen_cpu::*;
-use crate::cpu::*;
+use super::cpu::*;
 
 
 
