@@ -1,7 +1,7 @@
 use core::ptr;
 
 pub mod gen_cpu;
-pub use crate::hal::cpu::gen_cpu::*;
+pub use gen_cpu::*;
 
 #[repr(C)]
 pub struct FlashReg {

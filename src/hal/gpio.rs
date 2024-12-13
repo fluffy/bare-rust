@@ -1,6 +1,6 @@
 use core::ptr;
 
-use crate::hal::cpu::*;
+use super::cpu::*;
 
 
 #[derive(Copy, Clone)]

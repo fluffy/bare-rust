@@ -4,8 +4,8 @@
 use core::panic::PanicInfo;
 
 use hal;
-use hal::hal::led;
-use hal::hal::led::Color;
+use hal::led;
+use hal::led::Color;
 
 mod startup;
 //mod hal;
