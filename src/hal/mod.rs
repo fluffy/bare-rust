@@ -2,11 +2,11 @@
 #![feature(concat_idents)]
 
 //pub mod hal {
-    mod cpu;
-    //pub mod clock;
-    pub mod gpio;
-    pub mod led;
-    pub mod clock;
+mod cpu;
+//pub mod clock;
+pub mod clock;
+pub mod gpio;
+pub mod led;
 //}
 
 #[inline(never)]

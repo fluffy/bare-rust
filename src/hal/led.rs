@@ -1,5 +1,5 @@
-use super::gpio;
 use super::cpu;
+use super::gpio;
 
 pub fn init() {
     set(Color::Black);

@@ -3,9 +3,6 @@ use core::ptr;
 //use crate::cpu::gen_cpu::*;
 use super::cpu::*;
 
-
-
-
 //#[allow(concat_idents)]
 macro_rules! reg_set_bit {
     ($x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
@@ -44,7 +41,6 @@ macro_rules! reg_get_bit {
         val
     }};
 }
-
 
 pub fn init() {
     // setup flash wait states and cache
@@ -109,8 +105,8 @@ pub fn init() {
         while (reg_get_bit!(RCC.cfgr[SWS0;2]) != 0b10) {}
     }
 
+    // enable clocks for GPIO A,B,C
     {
-        // enable clocks for GPIO A,B,C
         reg_set_bit!(RCC.ahb1enr[GPIOAEN;1], 1 );
         reg_set_bit!(RCC.ahb1enr[GPIOBEN;1], 1 );
         reg_set_bit!(RCC.ahb1enr[GPIOCEN;1], 1 );

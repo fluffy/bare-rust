@@ -2,10 +2,8 @@ use core::ptr;
 
 use super::cpu::*;
 
-
 #[derive(Copy, Clone)]
 pub struct Pin(*mut GpioReg, u8);
-
 
 macro_rules! write_2bits {
     ($x:ident.$y:ident, $bit_num:expr, $val:expr ) => {
@@ -28,7 +26,6 @@ macro_rules! read_1bits {
         unsafe { priv_read_1bits(ptr::addr_of_mut!((*$x).$y), $bit_num) }
     };
 }
-
 
 impl Pin {
     pub fn new(gpio: *mut GpioReg, p: u8) -> Pin {
@@ -61,7 +58,7 @@ impl Pin {
         // set mode to input
         write_2bits!(gpio.moder, pin_num, 0b00);
     }
-    
+
     pub fn low(&self) {
         let gpio = self.0;
         let pin_num = self.1;
@@ -103,4 +100,3 @@ pub fn init() {
 
     Pin::new(GPIO_C, 13).input(); // PTT
 }
-

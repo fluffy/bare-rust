@@ -22,7 +22,7 @@ pub extern "C" fn main() -> ! {
     hal::init();
 
     led::set(Color::Blue);
-    fib(31);
+    fib(34);
     //fib(34);
     led::set(Color::Green);
 

@@ -63,8 +63,6 @@ pub struct RccReg {
 
 pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
 
-
-
 #[allow(non_snake_case)]
 pub mod FLASH {
     pub mod acr {
