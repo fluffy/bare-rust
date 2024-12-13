@@ -26,7 +26,8 @@ pub extern "C" fn main() -> ! {
         led::set(Color::Blue);
         debug::set(0, true);
 
-        // getting 1.630 seconds
+        // getting 1.630 s on dev
+        // getting 0.798 s on rel
         fib(34);
 
         debug::set(0, false);
