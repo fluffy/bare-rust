@@ -1,66 +1,9 @@
 use core::ptr;
 
 use crate::gen_cpu::*;
+use crate::cpu::*;
 
-#[repr(C)]
-pub struct FlashReg {
-    pub acr: u32,
-    pub keyr: u32,
-    pub opkeyr: u32,
-    pub sr: u32,
-    pub cr: u32,
-    pub optcr: u32,
-}
 
-pub const FLASH: *mut FlashReg = 0x4002_3C00 as *mut FlashReg;
-
-#[repr(C)]
-pub struct RccReg {
-    pub cr: u32,
-    pub pllcfgr: u32,
-    pub cfgr: u32,
-    pub cir: u32,
-
-    pub ahb1rstr: u32,
-    pub ahb2rstr: u32,
-    pub ahb3rstr: u32,
-    reserved1: u32,
-
-    pub apb1_enr: u32,
-    pub apb12enr: u32,
-    reserved2: u32,
-    reserved3: u32,
-
-    pub ahb1enr: u32,
-    pub ahb2enr: u32,
-    pub ahb3enr: u32,
-    reserved4: u32,
-
-    pub apb1enr: u32,
-    pub apb2enr: u32,
-    reserved5: u32,
-    reserved6: u32,
-
-    pub ahb1lpenr: u32,
-    pub ahb2lpenr: u32,
-    pub ahb3lpenr: u32,
-    reserved7: u32,
-
-    pub apb1lpenr: u32,
-    pub apb2lpenr: u32,
-    reserved8: u32,
-    reserved9: u32,
-
-    pub bdcr: u32,
-    pub csr: u32,
-    reserved10: u32,
-    reserved11: u32,
-
-    pub sscgr: u32,
-    pub pli2scfgr: u32,
-}
-
-pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
 
 
 //#[allow(concat_idents)]
@@ -102,18 +45,6 @@ macro_rules! reg_get_bit {
     }};
 }
 
-
-
-#[allow(non_snake_case)]
-mod FLASH {
-    pub mod acr {
-        #![allow(unused)]
-
-        pub const PRFTEN: u32 = 8;
-        pub const ICEN: u32 = 9;
-        pub const DCEN: u32 = 10;
-    }
-}
 
 pub fn init() {
     // setup flash wait states and cache

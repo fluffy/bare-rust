@@ -1,67 +1,11 @@
 use core::ptr;
 
+use crate::cpu::*;
+
+
 #[derive(Copy, Clone)]
 pub struct Pin(*mut GpioReg, u8);
 
-#[repr(C)]
-pub struct GpioReg {
-    moder: u32,
-    otyper: u32,
-    ospeedr: u32,
-    pupdr: u32,
-    idr: u32,
-    odr: u32,
-    bsrr: u32,
-    lckr: u32,
-    afrl: u32,
-    afrh: u32,
-    brr: u32,
-}
-
-pub const GPIO_A: *mut GpioReg = 0x4002_0000 as *mut GpioReg;
-pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
-pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
-
-fn priv_write_2bits(addr: *mut u32, num: u8, data: u32) {
-    assert!(num < 16);
-    assert!(data <= 0b11);
-    unsafe {
-        let mut v: u32 = ptr::read_volatile(addr);
-
-        v = v & !(0b11 << (num * 2));
-        v = v | (data << (num * 2));
-
-        ptr::write_volatile(addr, v);
-    }
-}
-
-fn priv_write_1bits(addr: *mut u32, num: u8, data: u32) {
-    assert!(num < 32);
-    assert!(data <= 0b1);
-    unsafe {
-        let mut v: u32 = ptr::read_volatile(addr);
-
-        v = v & !(0b1 << num);
-        v = v | (data << num);
-
-        ptr::write_volatile(addr, v);
-    }
-}
-fn priv_write_reg(addr: *mut u32, data: u32) {
-    unsafe {
-        ptr::write_volatile(addr, data);
-    }
-}
-fn priv_read_1bits(addr: *mut u32, num: u8) -> bool {
-    assert!(num < 32);
-    unsafe {
-        let mut v: u32 = ptr::read_volatile(addr);
-
-        v &= 0b1 << num;
-
-        return v != 0;
-    }
-}
 
 macro_rules! write_2bits {
     ($x:ident.$y:ident, $bit_num:expr, $val:expr ) => {
@@ -84,6 +28,7 @@ macro_rules! read_1bits {
         unsafe { priv_read_1bits(ptr::addr_of_mut!((*$x).$y), $bit_num) }
     };
 }
+
 
 impl Pin {
     pub fn new(gpio: *mut GpioReg, p: u8) -> Pin {
@@ -158,3 +103,4 @@ pub fn init() {
 
     Pin::new(GPIO_C, 13).input(); // PTT
 }
+

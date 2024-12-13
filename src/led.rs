@@ -1,4 +1,5 @@
 use super::gpio;
+use crate::cpu;
 
 pub fn init() {
     set(Color::Black);
@@ -18,15 +19,15 @@ pub fn set(c: Color) {
 
     #[cfg(feature = "brd-hactar-10")]
     {
-        red = gpio::Pin::new(gpio::GPIO_A, 6);
-        green = gpio::Pin::new(gpio::GPIO_C, 5);
-        blue = gpio::Pin::new(gpio::GPIO_A, 1);
+        red = gpio::Pin::new(cpu::GPIO_A, 6);
+        green = gpio::Pin::new(cpu::GPIO_C, 5);
+        blue = gpio::Pin::new(cpu::GPIO_A, 1);
     }
     #[cfg(feature = "brd-blink-clk-a")]
     {
-        red = gpio::Pin::new(gpio::GPIO_A, 12); // red LED
-        green = gpio::Pin::new(gpio::GPIO_A, 11); // green LED
-        blue = gpio::Pin::new(gpio::GPIO_B, 7); // blue LED
+        red = gpio::Pin::new(cpu::GPIO_A, 12); // red LED
+        green = gpio::Pin::new(cpu::GPIO_A, 11); // green LED
+        blue = gpio::Pin::new(cpu::GPIO_B, 7); // blue LED
     }
 
     match c {

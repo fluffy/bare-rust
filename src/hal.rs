@@ -7,6 +7,7 @@ pub mod gpio;
 pub mod led;
 
 mod gen_cpu;
+mod cpu;
 
 
 #[inline(never)] 
