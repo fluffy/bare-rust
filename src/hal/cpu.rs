@@ -135,10 +135,45 @@ pub fn priv_read_1bits(addr: *mut u32, num: u8) -> bool {
 }
 
 //#[macro_export]
-macro_rules! write_2bits {
-    ($x:ident.$y:ident, $bit_num:expr, $val:expr ) => {
-        unsafe { cpu::priv_write_2bits(ptr::addr_of_mut!((*$x).$y), $bit_num, $val) }
+
+macro_rules! write {
+    ( $x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
+        //let offset = $x::$y::$z;
+
+        let offset = 3; //concat_idents!(   $x, _, $y, _, $z);
+        let mut mask = (1u32 << $w) - 1;
+        let mut val = $data & mask;
+        mask = mask << offset;
+        val = val << offset;
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            let mut v: u32 = ptr::read_volatile(addr);
+            v &= !mask;
+            v |= val;
+            ptr::write_volatile(addr, v);
+        }
     };
 }
 
-pub(crate) use write_2bits ;   
+pub(crate) use write;
+
+macro_rules! read {
+    ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
+        // TODO why is {{ needed here
+        //let offset = $x::$y::$z;
+
+        let offset: i32 = concat_idents!($x, _, $y, _, $z);
+        let mask = (1u32 << $w) - 1;
+        let mut val;
+
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            val = ptr::read_volatile(addr);
+        }
+        val = val >> offset;
+        val = val & mask;
+        val
+    }};
+}
+
+pub(crate) use read;

@@ -7,6 +7,12 @@ use crate::cpu;
 #[derive(Copy, Clone)]
 pub struct Pin(*mut cpu::GpioReg, u8);
 
+macro_rules! write_2bits {
+    ($x:ident.$y:ident, $bit_num:expr, $val:expr ) => {
+        unsafe { cpu::priv_write_2bits(ptr::addr_of_mut!((*$x).$y), $bit_num, $val) }
+    };
+}
+
 macro_rules! write_1bits {
     ($x:ident.$y:ident, $bit_num:expr, $val:expr ) => {
         unsafe { cpu::priv_write_1bits(ptr::addr_of_mut!((*$x).$y), $bit_num, $val) }
@@ -35,15 +41,15 @@ impl Pin {
         let pin_num = self.1;
 
         // set mode to output
-        cpu::write_2bits!(gpio.moder, pin_num, 0b01);
+        write_2bits!(gpio.moder, pin_num, 0b01);
         // set output as low
         write_1bits!(gpio.odr, pin_num, 0b0);
         // set as push-pull
         write_1bits!(gpio.otyper, pin_num, 0b0);
         // set no pull up , no pull down
-        cpu::write_2bits!(gpio.pupdr, pin_num, 0b00);
+        write_2bits!(gpio.pupdr, pin_num, 0b00);
         // set speed to slow
-        cpu::write_2bits!(gpio.ospeedr, pin_num, 0b00);
+        write_2bits!(gpio.ospeedr, pin_num, 0b00);
     }
 
     fn input(&self) {
@@ -51,9 +57,9 @@ impl Pin {
         let pin_num = self.1;
 
         // set to pull down
-        cpu::write_2bits!(gpio.pupdr, pin_num, 0b10);
+        write_2bits!(gpio.pupdr, pin_num, 0b10);
         // set mode to input
-        cpu::write_2bits!(gpio.moder, pin_num, 0b00);
+        write_2bits!(gpio.moder, pin_num, 0b00);
     }
 
     pub fn low(&self) {
