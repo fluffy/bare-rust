@@ -1,4 +1,4 @@
-use core::ptr;
+//use core::ptr;
 
 pub mod gen_cpu;
 pub use gen_cpu::*;
@@ -93,54 +93,10 @@ pub const GPIO_A: *mut GpioReg = 0x4002_0000 as *mut GpioReg;
 pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
 pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
-pub fn priv_write_2bits(addr: *mut u32, num: u8, data: u32) {
-    assert!(num < 16);
-    assert!(data <= 0b11);
-    unsafe {
-        let mut v: u32 = ptr::read_volatile(addr);
-
-        v = v & !(0b11 << (num * 2));
-        v = v | (data << (num * 2));
-
-        ptr::write_volatile(addr, v);
-    }
-}
-
-pub fn priv_write_1bits(addr: *mut u32, num: u8, data: u32) {
-    assert!(num < 32);
-    assert!(data <= 0b1);
-    unsafe {
-        let mut v: u32 = ptr::read_volatile(addr);
-
-        v = v & !(0b1 << num);
-        v = v | (data << num);
-
-        ptr::write_volatile(addr, v);
-    }
-}
-pub fn priv_write_reg(addr: *mut u32, data: u32) {
-    unsafe {
-        ptr::write_volatile(addr, data);
-    }
-}
-pub fn priv_read_1bits(addr: *mut u32, num: u8) -> bool {
-    assert!(num < 32);
-    unsafe {
-        let mut v: u32 = ptr::read_volatile(addr);
-
-        v &= 0b1 << num;
-
-        return v != 0;
-    }
-}
-
-//#[macro_export]
-
 macro_rules! write {
     ( $x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
         //let offset = $x::$y::$z;
-
-        let offset = 3; //concat_idents!(   $x, _, $y, _, $z);
+        let offset = concat_idents!($x, _, $y, _, $z);
         let mut mask = (1u32 << $w) - 1;
         let mut val = $data & mask;
         mask = mask << offset;
@@ -153,6 +109,29 @@ macro_rules! write {
             ptr::write_volatile(addr, v);
         }
     };
+
+    ( $x:ident.$y:ident[$z:expr;$w:expr],  $data:expr  ) => {
+        let offset = $z;
+        let mut mask = (1u32 << $w) - 1;
+        let mut val = $data & mask;
+        mask = mask << offset;
+        val = val << offset;
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            let mut v: u32 = ptr::read_volatile(addr);
+            v &= !mask;
+            v |= val;
+            ptr::write_volatile(addr, v);
+        }
+    };
+
+    ( $x:ident.$y:ident ,  $data:expr  ) => {
+        let val = $data;
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            ptr::write_volatile(addr, val);
+        }
+    };
 }
 
 pub(crate) use write;
@@ -160,9 +139,23 @@ pub(crate) use write;
 macro_rules! read {
     ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
         // TODO why is {{ needed here
-        //let offset = $x::$y::$z;
 
+        //let offset = $x::$y::$z;
         let offset: i32 = concat_idents!($x, _, $y, _, $z);
+        let mask = (1u32 << $w) - 1;
+        let mut val;
+
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            val = ptr::read_volatile(addr);
+        }
+        val = val >> offset;
+        val = val & mask;
+        val
+    }};
+    ( $x:ident.$y:ident[$z:expr;$w:expr] ) => {{
+        // TODO why is {{ needed here
+        let offset: u32 = $z;
         let mask = (1u32 << $w) - 1;
         let mut val;
 
