@@ -133,3 +133,12 @@ pub fn priv_read_1bits(addr: *mut u32, num: u8) -> bool {
         return v != 0;
     }
 }
+
+//#[macro_export]
+macro_rules! write_2bits {
+    ($x:ident.$y:ident, $bit_num:expr, $val:expr ) => {
+        unsafe { cpu::priv_write_2bits(ptr::addr_of_mut!((*$x).$y), $bit_num, $val) }
+    };
+}
+
+pub(crate) use write_2bits ;   
