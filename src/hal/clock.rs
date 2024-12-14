@@ -2,6 +2,7 @@ use core::ptr;
 
 use super::cpu;
 use super::cpu::*;
+//use super::cpu::gen_cpu::*;
 
 pub fn init() {
     // setup flash wait states and cache

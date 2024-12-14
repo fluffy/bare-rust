@@ -64,8 +64,8 @@ pub struct RccReg {
 pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
 
 #[allow(non_snake_case)]
-pub mod FLASH {
-    pub mod acr {
+pub mod OLDFLASH {
+    pub mod oldacr {
         #![allow(unused)]
 
         pub const PRFTEN: u32 = 8;
@@ -95,8 +95,8 @@ pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
 macro_rules! write {
     ( $x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
-        //let offset = $x::$y::$z;
-        let offset = concat_idents!($x, _, $y, _, $z);
+        let offset = $x::$y::$z;
+        //let offset = concat_idents!($x, _, $y, _, $z);
         let mut mask = (1u32 << $w) - 1;
         let mut val = $data & mask;
         mask = mask << offset;
@@ -140,8 +140,8 @@ macro_rules! read {
     ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
         // TODO why is {{ needed here
 
-        //let offset = $x::$y::$z;
-        let offset: i32 = concat_idents!($x, _, $y, _, $z);
+        let offset = $x::$y::$z;
+        //let offset: i32 = concat_idents!($x, _, $y, _, $z);
         let mask = (1u32 << $w) - 1;
         let mut val;
 
