@@ -7,7 +7,7 @@ runner = "arm-none-eabi-gdb -q -x openocd.gdb"
 [build]
 target = "thumbv7em-none-eabihf" # Cortex-M4F
 rustflags = [
-    "-Zemit-stack-sizes",
+#    "-Zemit-stack-sizes",
     "-Clinker-plugin-lto",
     "-Clink-arg=-mllvm=-lto-embed-bitcode=optimized",
     "-Clink-arg=-mllvm=-stack-size-section",
