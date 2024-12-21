@@ -21,7 +21,7 @@ this will bring you to gd prompt where you can type "c" to continue.
 
 one
 two
-three
+3
 four
 five
 six
