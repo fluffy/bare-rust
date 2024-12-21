@@ -40,6 +40,7 @@ pub extern "C" fn main() -> ! {
 pub fn fib(x: usize) -> u32 {
     if x > 2 {
         fib(x - 1) + fib(x - 2)
+        broken 
     } else {
         1
     }
