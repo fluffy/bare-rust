@@ -22,7 +22,9 @@ pub fn init() {
         cpu::write!(RCC.cr[HSEON;1], 1);
 
         // wait for HSE to be ready
-        while (cpu::read!(RCC.cr[HSERDY;1]) != 1) {}
+        if cfg!(target_arch = "arm") {
+            while (cpu::read!(RCC.cr[HSERDY;1]) != 1) {}
+        }
 
         // setup main PLL timing for external HSE
         #[cfg(feature = "brd-hactar-10")]
@@ -50,7 +52,9 @@ pub fn init() {
         // enable PLL
         cpu::write!(RCC.cr[PLLON;1], 0b1);
         // wait for PLL to be ready
-        while (cpu::read!(RCC.cr[PLLRDY;1]) != 1) {}
+        if cfg!(target_arch = "arm") {
+            while (cpu::read!(RCC.cr[PLLRDY;1]) != 1) {}
+        }
 
         // setup clock usage and dividers
         // sys clock div 1
@@ -64,7 +68,9 @@ pub fn init() {
         cpu::write!(RCC.cfgr[SW0;2], 0b10 );
 
         // wait for clock to switch to PLL
-        while (cpu::read!(RCC.cfgr[SWS0;2]) != 0b10) {}
+        if cfg!(target_arch = "arm") {
+            while (cpu::read!(RCC.cfgr[SWS0;2]) != 0b10) {}
+        }
     }
 
     // enable clocks for GPIO A,B,C

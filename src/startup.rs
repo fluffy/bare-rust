@@ -34,15 +34,18 @@ pub extern "C" fn Default_Handler() -> ! {
     loop {}
 }
 
+#[cfg(target_arch = "arm")]
 #[link_section = ".vector_table.reset_vector"]
 #[no_mangle]
 pub static Reset_Vector: extern "C" fn() -> ! = Reset_Handler;
 
+#[allow(dead_code)]
 pub union IrqVector {
     not_used: u32,
     handler: unsafe extern "C" fn() -> !,
 }
 
+#[cfg(target_arch = "arm")]
 #[link_section = ".vector_table.exceptions"]
 #[no_mangle]
 pub static Exceptions: [IrqVector; 14] = [

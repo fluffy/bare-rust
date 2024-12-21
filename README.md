@@ -19,12 +19,11 @@ this will bring you to gd prompt where you can type "c" to continue.
 
 # Notes
 
-one
-two
-3
-four
-five
-six
-seven
-eight
+```aiignore
+cargo build  --target=thumbv7em-none-eabihf --release
+```
+
+```aiignore
+cargo test  --target=aarch64-apple-darwin
+```
 
