@@ -1,5 +1,6 @@
 [toolchain]
-channel = "nightly"
+#channel = "nightly"
+channel = "stable"
 components = [ "llvm-tools-preview", "rust-src", "rustfmt" , "rustfmt", "rustc-dev" ]
 targets = [ "thumbv7em-none-eabihf" ] # Cortex-M4F
 profile = "default"
