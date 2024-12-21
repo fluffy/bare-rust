@@ -1,5 +1,5 @@
-#![cfg_attr(  target_arch = "arm", no_std )]
-#![cfg_attr(  target_arch = "arm", no_main )]
+#![cfg_attr(target_arch = "arm", no_std)]
+#![cfg_attr(target_arch = "arm", no_main)]
 
 use hal;
 use hal::debug;
@@ -25,7 +25,6 @@ fn panic(_panic: &PanicInfo) -> ! {
 //    loop {}
 //}
 
-
 #[cfg(target_arch = "arm")]
 #[no_mangle]
 //#[start]
@@ -35,16 +34,12 @@ pub extern "C" fn main() -> ! {
     my_main();
 }
 
-
-
 #[cfg(not(target_arch = "arm"))]
 //#[start]
 //#[export_name = "main"]
 fn main() -> () {
     my_main();
 }
-
-
 
 fn my_main() -> ! {
     hal::init();

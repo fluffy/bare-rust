@@ -93,17 +93,16 @@ pub const GPIO_A: *mut GpioReg = 0x4002_0000 as *mut GpioReg;
 pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
 pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
-
 //#[cfg(target_arch = "arm")]
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     if cfg!(target_arch = "arm") {
         unsafe {
             let mut v: u32 = core::ptr::read_volatile(addr);
-            v &= ! mask;
+            v &= !mask;
             v |= val;
             core::ptr::write_volatile(addr, v);
         }
-    } 
+    }
 }
 
 pub fn write_reg(addr: *mut u32, val: u32) {
@@ -115,10 +114,9 @@ pub fn write_reg(addr: *mut u32, val: u32) {
 }
 
 pub fn read_reg(addr: *mut u32) -> u32 {
-    if cfg!(target_arch = "arm") {        unsafe {
-            core::ptr::read_volatile(addr)
-        }
-    } else { 
+    if cfg!(target_arch = "arm") {
+        unsafe { core::ptr::read_volatile(addr) }
+    } else {
         0
     }
 }
@@ -133,29 +131,27 @@ macro_rules! write {
         val = val << offset;
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
-            cpu::update_reg(addr, mask, val );
-          
+            cpu::update_reg(addr, mask, val);
         }
     };
 
-    ( $x:ident.$y:ident[$z:expr;$w:expr],  $data:expr  ) => {
-        { let offset = $z;
+    ( $x:ident.$y:ident[$z:expr;$w:expr],  $data:expr  ) => {{
+        let offset = $z;
         let mut mask = (1u32 << $w) - 1;
         let mut val = $data & mask;
         mask = mask << offset;
         val = val << offset;
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
-            cpu::update_reg(addr, mask, val );
-                 } }
-    };
+            cpu::update_reg(addr, mask, val);
+        }
+    }};
 
     ( $x:ident.$y:ident ,  $data:expr  ) => {
         let val = $data;
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
-            cpu::write_reg(addr , val );
-        
+            cpu::write_reg(addr, val);
         }
     };
 }
@@ -174,7 +170,6 @@ macro_rules! read {
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
             val = cpu::read_reg(addr);
-         
         }
         val = val >> offset;
         val = val & mask;
@@ -189,7 +184,6 @@ macro_rules! read {
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
             val = cpu::read_reg(addr);
-      
         }
         val = val >> offset;
         val = val & mask;

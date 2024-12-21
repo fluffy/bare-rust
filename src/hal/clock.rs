@@ -25,7 +25,7 @@ pub fn init() {
         if cfg!(target_arch = "arm") {
             while (cpu::read!(RCC.cr[HSERDY;1]) != 1) {}
         }
-    
+
         // setup main PLL timing for external HSE
         #[cfg(feature = "brd-hactar-10")]
         let pll_m: u32 = 12;
@@ -55,7 +55,7 @@ pub fn init() {
         if cfg!(target_arch = "arm") {
             while (cpu::read!(RCC.cr[PLLRDY;1]) != 1) {}
         }
-        
+
         // setup clock usage and dividers
         // sys clock div 1
         cpu::write!(RCC.cfgr[HPRE;4], 0b0000);
