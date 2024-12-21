@@ -44,4 +44,3 @@ pub fn fib(x: usize) -> u32 {
         1
     }
 }
-
