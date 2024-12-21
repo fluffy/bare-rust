@@ -16,5 +16,3 @@ cargo run
 ```
 this will bring you to gd prompt where you can type "c" to continue.
 
-
-
