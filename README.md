@@ -20,12 +20,9 @@ this will bring you to gd prompt where you can type "c" to continue.
 # Notes
 
 one
-
 two
-
 three
-
 four
-
 five
+six
 
