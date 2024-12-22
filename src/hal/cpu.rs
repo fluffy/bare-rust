@@ -115,7 +115,10 @@ pub fn write_reg(addr: *mut u32, val: u32) {
 
 pub fn read_reg(addr: *mut u32) -> u32 {
     if cfg!(target_arch = "arm") {
-        unsafe { core::ptr::read_volatile(addr) }
+        unsafe { 
+            core::ptr::read_volatile(addr)
+            //core::intrinsics::volatile_load(addr)
+        }
     } else {
         0
     }
