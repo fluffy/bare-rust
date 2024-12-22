@@ -1,4 +1,6 @@
 use core::ptr;
+use hal::led;
+use hal::led::Color;
 
 extern "C" {
     fn main() -> !;
@@ -28,17 +30,18 @@ pub extern "C" fn Reset_Handler() -> ! {
         ptr::copy_nonoverlapping(&_sidata as *const u8, &mut _sdata as *mut u8, count);
     }
     unsafe {
-        // initialize the heap and stack to 0xC1 
+        // initialize the heap and stack to 0xC1
         // leave 100 bytes free for this function
         let count = &_estack as *const u8 as usize - &_heap_start as *const u8 as usize - 100;
         ptr::write_bytes(&mut _heap_start as *mut u8, 0xC1, count);
     }
-    
+
     unsafe { main() }
 }
 
 #[no_mangle]
 pub extern "C" fn Default_Handler() -> ! {
+    led::set(Color::Red);
     loop {}
 }
 
