@@ -1,3 +1,4 @@
+#[cfg(target_arch = "arm")]
 use core::ptr;
 
 extern "C" {
@@ -7,6 +8,7 @@ extern "C" {
     static _stack_reserve_end: u8;
 }
 
+#[cfg(target_arch = "arm")]
 pub fn usage() -> usize {
     let start: u32 = ptr::addr_of!(_heap_start) as u32;
     let end: u32 = ptr::addr_of!(_estack) as u32;
@@ -40,4 +42,9 @@ pub fn usage() -> usize {
     }
 
     usage
+}
+
+#[cfg(not(target_arch = "arm"))]
+pub fn usage() -> usize {
+    0
 }
