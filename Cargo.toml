@@ -29,7 +29,8 @@ panic = "abort"
 
 [profile.dev]
 #opt-level = 3
-opt-level = "s"
+#opt-level = "s"
+opt-level = 1
 debug = true
 strip = "none"
 lto = "fat"

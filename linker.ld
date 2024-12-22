@@ -50,18 +50,19 @@ SECTIONS
       _ebss = .;
    } > RAM
 
-
-   ._heap_start :
+   .heap_start :
    {
+    _heap_start = .;
     . = ALIGN(4);
     . = . + _Min_Heap_Size;
+    _stack_reserve_start = .;
     . = . + _Min_Stack_Size;
+    _stack_reserve_end = .;
     . = ALIGN(4);
-   }
+   } > RAM
 
    .stack_sizes (INFO) :
    {
      KEEP(*(.stack_sizes));
    }
-
 }

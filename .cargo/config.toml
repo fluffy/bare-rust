@@ -1,7 +1,6 @@
 [target.thumbv7em-none-eabihf]
 #runner = "qemu-system-arm -cpu cortex-m4 -machine netduinoplus2 -nographic -semihosting-config enable=on,target=native -kernel"
 
-
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
 runner = "arm-none-eabi-gdb -q -x openocd.gdb"
 rustflags = [
@@ -21,7 +20,7 @@ rustflags = [
     "-Clink-arg=-mllvm=-lto-embed-bitcode=optimized",
 ]
 
-
 [unstable]
 build-std = ["compiler_builtins", "core"]
+
 

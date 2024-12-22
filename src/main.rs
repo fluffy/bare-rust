@@ -6,6 +6,7 @@ use hal::debug;
 use hal::led;
 use hal::led::Color;
 
+mod stack;
 mod startup;
 //mod hal;
 
@@ -14,6 +15,7 @@ use core::panic::PanicInfo;
 #[cfg(target_arch = "arm")]
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
+    led::set(Color::Red);
     loop {}
 }
 
@@ -52,8 +54,10 @@ fn my_main() -> ! {
         // getting 0.798 s on rel
         fib(34);
 
+        let _stack_usage = stack::usage();
+
         debug::set(0, false);
-        led::set(Color::Red);
+        led::set(Color::Green);
 
         fib(33);
     }
