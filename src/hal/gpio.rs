@@ -1,7 +1,6 @@
 use core::ptr;
+use super::{board, cpu};
 
-use super::cpu;
-//use super::cpu::*;
 
 #[derive(Copy, Clone)]
 pub struct Pin(pub *mut cpu::GpioReg, pub u8);
@@ -66,30 +65,14 @@ impl Pin {
     }
 }
 
-#[cfg(feature = "board-hactar12")]
-pub fn init() {
-    Pin::new(cpu::GPIO_A, 6).output(); // red LED
-    Pin::new(cpu::GPIO_C, 5).output(); // green LED
-    Pin::new(cpu::GPIO_A, 1).output(); // blue LED
 
-    Pin::new(cpu::GPIO_C, 0).input(); // PTT
+pub fn init() {
+    board::info::LED_RED_PIN.output(); 
+    board::info::LED_GREEN_PIN.output();
+    board::info::LED_BLUE_PIN.output();
+
+    board::info::PTT_BUTTON.input();
+
+    board::info::DEBUG1_PIN.output();
 }
 
-#[cfg(feature = "board-sim")]
-pub fn init() {
-    Pin::new(cpu::GPIO_A, 6).output(); // red LED
-    Pin::new(cpu::GPIO_C, 5).output(); // green LED
-    Pin::new(cpu::GPIO_A, 1).output(); // blue LED
-
-    Pin::new(cpu::GPIO_C, 0).input(); // PTT
-}
-#[cfg(feature = "board-blinkA")]
-pub fn init() {
-    Pin::new(cpu::GPIO_A, 12).output(); // red LED
-    Pin::new(cpu::GPIO_A, 11).output(); // green LED
-    Pin::new(cpu::GPIO_B, 7).output(); // blue LED
-
-    Pin::new(cpu::GPIO_C, 13).input(); // PTT
-
-    Pin::new(cpu::GPIO_A, 8).output(); // PPS Out
-}
