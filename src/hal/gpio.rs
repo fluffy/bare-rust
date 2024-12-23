@@ -4,7 +4,7 @@ use super::cpu;
 //use super::cpu::*;
 
 #[derive(Copy, Clone)]
-pub struct Pin(*mut cpu::GpioReg, u8);
+pub struct Pin(pub *mut cpu::GpioReg, pub u8);
 
 impl Pin {
     pub fn new(gpio: *mut cpu::GpioReg, p: u8) -> Pin {

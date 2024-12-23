@@ -1,19 +1,9 @@
 use super::cpu;
 use super::gpio;
+use super::board;
 
 pub fn init() {
-    #[cfg(feature = "board-blinkA")]
-    {
-        gpio::Pin::new(cpu::GPIO_A, 8).low(); // PPS line
-    }
-    #[cfg(feature = "board-hactar12")]
-    {
-        gpio::Pin::new(cpu::GPIO_A, 11).low(); // UI DEBUG 1
-    }
-    #[cfg(feature = "board-sim")]
-    {
-        gpio::Pin::new(cpu::GPIO_A, 11).low(); // UI DEBUG 1
-    }
+        board::info::DEBUG1_PIN.low();
 }
 
 pub fn set(ch: u8, v: bool) {
