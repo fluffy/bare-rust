@@ -4,7 +4,7 @@ use super::cpu;
 //use super::cpu::*;
 
 #[derive(Copy, Clone)]
-pub struct Pin(*mut cpu::GpioReg, u8);
+pub struct Pin(pub *mut cpu::GpioReg, pub u8);
 
 impl Pin {
     pub fn new(gpio: *mut cpu::GpioReg, p: u8) -> Pin {
@@ -66,7 +66,7 @@ impl Pin {
     }
 }
 
-#[cfg(feature = "brd-hactar-10")]
+#[cfg(feature = "board-hactar12")]
 pub fn init() {
     Pin::new(cpu::GPIO_A, 6).output(); // red LED
     Pin::new(cpu::GPIO_C, 5).output(); // green LED
@@ -75,7 +75,15 @@ pub fn init() {
     Pin::new(cpu::GPIO_C, 0).input(); // PTT
 }
 
-#[cfg(feature = "brd-blink-clk-a")]
+#[cfg(feature = "board-sim")]
+pub fn init() {
+    Pin::new(cpu::GPIO_A, 6).output(); // red LED
+    Pin::new(cpu::GPIO_C, 5).output(); // green LED
+    Pin::new(cpu::GPIO_A, 1).output(); // blue LED
+
+    Pin::new(cpu::GPIO_C, 0).input(); // PTT
+}
+#[cfg(feature = "board-blinkA")]
 pub fn init() {
     Pin::new(cpu::GPIO_A, 12).output(); // red LED
     Pin::new(cpu::GPIO_A, 11).output(); // green LED

@@ -1,7 +1,13 @@
+#[cfg(target_arch = "arm")]
 use core::ptr;
+
+#[cfg(target_arch = "arm")]
 use hal::led;
+
+#[cfg(target_arch = "arm")]
 use hal::led::Color;
 
+#[cfg(target_arch = "arm")]
 extern "C" {
     fn main() -> !;
 }
@@ -16,6 +22,7 @@ extern "C" {
     static mut _heap_start: u8;
 }
 
+#[cfg(target_arch = "arm")]
 #[no_mangle]
 #[allow(static_mut_refs)]
 pub extern "C" fn Reset_Handler() -> ! {
@@ -39,6 +46,7 @@ pub extern "C" fn Reset_Handler() -> ! {
     unsafe { main() }
 }
 
+#[cfg(target_arch = "arm")]
 #[no_mangle]
 pub extern "C" fn Default_Handler() -> ! {
     led::set(Color::Red);

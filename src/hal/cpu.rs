@@ -89,8 +89,11 @@ pub struct GpioReg {
     pub brr: u32,
 }
 
+#[allow(unused)]
 pub const GPIO_A: *mut GpioReg = 0x4002_0000 as *mut GpioReg;
+#[allow(unused)]
 pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
+#[allow(unused)]
 pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
 //#[cfg(target_arch = "arm")]
@@ -163,8 +166,6 @@ pub(crate) use write;
 
 macro_rules! read {
     ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
-        // TODO why is {{ needed here
-
         let offset = $x::$y::$z;
         //let offset: i32 = concat_idents!($x, _, $y, _, $z);
         let mask = (1u32 << $w) - 1;
@@ -179,7 +180,6 @@ macro_rules! read {
         val
     }};
     ( $x:ident.$y:ident[$z:expr;$w:expr] ) => {{
-        // TODO why is {{ needed here
         let offset: u32 = $z;
         let mask = (1u32 << $w) - 1;
         let mut val;

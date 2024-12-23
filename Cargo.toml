@@ -8,6 +8,7 @@ repository = "git@github.com:fluffy/bare-rust.git"
 license = "BSD-2-Clause"
 
 [dependencies]
+#std = {  optional = true }
 
 [lib]
 name = "hal"
@@ -37,9 +38,10 @@ lto = "fat"
 panic = "abort"
 
 [features]
-default = [ "brd-blink-clk-a" ]
-#default = [ "brd-hactar-10" ]
-brd-hactar-10 = []
-brd-blink-clk-a = []
-
-
+#default = [ "board-blinkA" ]
+#default = [ "board-hactar12" ]
+#default = [ "board-sim" ]
+std = []
+board-hactar12 = []
+board-blinkA = []
+board-sim = [ "std" ]

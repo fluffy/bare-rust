@@ -17,13 +17,19 @@ pub fn set(c: Color) {
     let green: gpio::Pin;
     let blue: gpio::Pin;
 
-    #[cfg(feature = "brd-hactar-10")]
+    #[cfg(feature = "board-hactar12")]
+    {
+        red = gpio::Pin::new(cpu::GPIO_A, 6);
+        green = gpio::Pin::new(cpu::GPIO_C, 5);
+        blue = gpio::Pin::new(cpu::GPIO_A, 1);
+    }  
+    #[cfg(feature = "board-sim")]
     {
         red = gpio::Pin::new(cpu::GPIO_A, 6);
         green = gpio::Pin::new(cpu::GPIO_C, 5);
         blue = gpio::Pin::new(cpu::GPIO_A, 1);
     }
-    #[cfg(feature = "brd-blink-clk-a")]
+    #[cfg(feature = "board-blinkA")]
     {
         red = gpio::Pin::new(cpu::GPIO_A, 12); // red LED
         green = gpio::Pin::new(cpu::GPIO_A, 11); // green LED

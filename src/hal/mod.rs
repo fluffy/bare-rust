@@ -1,14 +1,13 @@
 #![no_std]
-//#![feature(concat_idents)]
 
-//pub mod hal {
+
 mod cpu;
 //pub mod clock;
 pub mod clock;
 pub mod debug;
 pub mod gpio;
 pub mod led;
-//}
+mod board;
 
 #[inline(never)]
 pub fn init() {

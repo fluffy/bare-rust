@@ -20,10 +20,14 @@ this will bring you to gd prompt where you can type "c" to continue.
 # Notes
 
 ```aiignore
-cargo build  --target=thumbv7em-none-eabihf --release
+openocd &
 ```
 
 ```aiignore
-cargo test  --target=aarch64-apple-darwin
+cargo run --features board-blinkA --target=thumbv7em-none-eabihf --release
+```
+
+```aiignore
+cargo test --features board-sim
 ```
 
