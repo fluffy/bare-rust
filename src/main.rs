@@ -1,5 +1,8 @@
-#![cfg_attr(target_arch = "arm", no_std)]
-#![cfg_attr(target_arch = "arm", no_main)]
+#![no_std]
+#![cfg_attr(not(feature = "std"), no_main)]
+
+#[cfg(feature = "std")]
+extern crate std;
 
 use hal;
 use hal::debug;
@@ -10,35 +13,15 @@ mod stack;
 mod startup;
 //mod hal;
 
-#[cfg(target_arch = "arm")]
-use core::panic::PanicInfo;
-#[cfg(target_arch = "arm")]
-#[panic_handler]
-fn panic(_panic: &PanicInfo) -> ! {
-    led::set(Color::Red);
-    loop {}
-}
-
-//#[cfg(not(target_arch = "arm"))]
-//use core::panic::PanicInfo;
-//#[cfg(not(target_arch = "arm"))]
-//#[panic_handler]
-//fn panic(_panic: &PanicInfo) -> ! {
-//    loop {}
-//}
-
-#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
 #[no_mangle]
-//#[start]
 #[export_name = "main"]
 #[inline(never)]
 pub extern "C" fn main() -> ! {
     my_main();
 }
 
-#[cfg(not(target_arch = "arm"))]
-//#[start]
-//#[export_name = "main"]
+#[cfg(feature = "std")]
 fn main() -> () {
     my_main();
 }

@@ -63,17 +63,6 @@ pub struct RccReg {
 
 pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
 
-#[allow(non_snake_case)]
-pub mod OLDFLASH {
-    pub mod oldacr {
-        #![allow(unused)]
-
-        pub const PRFTEN: u32 = 8;
-        pub const ICEN: u32 = 9;
-        pub const DCEN: u32 = 10;
-    }
-}
-
 #[repr(C)]
 pub struct GpioReg {
     pub moder: u32,
@@ -96,9 +85,9 @@ pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
 #[allow(unused)]
 pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
-//#[cfg(target_arch = "arm")]
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
-    if cfg!(target_arch = "arm") {
+    if cfg!(feature = "board-sim") {
+    } else {
         unsafe {
             let mut v: u32 = core::ptr::read_volatile(addr);
             v &= !mask;
@@ -109,7 +98,8 @@ pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
 }
 
 pub fn write_reg(addr: *mut u32, val: u32) {
-    if cfg!(target_arch = "arm") {
+    if cfg!(feature = "board-sim") {
+    } else {
         unsafe {
             core::ptr::write_volatile(addr, val);
         }
@@ -117,13 +107,10 @@ pub fn write_reg(addr: *mut u32, val: u32) {
 }
 
 pub fn read_reg(addr: *mut u32) -> u32 {
-    if cfg!(target_arch = "arm") {
-        unsafe {
-            core::ptr::read_volatile(addr)
-            //core::intrinsics::volatile_load(addr)
-        }
-    } else {
+    if cfg!(feature = "board-sim") {
         0
+    } else {
+        unsafe { core::ptr::read_volatile(addr) }
     }
 }
 
@@ -167,7 +154,6 @@ pub(crate) use write;
 macro_rules! read {
     ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
         let offset = $x::$y::$z;
-        //let offset: i32 = concat_idents!($x, _, $y, _, $z);
         let mask = (1u32 << $w) - 1;
         let mut val;
 

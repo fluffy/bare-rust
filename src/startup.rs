@@ -1,15 +1,25 @@
-#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
 use core::ptr;
 
-#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
 use hal::led;
 
-#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
 use hal::led::Color;
 
-#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
 extern "C" {
     fn main() -> !;
+}
+
+#[cfg(not(feature = "std"))]
+use core::panic::PanicInfo;
+
+#[cfg(not(feature = "std"))]
+#[panic_handler]
+fn panic(_panic: &PanicInfo) -> ! {
+    led::set(Color::Red);
+    loop {}
 }
 
 extern "C" {
@@ -22,7 +32,7 @@ extern "C" {
     static mut _heap_start: u8;
 }
 
-#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
 #[no_mangle]
 #[allow(static_mut_refs)]
 pub extern "C" fn Reset_Handler() -> ! {
@@ -46,7 +56,7 @@ pub extern "C" fn Reset_Handler() -> ! {
     unsafe { main() }
 }
 
-#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
 #[no_mangle]
 pub extern "C" fn Default_Handler() -> ! {
     led::set(Color::Red);

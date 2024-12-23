@@ -29,7 +29,7 @@ pub fn init() {
 
         // setup main PLL timing for external HSE
         let pll_m: u32 = board::info::CLOCK_PLL_M;
-              
+
         let pll_n: u32 = 168;
         let pll_q: u32 = 4;
 

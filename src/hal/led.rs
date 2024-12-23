@@ -1,5 +1,4 @@
-use super::cpu;
-use super::gpio;
+use super::board;
 
 pub fn init() {
     set(Color::Black);
@@ -13,54 +12,31 @@ pub enum Color {
     Blue,
 }
 pub fn set(c: Color) {
-    let red: gpio::Pin;
-    let green: gpio::Pin;
-    let blue: gpio::Pin;
-
-    #[cfg(feature = "board-hactar12")]
-    {
-        red = gpio::Pin::new(cpu::GPIO_A, 6);
-        green = gpio::Pin::new(cpu::GPIO_C, 5);
-        blue = gpio::Pin::new(cpu::GPIO_A, 1);
-    }  
-    #[cfg(feature = "board-sim")]
-    {
-        red = gpio::Pin::new(cpu::GPIO_A, 6);
-        green = gpio::Pin::new(cpu::GPIO_C, 5);
-        blue = gpio::Pin::new(cpu::GPIO_A, 1);
-    }
-    #[cfg(feature = "board-blinkA")]
-    {
-        red = gpio::Pin::new(cpu::GPIO_A, 12); // red LED
-        green = gpio::Pin::new(cpu::GPIO_A, 11); // green LED
-        blue = gpio::Pin::new(cpu::GPIO_B, 7); // blue LED
-    }
-
     match c {
         Color::Red => {
-            red.high();
-            green.low();
-            blue.low();
+            board::info::LED_RED_PIN.high();
+            board::info::LED_GREEN_PIN.low();
+            board::info::LED_BLUE_PIN.low();
         }
         Color::Green => {
-            red.low();
-            green.high();
-            blue.low();
+            board::info::LED_RED_PIN.low();
+            board::info::LED_GREEN_PIN.high();
+            board::info::LED_BLUE_PIN.low();
         }
         Color::Blue => {
-            red.low();
-            green.low();
-            blue.high();
+            board::info::LED_RED_PIN.low();
+            board::info::LED_GREEN_PIN.low();
+            board::info::LED_BLUE_PIN.high();
         }
         Color::Black => {
-            red.low();
-            green.low();
-            blue.low();
+            board::info::LED_RED_PIN.low();
+            board::info::LED_GREEN_PIN.low();
+            board::info::LED_BLUE_PIN.low();
         }
         Color::White => {
-            red.low();
-            green.low();
-            blue.low();
+            board::info::LED_RED_PIN.low();
+            board::info::LED_GREEN_PIN.low();
+            board::info::LED_BLUE_PIN.low();
         }
     }
 }
