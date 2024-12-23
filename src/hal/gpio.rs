@@ -66,7 +66,7 @@ impl Pin {
     }
 }
 
-#[cfg(feature = "brd-hactar-10")]
+#[cfg(feature = "board-hactar10")]
 pub fn init() {
     Pin::new(cpu::GPIO_A, 6).output(); // red LED
     Pin::new(cpu::GPIO_C, 5).output(); // green LED
@@ -75,7 +75,7 @@ pub fn init() {
     Pin::new(cpu::GPIO_C, 0).input(); // PTT
 }
 
-#[cfg(feature = "brd-blink-clk-a")]
+#[cfg(feature = "board-blinkA")]
 pub fn init() {
     Pin::new(cpu::GPIO_A, 12).output(); // red LED
     Pin::new(cpu::GPIO_A, 11).output(); // green LED

@@ -37,9 +37,11 @@ lto = "fat"
 panic = "abort"
 
 [features]
-default = [ "brd-blink-clk-a" ]
-#default = [ "brd-hactar-10" ]
-brd-hactar-10 = []
-brd-blink-clk-a = []
+#default = [ "board-blinkA" ]
+default = [ "board-hactar10" ]
+board-hactar10 = []
+board-blinkA = []
+board-sim = []
+
 
 
