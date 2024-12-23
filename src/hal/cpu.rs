@@ -89,8 +89,11 @@ pub struct GpioReg {
     pub brr: u32,
 }
 
+#[allow(unused)]
 pub const GPIO_A: *mut GpioReg = 0x4002_0000 as *mut GpioReg;
+#[allow(unused)]
 pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
+#[allow(unused)]
 pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
 //#[cfg(target_arch = "arm")]
