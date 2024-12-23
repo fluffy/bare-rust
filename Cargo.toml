@@ -38,8 +38,8 @@ panic = "abort"
 
 [features]
 #default = [ "board-blinkA" ]
-default = [ "board-hactar10" ]
-board-hactar10 = []
+#default = [ "board-hactar12" ]
+board-hactar12 = []
 board-blinkA = []
 board-sim = []
 

@@ -66,7 +66,7 @@ impl Pin {
     }
 }
 
-#[cfg(feature = "board-hactar10")]
+#[cfg(feature = "board-hactar12")]
 pub fn init() {
     Pin::new(cpu::GPIO_A, 6).output(); // red LED
     Pin::new(cpu::GPIO_C, 5).output(); // green LED

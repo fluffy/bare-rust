@@ -17,7 +17,7 @@ pub fn set(c: Color) {
     let green: gpio::Pin;
     let blue: gpio::Pin;
 
-    #[cfg(feature = "board-hactar10")]
+    #[cfg(feature = "board-hactar12")]
     {
         red = gpio::Pin::new(cpu::GPIO_A, 6);
         green = gpio::Pin::new(cpu::GPIO_C, 5);

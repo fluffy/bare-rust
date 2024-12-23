@@ -6,9 +6,9 @@ pub fn init() {
     {
         gpio::Pin::new(cpu::GPIO_A, 8).low(); // PPS line
     }
-    #[cfg(feature = "board-hactar10")]
+    #[cfg(feature = "board-hactar12")]
     {
-        gpio::Pin::new(cpu::GPIO_A, 11).low(); // UI DEBUG 1 
+        gpio::Pin::new(cpu::GPIO_A, 11).low(); // UI DEBUG 1
     }
 }
 
@@ -23,7 +23,7 @@ pub fn set(ch: u8, v: bool) {
             gpio::Pin::new(cpu::GPIO_A, 8).high(); // PPS line
         }
     }
-    #[cfg(feature = "board-hactar10")]
+    #[cfg(feature = "board-hactar12")]
     {
         assert!(ch == 0);
         // not the PPS output is inverted

@@ -27,7 +27,7 @@ pub fn init() {
         }
 
         // setup main PLL timing for external HSE
-        #[cfg(feature = "board-hactar10")]
+        #[cfg(feature = "board-hactar12")]
         let pll_m: u32 = 12;
         #[cfg(feature = "board-blinkA")]
         let pll_m: u32 = 8;
