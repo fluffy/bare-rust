@@ -1,5 +1,6 @@
 use core::ptr;
 
+use super::board;
 use super::cpu;
 use super::cpu::*;
 //use super::cpu::gen_cpu::*;
@@ -27,12 +28,8 @@ pub fn init() {
         }
 
         // setup main PLL timing for external HSE
-        #[cfg(feature = "board-hactar12")]
-        let pll_m: u32 = 12;
-        #[cfg(feature = "board-blinkA")]
-        let pll_m: u32 = 8;
-        #[cfg(feature = "board-sim")]
-        let pll_m: u32 = 12;
+        let pll_m: u32 = board::info::CLOCK_PLL_M;
+              
         let pll_n: u32 = 168;
         let pll_q: u32 = 4;
 
