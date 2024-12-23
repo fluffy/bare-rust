@@ -10,6 +10,10 @@ pub fn init() {
     {
         gpio::Pin::new(cpu::GPIO_A, 11).low(); // UI DEBUG 1
     }
+    #[cfg(feature = "board-sim")]
+    {
+        gpio::Pin::new(cpu::GPIO_A, 11).low(); // UI DEBUG 1
+    }
 }
 
 pub fn set(ch: u8, v: bool) {
@@ -24,6 +28,16 @@ pub fn set(ch: u8, v: bool) {
         }
     }
     #[cfg(feature = "board-hactar12")]
+    {
+        assert!(ch == 0);
+        // not the PPS output is inverted
+        if v {
+            gpio::Pin::new(cpu::GPIO_A, 11).low(); // PPS line
+        } else {
+            gpio::Pin::new(cpu::GPIO_A, 11).high(); // PPS line
+        }
+    }    
+    #[cfg(feature = "board-sim")]
     {
         assert!(ch == 0);
         // not the PPS output is inverted

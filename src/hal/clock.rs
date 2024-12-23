@@ -31,6 +31,8 @@ pub fn init() {
         let pll_m: u32 = 12;
         #[cfg(feature = "board-blinkA")]
         let pll_m: u32 = 8;
+        #[cfg(feature = "board-sim")]
+        let pll_m: u32 = 12;
         let pll_n: u32 = 168;
         let pll_q: u32 = 4;
 

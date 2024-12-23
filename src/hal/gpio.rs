@@ -75,6 +75,14 @@ pub fn init() {
     Pin::new(cpu::GPIO_C, 0).input(); // PTT
 }
 
+#[cfg(feature = "board-sim")]
+pub fn init() {
+    Pin::new(cpu::GPIO_A, 6).output(); // red LED
+    Pin::new(cpu::GPIO_C, 5).output(); // green LED
+    Pin::new(cpu::GPIO_A, 1).output(); // blue LED
+
+    Pin::new(cpu::GPIO_C, 0).input(); // PTT
+}
 #[cfg(feature = "board-blinkA")]
 pub fn init() {
     Pin::new(cpu::GPIO_A, 12).output(); // red LED

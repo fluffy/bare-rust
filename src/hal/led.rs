@@ -22,6 +22,12 @@ pub fn set(c: Color) {
         red = gpio::Pin::new(cpu::GPIO_A, 6);
         green = gpio::Pin::new(cpu::GPIO_C, 5);
         blue = gpio::Pin::new(cpu::GPIO_A, 1);
+    }  
+    #[cfg(feature = "board-sim")]
+    {
+        red = gpio::Pin::new(cpu::GPIO_A, 6);
+        green = gpio::Pin::new(cpu::GPIO_C, 5);
+        blue = gpio::Pin::new(cpu::GPIO_A, 1);
     }
     #[cfg(feature = "board-blinkA")]
     {
