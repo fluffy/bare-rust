@@ -63,7 +63,6 @@ pub struct RccReg {
 
 pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
 
-
 #[repr(C)]
 pub struct GpioReg {
     pub moder: u32,
@@ -87,8 +86,8 @@ pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
 pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
-    if cfg!(feature = "board-sim") {}
-    else {
+    if cfg!(feature = "board-sim") {
+    } else {
         unsafe {
             let mut v: u32 = core::ptr::read_volatile(addr);
             v &= !mask;
@@ -99,8 +98,8 @@ pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
 }
 
 pub fn write_reg(addr: *mut u32, val: u32) {
-    if cfg!(feature = "board-sim") {}
-    else{
+    if cfg!(feature = "board-sim") {
+    } else {
         unsafe {
             core::ptr::write_volatile(addr, val);
         }
@@ -110,12 +109,9 @@ pub fn write_reg(addr: *mut u32, val: u32) {
 pub fn read_reg(addr: *mut u32) -> u32 {
     if cfg!(feature = "board-sim") {
         0
+    } else {
+        unsafe { core::ptr::read_volatile(addr) }
     }
-    else {
-        unsafe {
-            core::ptr::read_volatile(addr)
-        }
-    } 
 }
 
 macro_rules! write {

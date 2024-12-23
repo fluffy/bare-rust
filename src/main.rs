@@ -1,5 +1,5 @@
 #![no_std]
-#![cfg_attr( not(feature = "std"), no_main)]
+#![cfg_attr(not(feature = "std"), no_main)]
 
 #[cfg(feature = "std")]
 extern crate std;

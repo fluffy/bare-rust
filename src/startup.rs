@@ -1,4 +1,3 @@
-
 #[cfg(not(feature = "std"))]
 use core::ptr;
 
@@ -22,7 +21,6 @@ fn panic(_panic: &PanicInfo) -> ! {
     led::set(Color::Red);
     loop {}
 }
-
 
 extern "C" {
     static mut _sbss: u8;

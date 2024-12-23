@@ -12,7 +12,6 @@ pub enum Color {
     Blue,
 }
 pub fn set(c: Color) {
- 
     match c {
         Color::Red => {
             board::info::LED_RED_PIN.high();

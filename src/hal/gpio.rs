@@ -1,6 +1,5 @@
-use core::ptr;
 use super::{board, cpu};
-
+use core::ptr;
 
 #[derive(Copy, Clone)]
 pub struct Pin(pub *mut cpu::GpioReg, pub u8);
@@ -65,9 +64,8 @@ impl Pin {
     }
 }
 
-
 pub fn init() {
-    board::info::LED_RED_PIN.output(); 
+    board::info::LED_RED_PIN.output();
     board::info::LED_GREEN_PIN.output();
     board::info::LED_BLUE_PIN.output();
 
@@ -75,4 +73,3 @@ pub fn init() {
 
     board::info::DEBUG1_PIN.output();
 }
-

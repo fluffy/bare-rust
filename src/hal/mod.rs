@@ -1,13 +1,12 @@
 #![no_std]
 
-
 mod cpu;
 //pub mod clock;
+mod board;
 pub mod clock;
 pub mod debug;
 pub mod gpio;
 pub mod led;
-mod board;
 
 #[inline(never)]
 pub fn init() {
