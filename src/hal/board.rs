@@ -1,3 +1,10 @@
+#[cfg(not(any(
+    feature = "board-hactar12",
+    feature = "board-blinkA",
+    feature = "board-sim"
+)))]
+compile_error!("Must specify a board as compile feature. Try--features=board-sim");
+
 #[cfg(feature = "board-hactar12")]
 pub mod info {
     use crate::cpu;
@@ -20,7 +27,7 @@ pub mod info {
 pub mod info {
     use crate::cpu;
     use crate::gpio;
-    
+
     pub const CLOCK_PLL_M: u32 = 8;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
 }
