@@ -163,8 +163,6 @@ pub(crate) use write;
 
 macro_rules! read {
     ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
-        // TODO why is {{ needed here
-
         let offset = $x::$y::$z;
         //let offset: i32 = concat_idents!($x, _, $y, _, $z);
         let mask = (1u32 << $w) - 1;
@@ -179,7 +177,6 @@ macro_rules! read {
         val
     }};
     ( $x:ident.$y:ident[$z:expr;$w:expr] ) => {{
-        // TODO why is {{ needed here
         let offset: u32 = $z;
         let mask = (1u32 << $w) - 1;
         let mut val;
