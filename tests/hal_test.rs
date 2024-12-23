@@ -1,5 +1,7 @@
-//#[cfg((target_arch = "arm"))]
 #![no_std]
+
+#[cfg(feature = "std")]
+extern crate std;
 
 extern crate core;
 
