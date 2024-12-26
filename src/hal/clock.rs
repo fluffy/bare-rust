@@ -1,5 +1,5 @@
 use core::ptr;
-
+use crate::board::info::HAS_RCC;
 use super::board;
 use super::cpu;
 use super::cpu::*;
@@ -23,7 +23,7 @@ pub fn init() {
         cpu::write!(RCC.cr[HSEON;1], 1);
 
         // wait for HSE to be ready
-        if cfg!(target_arch = "arm") {
+        if HAS_RCC {
             while (cpu::read!(RCC.cr[HSERDY;1]) != 1) {}
         }
 
@@ -51,7 +51,7 @@ pub fn init() {
         // enable PLL
         cpu::write!(RCC.cr[PLLON;1], 0b1);
         // wait for PLL to be ready
-        if cfg!(target_arch = "arm") {
+        if HAS_RCC {
             while (cpu::read!(RCC.cr[PLLRDY;1]) != 1) {}
         }
 
@@ -67,7 +67,7 @@ pub fn init() {
         cpu::write!(RCC.cfgr[SW0;2], 0b10 );
 
         // wait for clock to switch to PLL
-        if cfg!(target_arch = "arm") {
+        if HAS_RCC {
             while (cpu::read!(RCC.cfgr[SWS0;2]) != 0b10) {}
         }
     }
