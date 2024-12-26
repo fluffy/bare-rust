@@ -44,4 +44,5 @@ panic = "abort"
 std = []
 board-hactar12 = []
 board-blinkA = []
+board-qemu = [ ]
 board-sim = [ "std" ]

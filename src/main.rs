@@ -29,6 +29,8 @@ fn main() -> () {
 fn my_main() -> ! {
     hal::init();
 
+    //hal::semihost::exit(22);
+
     loop {
         led::set(Color::Blue);
         debug::set(0, true);

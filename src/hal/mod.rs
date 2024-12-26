@@ -7,6 +7,7 @@ pub mod clock;
 pub mod debug;
 pub mod gpio;
 pub mod led;
+pub mod semihost;
 
 #[inline(never)]
 pub fn init() {
