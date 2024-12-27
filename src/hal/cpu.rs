@@ -85,6 +85,19 @@ pub const GPIO_B: *mut GpioReg = 0x4002_0400 as *mut GpioReg;
 #[allow(unused)]
 pub const GPIO_C: *mut GpioReg = 0x4002_0800 as *mut GpioReg;
 
+#[repr(C)]
+pub struct UsartReg {
+    pub sr: u32,
+    pub dr: u32,
+    pub brr: u32,
+    pub cr1: u32,
+    pub cr2: u32,
+    pub cr3: u32,
+    pub gtpr: u32,
+}
+
+pub const USART2: *mut UsartReg = 0x4000_4400 as *mut UsartReg;
+
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     if cfg!(feature = "board-sim") {
     } else {

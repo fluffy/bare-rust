@@ -314,6 +314,73 @@ pub mod RCC {
         pub const PLLI2SNx: u32 = 6;
     }
 }
+pub mod USART {
+    pub mod sr {
+        pub const CTS: u32 = 9;
+        pub const LBD: u32 = 8;
+        pub const TXE: u32 = 7;
+        pub const TC: u32 = 6;
+        pub const RXNE: u32 = 5;
+        pub const IDLE: u32 = 4;
+        pub const ORE: u32 = 3;
+        pub const NF: u32 = 2;
+        pub const FE: u32 = 1;
+        pub const PE: u32 = 0;
+    }
+    pub mod dr {
+        pub const DR: u32 = 0;
+    }
+    pub mod brr {
+        pub const DIV_Mantissa: u32 = 4;
+        pub const DIV_Fraction: u32 = 0;
+    }
+    pub mod cr1 {
+        pub const OVER8: u32 = 15;
+        pub const UE: u32 = 13;
+        pub const M: u32 = 12;
+        pub const WAKE: u32 = 11;
+        pub const PCE: u32 = 10;
+        pub const PS: u32 = 9;
+        pub const PEIE: u32 = 8;
+        pub const TXEIE: u32 = 7;
+        pub const TCIE: u32 = 6;
+        pub const RXNEIE: u32 = 5;
+        pub const IDLEIE: u32 = 4;
+        pub const TE: u32 = 3;
+        pub const RE: u32 = 2;
+        pub const RWU: u32 = 1;
+        pub const SBK: u32 = 0;
+    }
+    pub mod cr2 {
+        pub const LINEN: u32 = 14;
+        pub const STOP: u32 = 12;
+        pub const CLKEN: u32 = 11;
+        pub const CPOL: u32 = 10;
+        pub const CPHA: u32 = 9;
+        pub const LBCL: u32 = 8;
+        pub const LBDIE: u32 = 6;
+        pub const LBDL: u32 = 5;
+        pub const ADD: u32 = 0;
+    }
+    pub mod cr3 {
+        pub const ONEBIT: u32 = 11;
+        pub const CTSIE: u32 = 10;
+        pub const CTSE: u32 = 9;
+        pub const RTSE: u32 = 8;
+        pub const DMAT: u32 = 7;
+        pub const DMAR: u32 = 6;
+        pub const SCEN: u32 = 5;
+        pub const NACK: u32 = 4;
+        pub const HDSEL: u32 = 3;
+        pub const IRLP: u32 = 2;
+        pub const IREN: u32 = 1;
+        pub const EIE: u32 = 0;
+    }
+    pub mod gtpr {
+        pub const GT: u32 = 8;
+        pub const PSC: u32 = 0;
+    }
+}
 pub mod FLASH {
     pub mod acr {
         pub const LATENCY: u32 = 0;

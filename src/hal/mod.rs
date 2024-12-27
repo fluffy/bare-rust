@@ -8,6 +8,7 @@ pub mod debug;
 pub mod gpio;
 pub mod led;
 pub mod semihost;
+pub mod uart;
 
 #[inline(never)]
 pub fn init() {
