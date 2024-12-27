@@ -54,7 +54,7 @@ pub extern "C" fn Reset_Handler() -> ! {
         // initialize the heap and stack to 0xC1
         // leave 100 bytes free for this function
         let count = &_estack as *const u8 as usize - &_heap_start as *const u8 as usize - 100;
-        ptr::write_bytes(&mut _heap_start as *mut u8, 0xC1, count);
+        ptr::write_bytes(&mut _heap_start as *mut u8, 0xC5, count);
     }
 
     unsafe { main() }

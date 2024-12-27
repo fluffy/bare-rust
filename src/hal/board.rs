@@ -4,7 +4,17 @@
     feature = "board-qemu",
     feature = "board-sim"
 )))]
-compile_error!("Must specify a board as compile feature. Try--features=board-sim");
+compile_error!("Must specify a board as compile feature. Try --features=board-sim");
+
+#[cfg( all( feature = "board-hactar12" , feature = "board-sim" ))]
+compile_error!("Must specify only a single board as a feature. Try --no-default-features --features=board-sim");
+
+#[cfg( all( feature = "board-blinkA" , feature = "board-sim" ))]
+compile_error!("Must specify only a single board as a feature. Try --no-default-features --features=board-sim");
+
+#[cfg( all( feature = "board-qemu" , feature = "board-sim" ))]
+compile_error!("Must specify only a single board as a feature. Try --no-default-features --features=board-sim");
+
 
 #[cfg(feature = "board-hactar12")]
 pub mod info {

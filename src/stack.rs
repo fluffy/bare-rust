@@ -14,17 +14,20 @@ pub fn usage() -> usize {
     let end: u32 = ptr::addr_of!(_estack) as u32;
 
     let mut lower_bound = start;
-    let mut upper_bound = end - 4;
+    let mut upper_bound = end - 8;
 
     while upper_bound - lower_bound > 16 {
         let mid = (lower_bound + (upper_bound - lower_bound) / 2) & !0x3;
-        let val: u32;
+        let val1: u32;
+        let val2: u32;
         unsafe {
-            let addr = mid as *const u32;
-            val = ptr::read_volatile(addr);
+            let addr1 = mid as *const u32;
+            val1 = ptr::read_volatile(addr1);
+            let addr2 = (mid + 4) as *const u32;
+            val2 = ptr::read_volatile(addr2);
         }
 
-        if val == 0xc1c1c1c1 {
+        if (val1 == 0xc5c5c5c5) && (val2 == 0xc5c5c5c5) {
             lower_bound = mid;
         } else {
             upper_bound = mid;

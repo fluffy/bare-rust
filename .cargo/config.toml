@@ -13,9 +13,6 @@ rustflags = [
 #target = "thumbv7em-none-eabihf" # Cortex-M4F
 
 [test]
-rustflags = [
-    "-Clink-arg=-mllvm=-lto-embed-bitcode=optimized",
-]
 
 [unstable]
 build-std = ["compiler_builtins", "core"]
