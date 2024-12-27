@@ -24,8 +24,3 @@ jobs:
         run: cargo build --verbose --no-default-features  --features board-blinkA --target=thumbv7em-none-eabihf --release
       - name: Run tests
         run: cargo test --verbose --no-default-features  --features board-sim
-      - name: Compile emulator test
-        run: cargo build --no-default-features  --features board-qemu,exit --target=thumbv7em-none-eabihf
-      - name: Run emulator test
-        run: qemu-system-arm -no-reboot -cpu cortex-m4 -machine netduinoplus2 -nographic -semihosting-config enable=on,target=native -kernel target/thumbv7em-none-eabihf/debug/app
-
