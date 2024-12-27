@@ -29,9 +29,7 @@ fn main() -> () {
 fn my_main() -> ! {
     hal::init();
 
-    //hal::semihost::exit(22);
-
-    loop {
+   loop {
         led::set(Color::Blue);
         debug::set(0, true);
 
@@ -39,14 +37,18 @@ fn my_main() -> ! {
         // getting 0.798 s on rel
         fib(34);
 
-        let _stack_usage = stack::usage();
-
         debug::set(0, false);
         led::set(Color::Green);
 
         fib(33);
+
+        let _stack_usage = stack::usage();
+
+       #[cfg(feature = "exit")]
+       hal::semihost::exit(0);
     }
 }
+
 
 pub fn fib(x: usize) -> u32 {
     if x > 2 {

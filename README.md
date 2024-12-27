@@ -4,15 +4,15 @@ Bare rust project for STM32
 
 # Running on Board
 
-Connect up with stlink to board. 
+Connect up stlink to board. 
 
 From in the main directory, start
 ```aiignore
-openocd
+openocd --file openocd.cfg 
 ```
 and leave running. Then in another window do 
 ```aiignore
-cargo run --features board-blinkA  --target=thumbv7em-none-eabihf 
+cargo run  --no-default-features  --features board-blinkA  --target=thumbv7em-none-eabihf 
 ```
 this will bring you to gdb prompt where you can type "c" to continue.
 
@@ -20,7 +20,7 @@ this will bring you to gdb prompt where you can type "c" to continue.
 
 Build with:
 ```aiignore
-cargo build --features board-qemu  --target=thumbv7em-none-eabihf 
+cargo build --no-default-features  --features board-qemu  --target=thumbv7em-none-eabihf 
 ```
 
 Run with:
@@ -39,7 +39,7 @@ arm-none-eabi-gdb -q  target/thumbv7em-none-eabihf/debug/app --init-eval-command
 # Running on the Simulator
 
 ```aiignore
-cargo test --features board-sim
+cargo test --no-default-features --features board-sim
 ```
 
 # Notes

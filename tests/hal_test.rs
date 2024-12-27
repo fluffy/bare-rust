@@ -5,19 +5,24 @@ extern crate std;
 
 extern crate core;
 
-#[cfg(target_arch = "arm")]
-use core::panic::PanicInfo;
 
 use hal;
 use hal::led;
 use hal::led::Color;
 
-#[cfg(target_arch = "arm")]
+
+
+#[cfg(not(feature = "std"))]
+use core::panic::PanicInfo;
+
+#[cfg(not(feature = "std"))]
+#[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
+    led::set(Color::Red);
     loop {}
 }
 
-//#[cfg(test)]
+#[cfg(feature = "std")]
 #[test]
 fn test_init() {
     hal::init();

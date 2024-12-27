@@ -19,7 +19,11 @@ use core::panic::PanicInfo;
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
     led::set(Color::Red);
-    loop {}
+    loop {
+        #[cfg(feature = "exit")]
+        hal::semihost::exit(0);
+
+    }
 }
 
 extern "C" {
@@ -60,7 +64,10 @@ pub extern "C" fn Reset_Handler() -> ! {
 #[no_mangle]
 pub extern "C" fn Default_Handler() -> ! {
     led::set(Color::Red);
-    loop {}
+    loop {
+        #[cfg(feature = "exit")]
+        hal::semihost::exit(0);
+    }
 }
 
 #[cfg(target_arch = "arm")]
