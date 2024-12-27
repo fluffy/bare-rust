@@ -96,7 +96,8 @@ pub struct UsartReg {
     pub gtpr: u32,
 }
 
-pub const USART2: *mut UsartReg = 0x4000_4400 as *mut UsartReg;
+pub const USART1: *mut UsartReg = 0x4001_1000 as *mut UsartReg;
+//pub const USART2: *mut UsartReg = 0x4000_4400 as *mut UsartReg;
 
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     if cfg!(feature = "board-sim") {

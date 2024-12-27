@@ -5,7 +5,7 @@
 extern crate std;
 
 use hal;
-use hal::debug;
+use hal::{debug, uart};
 use hal::led;
 use hal::led::Color;
 
@@ -29,7 +29,9 @@ fn main() -> () {
 fn my_main() -> ! {
     hal::init();
 
-   loop {
+    uart::write_slice(b"Starting\r\n");
+
+    loop {
         led::set(Color::Blue);
         debug::set(0, true);
 
