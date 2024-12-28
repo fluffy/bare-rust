@@ -32,7 +32,7 @@ fn my_main() -> ! {
     #[cfg(feature = "exit")]
     hal::clock::validate();
 
-    uart::write1(b"Starting\r\n");
+    uart::write1("Starting\r\n");
 
     loop {
         led::set(Color::Blue);
@@ -51,7 +51,7 @@ fn my_main() -> ! {
 
         #[cfg(feature = "exit")]
         {
-            uart::write1(b"Stopping\r\n");
+            uart::write1( "Stopping\r\n");
             hal::semihost::exit(0);
         }
     }

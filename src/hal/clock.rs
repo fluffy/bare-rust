@@ -81,16 +81,24 @@ pub fn init() {
 }
 
 pub fn validate() {
+    if cfg!(feature = "board-sim") {
+        return;
+    }
+    
     // Check if HSE is ready
-    if cpu::read!(RCC.cr[HSERDY;1]) != 1 {
-        panic!("HSE not ready");
+    if HAS_RCC {
+        if cpu::read!(RCC.cr[HSERDY;1]) != 1 {
+            panic!("HSE not ready");
+        }
     }
 
     // Check if PLL is ready
-    if cpu::read!(RCC.cr[PLLRDY;1]) != 1 {
-        panic!("PLL not ready");
+    if HAS_RCC {
+        if cpu::read!(RCC.cr[PLLRDY;1]) != 1 {
+            panic!("PLL not ready");
+        }
     }
-
+ 
     // Check if PLL source is HSE
     if cpu::read!(RCC.pllcfgr[PLLSRC;1]) != 1 {
         panic!("PLL source not set to HSE");

@@ -1,5 +1,9 @@
 use core::ptr;
 //use crate::board::info::HAS_RCC;
+
+#[cfg(feature = "std")]
+extern crate std;
+
 use super::board;
 //use super::gpio;
 use super::cpu;
@@ -55,12 +59,22 @@ pub fn init1(baud_rate: u64) {
 }
 
 pub fn write_byte1(c: u8) {
+    if cfg!(feature = "board-sim") {
+        return;
+    }
     while (cpu::read!(USART1.sr[TXE;1]) == 0) {}
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
 
-pub fn write1(s: &[u8]) {
-    for c in s {
-        write_byte1(*c);
+pub fn write1(s: &str ){ // &[u8]) {
+    if cfg!(feature = "board-sim") {
+        #[cfg(feature = "std")]
+        std::print!("Console: {}",s);
+        return;
     }
+    for c in s.bytes() {
+        write_byte1( c);
+    }
+    //write_byte1( '\r' as u8);
+    //write_byte1( '\n' as u8);
 }
