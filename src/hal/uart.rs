@@ -22,10 +22,9 @@ pub fn init() {
     
     // set baud rate to 115200
     // UART 1 is on APB2 bus, which is 84MHz
-    //let apb_freq :u64 = 84_000_000;
-    let apb_freq :u64 = 42_000_000;// TODO NO IDEA WHY getting 42MHz
-    let baudrate :u64 = 115_200 ; 
-    let div_fixed3 :u64 = 1000*apb_freq / (16* baudrate );
+    let apb_freq :u64 = 84_000_000;
+    let baud_rate :u64 = 115_200 ; 
+    let div_fixed3 :u64 = 1000*apb_freq / (16* baud_rate );
   
     let mantissa :u64 = div_fixed3 / 1000;
     let frac: u64 = (div_fixed3%1000)*16/1000;
