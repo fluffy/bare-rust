@@ -5,9 +5,9 @@
 extern crate std;
 
 use hal;
-use hal::{debug, uart};
 use hal::led;
 use hal::led::Color;
+use hal::{debug, uart};
 
 mod stack;
 mod startup;
@@ -31,8 +31,8 @@ fn my_main() -> ! {
 
     #[cfg(feature = "exit")]
     hal::clock::validate();
-    
-    uart::write_slice(b"Starting\r\n");
+
+    uart::write1(b"Starting\r\n");
 
     loop {
         led::set(Color::Blue);
@@ -49,11 +49,13 @@ fn my_main() -> ! {
 
         let _stack_usage = stack::usage();
 
-       #[cfg(feature = "exit")]
-       hal::semihost::exit(0);
+        #[cfg(feature = "exit")]
+        {
+            uart::write1(b"Stopping\r\n");
+            hal::semihost::exit(0);
+        }
     }
 }
-
 
 pub fn fib(x: usize) -> u32 {
     if x > 2 {
