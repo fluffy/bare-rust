@@ -12,7 +12,7 @@ openocd --file openocd.cfg
 ```
 and leave running. Then in another window do 
 ```aiignore
-cargo run  --no-default-features  --features board-blinkA  --target=thumbv7em-none-eabihf 
+cargo run  --no-default-features --features board-blinkA  --target=thumbv7em-none-eabihf 
 ```
 this will bring you to gdb prompt where you can type "c" to continue.
 

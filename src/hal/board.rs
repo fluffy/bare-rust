@@ -35,6 +35,10 @@ pub mod info {
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
 
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
+
+
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
 
 #[cfg(feature = "board-blinkA")]
@@ -52,8 +56,8 @@ pub mod info {
 
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 13);
 
-    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
-    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
 
 #[cfg(feature = "board-qemu")]
@@ -70,6 +74,9 @@ pub mod info {
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
 
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
+
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
 
 #[cfg(feature = "board-sim")]
@@ -86,4 +93,7 @@ pub mod info {
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
 
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
+
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
