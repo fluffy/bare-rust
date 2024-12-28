@@ -16,6 +16,13 @@ cargo run  --no-default-features  --features board-blinkA  --target=thumbv7em-no
 ```
 this will bring you to gdb prompt where you can type "c" to continue.
 
+In a separate window, can monitor USB console with
+```aiignore
+screen /dev/tty.usbserial<SOOMETHING> 115200
+```
+To exit screen, type ^A^\ 
+
+
 # Running on Emulator
 
 Build with:
