@@ -27,7 +27,7 @@ To exit screen, type ^A^\
 
 Build with:
 ```aiignore
-cargo build --no-default-features  --features board-qemu  --target=thumbv7em-none-eabihf 
+cargo build --no-default-features  --features board-qemu,exit  --target=thumbv7em-none-eabihf 
 ```
 
 Run with:

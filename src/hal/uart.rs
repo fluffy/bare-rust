@@ -1,3 +1,4 @@
+use core::arch::asm;
 use core::ptr;
 //use crate::board::info::HAS_RCC;
 
@@ -66,15 +67,39 @@ pub fn write_byte1(c: u8) {
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
 
-pub fn write1(s: &str) {
-    // &[u8]) {
+pub fn write1(s: &[u8]) {
     if cfg!(feature = "board-sim") {
         #[cfg(feature = "std")]
-        std::print!("Console: {}", s);
+        std::print!("Console: ");
+        for c in s {
+            if *c == 0 {
+                break;
+            }
+            #[cfg(feature = "std")]
+            std::print!( "{}" , *c as char);
+        }
         return;
     }
-    for c in s.bytes() {
-        write_byte1(c);
+    if cfg!(feature = "board-qemu") {
+        let ptr = s.as_ptr();
+        
+        unsafe {
+            // semihost WRITE0 
+            asm!(
+            "mov r0, #0x04", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#sys-write0-0x04
+            "mov r1, {0}",
+            "bkpt #0xAB", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#4the-semihosting-interface
+            in(reg) ptr,
+            );
+        }
+
+        return;
+    }
+    for c in s {
+        if *c == 0 {
+            break;
+        }
+        write_byte1( *c );
     }
     //write_byte1( '\r' as u8);
     //write_byte1( '\n' as u8);
