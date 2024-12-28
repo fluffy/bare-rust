@@ -22,7 +22,6 @@ fn panic(_panic: &PanicInfo) -> ! {
     loop {
         #[cfg(feature = "exit")]
         hal::semihost::exit(0);
-
     }
 }
 

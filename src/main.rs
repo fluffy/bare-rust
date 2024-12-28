@@ -51,7 +51,7 @@ fn my_main() -> ! {
 
         #[cfg(feature = "exit")]
         {
-            uart::write1( "Stopping\r\n");
+            uart::write1("Stopping\r\n");
             hal::semihost::exit(0);
         }
     }

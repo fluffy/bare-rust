@@ -36,7 +36,6 @@ pub mod info {
 
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
 
-
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }

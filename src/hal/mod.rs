@@ -20,5 +20,5 @@ pub fn init() {
     // Do after GPIO is up
     led::init();
     debug::init();
-    uart::init1( 115_200);
+    uart::init1(115_200);
 }

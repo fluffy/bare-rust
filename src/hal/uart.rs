@@ -38,7 +38,7 @@ pub fn init1(baud_rate: u64) {
         cpu::write!( GPIO_A.afrh[(tx_pin-8)*4;4], 7); // AF7 mode
     }
 
-    // set baud rate to 115200
+    // set baud rate
     // UART 1 is on APB2 bus, which is 84MHz
     let apb_freq: u64 = 84_000_000;
     let div_fixed3: u64 = 1000 * apb_freq / (16 * baud_rate);
@@ -66,14 +66,15 @@ pub fn write_byte1(c: u8) {
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
 
-pub fn write1(s: &str ){ // &[u8]) {
+pub fn write1(s: &str) {
+    // &[u8]) {
     if cfg!(feature = "board-sim") {
         #[cfg(feature = "std")]
-        std::print!("Console: {}",s);
+        std::print!("Console: {}", s);
         return;
     }
     for c in s.bytes() {
-        write_byte1( c);
+        write_byte1(c);
     }
     //write_byte1( '\r' as u8);
     //write_byte1( '\n' as u8);

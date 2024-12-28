@@ -84,7 +84,7 @@ pub fn validate() {
     if cfg!(feature = "board-sim") {
         return;
     }
-    
+
     // Check if HSE is ready
     if HAS_RCC {
         if cpu::read!(RCC.cr[HSERDY;1]) != 1 {
@@ -98,7 +98,7 @@ pub fn validate() {
             panic!("PLL not ready");
         }
     }
- 
+
     // Check if PLL source is HSE
     if cpu::read!(RCC.pllcfgr[PLLSRC;1]) != 1 {
         panic!("PLL source not set to HSE");
@@ -148,20 +148,20 @@ pub fn validate() {
     if false {
         // enable GPIO A
         cpu::write!(RCC.ahb1enr[GPIOAEN;1], 1 );
-        
+
         // set PA8 to alternate function
         cpu::write!(GPIO_A.moder[8*2;2], 0b10);
         // set PA8 to AF0
         cpu::write!(GPIO_A.afrh[0;4], 0b0000);
-        
+
         // set MCO1 to PLL clock
-        cpu::write!(RCC.cfgr[MCO1;2], 0b11); 
-        
+        cpu::write!(RCC.cfgr[MCO1;2], 0b11);
+
         // set MCO1 prescaler to 1
-        cpu::write!(RCC.cfgr[MCO1PRE;3], 0b000); 
-        
+        cpu::write!(RCC.cfgr[MCO1PRE;3], 0b000);
+
         loop {
-           // wait forever 
+            // wait forever
         }
     }
 }
