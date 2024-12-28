@@ -29,8 +29,8 @@ fn main() -> () {
 fn my_main() -> ! {
     hal::init();
 
-    #[cfg(feature = "exit")]
-    hal::clock::validate();
+    //#[cfg(feature = "exit")]
+    //hal::clock::validate();
 
     uart::write1(b"Starting\r\n\0");
 

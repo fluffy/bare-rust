@@ -47,6 +47,7 @@ arm-none-eabi-gdb -q  target/thumbv7em-none-eabihf/debug/app --init-eval-command
 
 ```aiignore
 cargo test --no-default-features --features board-sim
+cargo run --no-default-features --features board-sim,exit
 ```
 
 # Notes
