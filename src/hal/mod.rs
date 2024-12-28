@@ -8,6 +8,7 @@ pub mod debug;
 pub mod gpio;
 pub mod led;
 pub mod semihost;
+pub mod uart;
 
 #[inline(never)]
 pub fn init() {
@@ -19,4 +20,5 @@ pub fn init() {
     // Do after GPIO is up
     led::init();
     debug::init();
+    uart::init1(115_200);
 }
