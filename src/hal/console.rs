@@ -1,9 +1,6 @@
-//use core::ptr;
-
 #[cfg(not(feature = "std"))]
 use core::arch::asm;
 
-//use super::{board, cpu, uart};
 use super::uart;
 
 #[cfg(feature = "std")]

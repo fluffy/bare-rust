@@ -2,10 +2,9 @@
 
 mod board;
 mod cpu;
-
 mod clock;
 pub mod debug;
-pub mod gpio;
+mod gpio;
 pub mod led;
 pub mod semihost;
 pub mod timer;

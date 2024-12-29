@@ -1,10 +1,12 @@
-use super::{board, cpu};
 use core::ptr;
+
+use super::{board, cpu};
 
 #[derive(Copy, Clone)]
 pub struct Pin(pub *mut cpu::GpioReg, pub u8);
 
 impl Pin {
+    #[allow(dead_code)]
     pub fn new(gpio: *mut cpu::GpioReg, p: u8) -> Pin {
         assert!(p < 16);
         return Pin(gpio, p);

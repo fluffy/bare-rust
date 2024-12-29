@@ -4,7 +4,6 @@ use core::ptr;
 extern crate std;
 
 use super::board;
-//use super::gpio;
 use super::cpu;
 use super::cpu::*;
 

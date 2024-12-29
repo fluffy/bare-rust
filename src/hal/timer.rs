@@ -1,16 +1,15 @@
+use core::ptr;
 
 #[cfg(not(feature = "std"))]
 use core::arch::asm;
 
-use core::ptr;
-
 #[cfg(feature = "std")]
 extern crate std;
+
 #[cfg(feature = "std")]
 use std::time::{SystemTime, UNIX_EPOCH};
 
 
-//use super::board;
 use super::cpu;
 use super::cpu::*;
 

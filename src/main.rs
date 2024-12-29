@@ -6,15 +6,12 @@ extern crate std;
 
 use hal;
 use hal::led;
-use hal::led::Color;
-
-use hal::console::Print;
-
 use hal::debug;
+use hal::led::Color;
+use hal::console::Print;
 
 mod stack;
 mod startup;
-//mod hal;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
