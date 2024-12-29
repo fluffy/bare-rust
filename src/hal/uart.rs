@@ -12,6 +12,7 @@ use super::cpu::*;
 
 pub use super::cpu::USART as USART1;
 
+#[inline(never)]
 pub fn init1(baud_rate: u64) {
     // enable USART1 & GPIO clock
     cpu::write!( RCC.apb2enr[USART1EN;1], 1);
@@ -76,15 +77,15 @@ pub fn write1(s: &[u8]) {
                 break;
             }
             #[cfg(feature = "std")]
-            std::print!( "{}" , *c as char);
+            std::print!("{}", *c as char);
         }
         return;
     }
     if cfg!(feature = "board-qemu") {
         let ptr = s.as_ptr();
-        
+
         unsafe {
-            // semihost WRITE0 
+            // semihost WRITE0
             asm!(
             "mov r0, #0x04", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#sys-write0-0x04
             "mov r1, {0}",
@@ -99,7 +100,7 @@ pub fn write1(s: &[u8]) {
         if *c == 0 {
             break;
         }
-        write_byte1( *c );
+        write_byte1(*c);
     }
     //write_byte1( '\r' as u8);
     //write_byte1( '\n' as u8);

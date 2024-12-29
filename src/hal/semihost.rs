@@ -5,6 +5,7 @@ extern crate std;
 use core::arch::asm;
 
 #[cfg(target_arch = "arm")]
+#[inline]
 pub fn exit_no_status() -> ! {
     unsafe {
         asm!(

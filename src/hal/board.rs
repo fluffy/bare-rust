@@ -47,6 +47,7 @@ pub mod info {
 
     pub const HAS_RCC: bool = true;
     pub const CLOCK_PLL_M: u32 = 8;
+
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 12);

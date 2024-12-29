@@ -61,12 +61,82 @@ pub extern "C" fn Reset_Handler() -> ! {
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
-pub extern "C" fn Default_Handler() -> ! {
+pub extern "C" fn Default_Handler() {
     led::set(Color::Red);
+    hal::semihost::exit_no_status();
+    #[allow(unreachable_code)]
     loop {
         #[cfg(feature = "exit")]
         hal::semihost::exit(0);
     }
+}
+
+#[no_mangle]
+pub extern "C" fn Default_HandlerA() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_HandlerB() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_HandlerC() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_HandlerD() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_HandlerE() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_HandlerF() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_HandlerG() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_HandlerH() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_Handler1() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_Handler2() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_Handler3() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_Handler4() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_Handler5() {
+    Default_Handler();
+}
+#[no_mangle]
+pub extern "C" fn Default_Handler6() {
+    Default_Handler();
+}
+
+#[no_mangle]
+pub extern "C" fn TIM1_UP_TIM10_IRQHandler() {
+    hal::timer::handle_tim1_irq();
+}
+
+#[allow(dead_code)]
+pub union IrqVector {
+    not_used: u32,
+    handler: unsafe extern "C" fn(),
 }
 
 #[cfg(target_arch = "arm")]
@@ -74,44 +144,284 @@ pub extern "C" fn Default_Handler() -> ! {
 #[no_mangle]
 pub static Reset_Vector: extern "C" fn() -> ! = Reset_Handler;
 
-#[allow(dead_code)]
-pub union IrqVector {
-    not_used: u32,
-    handler: unsafe extern "C" fn() -> !,
-}
-
 #[cfg(target_arch = "arm")]
 #[link_section = ".vector_table.exceptions"]
 #[no_mangle]
-pub static Exceptions: [IrqVector; 14] = [
+pub static Exceptions: [IrqVector; 14 + 82] = [
     IrqVector {
-        handler: Default_Handler,
+        handler: Default_HandlerA,
     }, // NMI
     IrqVector {
-        handler: Default_Handler,
+        handler: Default_HandlerB,
     }, // hard fault
     IrqVector {
-        handler: Default_Handler,
+        handler: Default_HandlerC,
     }, // mem manager
     IrqVector {
-        handler: Default_Handler,
+        handler: Default_HandlerD,
     }, // bus fault
     IrqVector {
-        handler: Default_Handler,
+        handler: Default_HandlerE,
     }, // usage
     IrqVector { not_used: 0 },
     IrqVector { not_used: 0 },
     IrqVector { not_used: 0 },
     IrqVector { not_used: 0 },
     IrqVector {
-        handler: Default_Handler,
+        handler: Default_HandlerF,
     }, // SVC
     IrqVector { not_used: 0 }, // ebug mon
     IrqVector { not_used: 0 },
     IrqVector {
-        handler: Default_Handler,
+        handler: Default_HandlerG,
     }, // Pend  SV
     IrqVector {
-        handler: Default_Handler,
+        handler: Default_HandlerH,
     }, // Sys Timer
+    IrqVector {
+        handler: Default_Handler1,
+    }, // WWDG
+    IrqVector {
+        handler: Default_Handler1,
+    }, // PVD
+    IrqVector {
+        handler: Default_Handler,
+    }, // TAMP_STAMP
+    IrqVector {
+        handler: Default_Handler,
+    }, // RTC_WKUP
+    IrqVector {
+        handler: Default_Handler,
+    }, // FLASH
+    IrqVector {
+        handler: Default_Handler,
+    }, // RCC
+    IrqVector {
+        handler: Default_Handler,
+    }, // EXTI0
+    IrqVector {
+        handler: Default_Handler,
+    }, // EXTI1
+    IrqVector {
+        handler: Default_Handler,
+    }, // EXTI2
+    IrqVector {
+        handler: Default_Handler,
+    }, // EXTI3
+    IrqVector {
+        handler: Default_Handler,
+    }, // EXTI4
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA1_Stream0
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA1_Stream1
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA1_Stream2
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA1_Stream3
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA1_Stream4
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA1_Stream5
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA1_Stream6
+    IrqVector {
+        handler: Default_Handler,
+    }, // ADC
+    IrqVector {
+        handler: Default_Handler,
+    }, // CAN1_TX
+    IrqVector {
+        handler: Default_Handler,
+    }, // CAN1_RX0
+    IrqVector {
+        handler: Default_Handler,
+    }, // CAN1_RX1
+    IrqVector {
+        handler: Default_Handler,
+    }, // CAN1_SCE
+    IrqVector {
+        handler: Default_Handler,
+    }, // EXTI9_5
+    IrqVector {
+        handler: Default_Handler1,
+    }, // TIM1_BRK_TIM9
+    IrqVector {
+        handler: TIM1_UP_TIM10_IRQHandler,
+    }, // TIM1_UP_TIM10
+    IrqVector {
+        handler: Default_Handler2,
+    }, // TIM1_TRG_COM_TIM11
+    IrqVector {
+        handler: Default_Handler3,
+    }, // TIM1_CC
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM2
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM3
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM4
+    IrqVector {
+        handler: Default_Handler,
+    }, // I2C1_EV
+    IrqVector {
+        handler: Default_Handler,
+    }, // I2C1_ER
+    IrqVector {
+        handler: Default_Handler,
+    }, // I2C2_EV
+    IrqVector {
+        handler: Default_Handler,
+    }, // I2C2_ER
+    IrqVector {
+        handler: Default_Handler,
+    }, // SPI1
+    IrqVector {
+        handler: Default_Handler,
+    }, // SPI2
+    IrqVector {
+        handler: Default_Handler,
+    }, // USART1
+    IrqVector {
+        handler: Default_Handler,
+    }, // USART2
+    IrqVector {
+        handler: Default_Handler,
+    }, // USART3
+    IrqVector {
+        handler: Default_Handler,
+    }, // EXTI15_10
+    IrqVector {
+        handler: Default_Handler,
+    }, // RTC_Alarm
+    IrqVector {
+        handler: Default_Handler,
+    }, // OTG_FS_WKUP
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM8_BRK_TIM12
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM8_UP_TIM13
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM8_TRG_COM_TIM14
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM8_CC
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA1_Stream7
+    IrqVector {
+        handler: Default_Handler,
+    }, // FSMC
+    IrqVector {
+        handler: Default_Handler,
+    }, // SDIO
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM5
+    IrqVector {
+        handler: Default_Handler,
+    }, // SPI3
+    IrqVector {
+        handler: Default_Handler,
+    }, // UART4
+    IrqVector {
+        handler: Default_Handler,
+    }, // UART5
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM6_DAC
+    IrqVector {
+        handler: Default_Handler,
+    }, // TIM7
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA2_Stream0
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA2_Stream1
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA2_Stream2
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA2_Stream3
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA2_Stream4
+    IrqVector {
+        handler: Default_Handler,
+    }, // ETH
+    IrqVector {
+        handler: Default_Handler,
+    }, // ETH_WKUP
+    IrqVector {
+        handler: Default_Handler,
+    }, // CAN2_TX
+    IrqVector {
+        handler: Default_Handler,
+    }, // CAN2_RX0
+    IrqVector {
+        handler: Default_Handler,
+    }, // CAN2_RX1
+    IrqVector {
+        handler: Default_Handler,
+    }, // CAN2_SCE
+    IrqVector {
+        handler: Default_Handler,
+    }, // OTG_FS
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA2_Stream5
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA2_Stream6
+    IrqVector {
+        handler: Default_Handler,
+    }, // DMA2_Stream7
+    IrqVector {
+        handler: Default_Handler,
+    }, // USART6
+    IrqVector {
+        handler: Default_Handler,
+    }, // I2C3_EV
+    IrqVector {
+        handler: Default_Handler,
+    }, // I2C3_ER
+    IrqVector {
+        handler: Default_Handler,
+    }, // OTG_HS_EP1_OUT
+    IrqVector {
+        handler: Default_Handler,
+    }, // OTG_HS_EP1_IN
+    IrqVector {
+        handler: Default_Handler,
+    }, // OTG_HS_WKUP
+    IrqVector {
+        handler: Default_Handler,
+    }, // OTG_HS
+    IrqVector {
+        handler: Default_Handler,
+    }, // DCMI
+    IrqVector {
+        handler: Default_Handler,
+    }, // CRYP
+    IrqVector {
+        handler: Default_Handler,
+    }, // HASH_RNG
+    IrqVector {
+        handler: Default_Handler,
+    }, // FPU
 ];
