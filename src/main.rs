@@ -7,9 +7,10 @@ extern crate std;
 use hal;
 use hal::led;
 use hal::led::Color;
-use hal::console;
 
-use hal::{debug};
+use hal::console::Print;
+
+use hal::debug;
 
 mod stack;
 mod startup;
@@ -34,14 +35,8 @@ fn my_main() -> ! {
     #[cfg(feature = "exit")]
     hal::validate();
 
-    console::write(b"Starting\r\n");
-    
-    // TODO remove 
-    console::write(b"  junk: ");
-    let junk:u64 = 1234;
-    console::write_u64(junk);
-    console::write(b" mS\r\n");
-    
+    b"Starting\r\n".print_console();
+
     loop {
         led::set(Color::Green);
 
@@ -54,19 +49,26 @@ fn my_main() -> ! {
         debug::set(0, false);
 
         let duration = end_time.sub(start_time);
-        console::write(b"  Duration: ");
-        console::write_u64((duration.as_u64() ) / 1000); // convert to mS
-        console::write(b" mS\r\n");
+        b"  Duration: ".print_console();
+        let duration_ms = (duration.as_u64()) / 1000; // convert to mS
+        duration_ms.print_console();
+        b" mS\r\n".print_console();
 
         led::set(Color::Blue);
 
         fib(32);
 
-        let _stack_usage = stack::usage();
+        let stack_usage = stack::usage() as u32;
+
+        if cfg!(not(feature = "std")) {
+            b"  Stack usage: ".print_console();
+            stack_usage.print_console();
+            b" bytes\r\n".print_console();
+        }
 
         #[cfg(feature = "exit")]
         {
-            console::write(b"Stopping\r\n\0");
+            b"Stopping\r\n".print_console();
             hal::semihost::exit(0);
         }
     }
