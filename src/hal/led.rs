@@ -1,6 +1,11 @@
 use super::board;
 
+#[inline(never)]
 pub fn init() {
+    board::info::LED_RED_PIN.output();
+    board::info::LED_GREEN_PIN.output();
+    board::info::LED_BLUE_PIN.output();
+
     set(Color::Black);
 }
 

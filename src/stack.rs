@@ -9,6 +9,7 @@ extern "C" {
 }
 
 #[cfg(target_arch = "arm")]
+#[inline(never)]
 pub fn usage() -> usize {
     let start: u32 = ptr::addr_of!(_heap_start) as u32;
     let end: u32 = ptr::addr_of!(_estack) as u32;
