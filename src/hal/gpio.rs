@@ -1,6 +1,14 @@
 use core::ptr;
 
-use super::{board, cpu};
+use super::cpu;
+pub use super::cpu::gen_cpu::*;
+pub use super::cpu::*;
+
+pub fn init() {
+    cpu::write!(RCC.ahb1enr[GPIOAEN;1], 1 );
+    cpu::write!(RCC.ahb1enr[GPIOBEN;1], 1 );
+    cpu::write!(RCC.ahb1enr[GPIOCEN;1], 1 );
+}
 
 #[derive(Copy, Clone)]
 pub struct Pin(pub *mut cpu::GpioReg, pub u8);
@@ -12,7 +20,7 @@ impl Pin {
         return Pin(gpio, p);
     }
 
-    fn output(&self) {
+    pub fn output(&self) {
         let gpio = self.0;
         let pin_num = self.1;
 
@@ -32,7 +40,7 @@ impl Pin {
         cpu::write!( gpio.ospeedr[pin_num*2;2], 0b00);
     }
 
-    fn input(&self) {
+    pub fn input(&self) {
         let gpio = self.0;
         let pin_num = self.1;
 
@@ -41,6 +49,24 @@ impl Pin {
 
         // set mode to input
         cpu::write!( gpio.moder[pin_num*2;2], 0b00);
+    }
+
+    #[allow(dead_code)]
+    pub fn pulldown(&self) {
+        let gpio = self.0;
+        let pin_num = self.1;
+
+        // set to pull down
+        cpu::write!(gpio.pupdr[pin_num * 2; 2], 0b10);
+    }
+
+    #[allow(dead_code)]
+    pub fn pullup(&self) {
+        let gpio = self.0;
+        let pin_num = self.1;
+
+        // set to pull up
+        cpu::write!(gpio.pupdr[pin_num * 2; 2], 0b01);
     }
 
     pub fn low(&self) {
@@ -64,14 +90,4 @@ impl Pin {
         let val = cpu::read!( gpio.idr[pin_num*1;1] );
         val != 0
     }
-}
-
-pub fn init() {
-    board::info::LED_RED_PIN.output();
-    board::info::LED_GREEN_PIN.output();
-    board::info::LED_BLUE_PIN.output();
-
-    board::info::PTT_BUTTON.input();
-
-    board::info::DEBUG1_PIN.output();
 }
