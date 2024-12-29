@@ -3,12 +3,12 @@ set confirm off
 
 load
 
-# break at start of program
-# stepi
-break my_main
-
 set print asm-demangle on
 
-#break rust_begin_unwind
 break Default_Handler
 break app::startup::panic
+
+# break at start of program
+# stepi
+break app::my_main
+
