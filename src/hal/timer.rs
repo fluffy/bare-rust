@@ -1,5 +1,6 @@
-use crate::led;
-use crate::led::Color;
+use core::arch::asm;
+
+
 use core::ptr;
 
 #[cfg(feature = "std")]
@@ -15,9 +16,11 @@ pub use super::cpu::TIM_ADV as TIM1;
 pub fn init1() {
     // enable TIM1 clock
     cpu::write!( RCC.apb2enr[TIM1EN;1], 1);
-
+   
+    // apb2 timer clock is 168MHz
+    
     // set prescaler for 1MHz
-    cpu::write!(TIM1.psc, 84 - 1);
+    cpu::write!(TIM1.psc, 168 - 1);
 
     // set auto-reload for 10ms
     cpu::write!(TIM1.arr, 10000 - 1);
@@ -50,13 +53,40 @@ pub fn handle_tim1_irq() {
         // interrupts disabled when it is read
         TICK_COUNTER += 1;
     }
+}
 
-    unsafe {
-        if TICK_COUNTER % 10 == 2 {
-            led::set(Color::Green);
-        }
-        if TICK_COUNTER % 10 == 5 {
-            led::set(Color::Blue);
-        }
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub struct MicroSeconds(pub u64);
+
+impl MicroSeconds {
+    pub fn new(microseconds: u64) -> Self {
+        MicroSeconds(microseconds)
     }
+
+    pub fn as_u64(&self) -> u64 {
+        self.0
+    }
+
+    pub fn sub(self, other: Self) -> MicroSeconds {
+        // TODO - deal with wrap around
+        MicroSeconds(self.0 - other.0)
+    }
+}
+
+#[inline(always)]
+pub fn current_time() -> MicroSeconds {
+    let lower: u32;
+    let upper: u32;
+
+    #[allow(unused_unsafe)] // the cpu::read! macro uses unsafe
+    unsafe {
+        // Read the value of the TIM1 counter
+        asm!("cpsid i"); // disable interrupts
+        lower = cpu::read!(TIM1.cnt);
+        upper = TICK_COUNTER;
+        asm!("cpsie i"); // enable interrupts
+    }
+
+    // Return the combined value
+    MicroSeconds(((upper as u64) * 10_000) + (lower as u64))
 }
