@@ -68,7 +68,10 @@ impl MicroSeconds {
     }
 
     pub fn sub(self, other: Self) -> MicroSeconds {
-        // TODO - deal with wrap around
+        if other.0 > self.0 {
+            // wrap-around occurred
+            return MicroSeconds( u64::MAX - other.0 + self.0 + 1);
+        }
         MicroSeconds(self.0 - other.0)
     }
 }
