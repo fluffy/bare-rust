@@ -7,7 +7,9 @@ extern crate std;
 use hal;
 use hal::led;
 use hal::led::Color;
-use hal::{debug, uart};
+use hal::console;
+
+use hal::{debug};
 
 mod stack;
 mod startup;
@@ -29,11 +31,17 @@ fn main() -> () {
 fn my_main() -> ! {
     hal::init();
 
-    //#[cfg(feature = "exit")]
-    //hal::clock::validate();
+    #[cfg(feature = "exit")]
+    hal::validate();
 
-    uart::write1(b"Starting\r\n\0");
-
+    console::write(b"Starting\r\n");
+    
+    // TODO remove 
+    console::write(b"  junk: ");
+    let junk:u64 = 1234;
+    console::write_u64(junk);
+    console::write(b" mS\r\n");
+    
     loop {
         led::set(Color::Green);
 
@@ -46,9 +54,9 @@ fn my_main() -> ! {
         debug::set(0, false);
 
         let duration = end_time.sub(start_time);
-        uart::write1(b"  Duration: \0");
-        uart::write1_u64((duration.as_u64() ) / 1000); // convert to mS
-        uart::write1(b" mS\r\n\0");
+        console::write(b"  Duration: ");
+        console::write_u64((duration.as_u64() ) / 1000); // convert to mS
+        console::write(b" mS\r\n");
 
         led::set(Color::Blue);
 
@@ -58,7 +66,7 @@ fn my_main() -> ! {
 
         #[cfg(feature = "exit")]
         {
-            uart::write1(b"Stopping\r\n\0");
+            console::write(b"Stopping\r\n\0");
             hal::semihost::exit(0);
         }
     }

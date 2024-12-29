@@ -1,6 +1,4 @@
-use core::arch::asm;
 use core::ptr;
-//use crate::board::info::HAS_RCC;
 
 #[cfg(feature = "std")]
 extern crate std;
@@ -60,7 +58,7 @@ pub fn init1(baud_rate: u64) {
     cpu::write!( USART1.cr1[UE;1], 1); // uart enable
 }
 
-pub fn write_byte1(c: u8) {
+pub fn write1(c: u8) {
     if cfg!(feature = "board-sim") {
         return;
     }
@@ -68,65 +66,3 @@ pub fn write_byte1(c: u8) {
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
 
-pub fn write1(s: &[u8]) {
-    if cfg!(feature = "board-sim") {
-        #[cfg(feature = "std")]
-        std::print!("Console: ");
-        for c in s {
-            if *c == 0 {
-                break;
-            }
-            #[cfg(feature = "std")]
-            std::print!("{}", *c as char);
-        }
-        return;
-    }
-    if cfg!(feature = "board-qemu") {
-        let ptr = s.as_ptr();
-
-        unsafe {
-            // semihost WRITE0
-            asm!(
-            "mov r0, #0x04", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#sys-write0-0x04
-            "mov r1, {0}",
-            "bkpt #0xAB", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#4the-semihosting-interface
-            in(reg) ptr,
-            );
-        }
-
-        return;
-    }
-    for c in s {
-        if *c == 0 {
-            break;
-        }
-        write_byte1(*c);
-    }
-    //write_byte1( '\r' as u8);
-    //write_byte1( '\n' as u8);
-}
-
-pub fn write1_u64(v: u64) {
-    let mut num = v;
-    let mut buffer = [0u8; 20+1]; // u64 max is 20 digits
-    let mut len: usize = 0;
-
-    if num == 0 {
-        buffer[len] = b'0';
-        len += 1;
-    } else {
-        while num > 0 {
-            buffer[len] = (num % 10) as u8 + b'0';
-            num /= 10;
-            len += 1;
-        }
-    }
-    
-    buffer[len] = 0; // null terminate
-    len += 1;
-    
-    while len > 0 {
-        len -= 1;
-        write_byte1(buffer[len]);
-    }
-}

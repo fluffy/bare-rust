@@ -3,13 +3,14 @@
 mod board;
 mod cpu;
 
-pub mod clock;
+mod clock;
 pub mod debug;
 pub mod gpio;
 pub mod led;
 pub mod semihost;
 pub mod timer;
-pub mod uart;
+mod uart;
+pub mod console;
 
 #[inline(never)]
 pub fn init() {
@@ -26,6 +27,13 @@ pub fn init() {
     debug::init();
     uart::init1(115_200);
 
+    // do after uart is up
+    console::init();
+    
     // Do last as this starts schedule
     timer::init1();
+ }
+
+pub fn validate () {
+    clock::validate();
 }
