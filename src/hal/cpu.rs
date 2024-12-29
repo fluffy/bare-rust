@@ -135,6 +135,7 @@ pub struct TimAdvReg {
 }
 pub const TIM1: *mut TimAdvReg = 0x4001_0000 as *mut TimAdvReg;
 
+#[inline(always)]
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     if cfg!(feature = "board-sim") {
     } else {
@@ -147,6 +148,7 @@ pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     }
 }
 
+#[inline(always)]
 pub fn write_reg(addr: *mut u32, val: u32) {
     if cfg!(feature = "board-sim") {
     } else {
@@ -156,6 +158,7 @@ pub fn write_reg(addr: *mut u32, val: u32) {
     }
 }
 
+#[inline(always)]
 pub fn read_reg(addr: *mut u32) -> u32 {
     if cfg!(feature = "board-sim") {
         0
@@ -235,6 +238,14 @@ macro_rules! read {
         val = val >> offset;
         val = val & mask;
         val
+    }};
+    ( $x:ident.$y:ident ) => {{
+        let val : u32;
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            val = cpu::read_reg(addr);
+        }
+        val 
     }};
 }
 
