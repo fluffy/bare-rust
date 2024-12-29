@@ -34,8 +34,14 @@ pub mod info {
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
 
+    pub const HAS_PTT_BUTTON: bool = true;
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
+    pub const PTT_BUTTON_PULL_UP: bool = true;
 
+    pub const HAS_AI_BUTTON: bool = true;
+    pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
+    pub const AI_BUTTON_PULL_UP: bool = true;
+    
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -54,8 +60,14 @@ pub mod info {
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_B, 7);
 
+    pub const HAS_PTT_BUTTON: bool = true;
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 13);
+    pub const PTT_BUTTON_PULL_UP: bool = false;
 
+    pub const HAS_AI_BUTTON: bool = false;
+    pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 13);
+    pub const AI_BUTTON_PULL_UP: bool = false;
+    
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -73,8 +85,14 @@ pub mod info {
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
 
+    pub const HAS_PTT_BUTTON: bool = false;
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
+    pub const PTT_BUTTON_PULL_UP: bool = true;
 
+    pub const HAS_AI_BUTTON: bool = false;
+    pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
+    pub const AI_BUTTON_PULL_UP: bool = true;
+    
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -92,8 +110,14 @@ pub mod info {
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
 
+    pub const HAS_PTT_BUTTON: bool = false;
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
+    pub const PTT_BUTTON_PULL_UP: bool = false;
 
+    pub const HAS_AI_BUTTON: bool = false;
+    pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
+    pub const AI_BUTTON_PULL_UP: bool = false;
+    
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }

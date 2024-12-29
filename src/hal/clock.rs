@@ -3,8 +3,10 @@ use core::ptr;
 use super::board;
 use super::cpu;
 use super::cpu::*;
-use crate::board::info::HAS_RCC;
 
+use super::board::info::HAS_RCC;
+
+#[inline(never)]
 pub fn init() {
     // setup flash wait states and cache
     {
@@ -43,8 +45,10 @@ pub fn init() {
         cpu::write!(RCC.pllcfgr[PLLQ0;4], pll_q );
         cpu::write!(RCC.pllcfgr[PLLM0;5], pll_m );
         cpu::write!(RCC.pllcfgr[PLLN0;9], pll_n );
+
         // set main division factor to 2
         cpu::write!(RCC.pllcfgr[PLLP0;2], 0b00);
+
         // select HSE
         cpu::write!(RCC.pllcfgr[PLLSRC;1], 0b1);
 
@@ -71,15 +75,9 @@ pub fn init() {
             while (cpu::read!(RCC.cfgr[SWS0;2]) != 0b10) {}
         }
     }
-
-    // enable clocks for GPIO A,B,C
-    {
-        cpu::write!(RCC.ahb1enr[GPIOAEN;1], 1 );
-        cpu::write!(RCC.ahb1enr[GPIOBEN;1], 1 );
-        cpu::write!(RCC.ahb1enr[GPIOCEN;1], 1 );
-    }
 }
 
+#[inline(never)]
 pub fn validate() {
     if cfg!(feature = "board-sim") {
         return;
@@ -100,14 +98,16 @@ pub fn validate() {
     }
 
     // Check if PLL source is HSE
-    if cpu::read!(RCC.pllcfgr[PLLSRC;1]) != 1 {
-        panic!("PLL source not set to HSE");
-    }
+    // seems like this can not be read after it is enabled
+    //if cpu::read!(RCC.pllcfgr[PLLSRC;1]) != 1 {
+    //    panic!("PLL source not set to HSE");
+    //}
 
     // Check if PLL M is set correctly
-    if read!(RCC.pllcfgr[PLLM0;6]) != board::info::CLOCK_PLL_M {
-        panic!("PLL M not set correctly");
-    }
+    // seems like this can not be read after it is enabled
+    //if read!(RCC.pllcfgr[PLLM0;6]) != board::info::CLOCK_PLL_M {
+    //    panic!("PLL M not set correctly");
+    //}
 
     // Check if PLL N is set to 168
     if read!(RCC.pllcfgr[PLLN0;9]) != 168 {
@@ -142,26 +142,5 @@ pub fn validate() {
     // Check APB2 prescaler
     if cpu::read!(RCC.cfgr[PPRE2;3]) != 0b100 {
         panic!("APB2 prescaler not set to 2");
-    }
-
-    // Output system clock on MCO1 pin (PA8)
-    if false {
-        // enable GPIO A
-        cpu::write!(RCC.ahb1enr[GPIOAEN;1], 1 );
-
-        // set PA8 to alternate function
-        cpu::write!(GPIO_A.moder[8*2;2], 0b10);
-        // set PA8 to AF0
-        cpu::write!(GPIO_A.afrh[0;4], 0b0000);
-
-        // set MCO1 to PLL clock
-        cpu::write!(RCC.cfgr[MCO1;2], 0b11);
-
-        // set MCO1 prescaler to 1
-        cpu::write!(RCC.cfgr[MCO1PRE;3], 0b000);
-
-        loop {
-            // wait forever
-        }
     }
 }

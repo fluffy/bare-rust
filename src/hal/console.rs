@@ -6,6 +6,7 @@ use super::uart;
 #[cfg(feature = "std")]
 extern crate std;
 
+#[inline(never)]
 pub fn init() {}
 
 pub trait Print {

@@ -1,6 +1,9 @@
 use super::board;
 
+#[inline(never)]
 pub fn init() {
+    board::info::DEBUG1_PIN.output();
+
     board::info::DEBUG1_PIN.low();
 }
 

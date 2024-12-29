@@ -26,10 +26,11 @@ fn main() -> () {
     my_main();
 }
 
+#[inline(never)]
 fn my_main() -> ! {
     hal::init();
 
-    #[cfg(feature = "exit")]
+    //#[cfg(feature = "exit")]
     hal::validate();
 
     b"Starting\r\n".print_console();
@@ -38,7 +39,7 @@ fn my_main() -> ! {
         led::set(Color::Green);
 
         // fib*34) getting 1.630 s on dev
-        // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed 
+        // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed
         debug::set(0, true);
         let start_time = hal::timer::current_time();
         fib(34);
@@ -51,6 +52,11 @@ fn my_main() -> ! {
         duration_ms.print_console();
         b" mS\r\n".print_console();
 
+        let bool = hal::button::read_ptt();
+        if bool {
+            b"  PTT button pressed\r\n".print_console();
+        }
+
         led::set(Color::Blue);
 
         fib(32);
@@ -62,6 +68,8 @@ fn my_main() -> ! {
             stack_usage.print_console();
             b" bytes\r\n".print_console();
         }
+
+        b"\r\n".print_console();
 
         #[cfg(feature = "exit")]
         {
