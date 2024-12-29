@@ -1,16 +1,14 @@
+use core::ptr;
 
 #[cfg(not(feature = "std"))]
 use core::arch::asm;
 
-use core::ptr;
-
 #[cfg(feature = "std")]
 extern crate std;
+
 #[cfg(feature = "std")]
 use std::time::{SystemTime, UNIX_EPOCH};
 
-
-//use super::board;
 use super::cpu;
 use super::cpu::*;
 
@@ -20,9 +18,9 @@ pub use super::cpu::TIM_ADV as TIM1;
 pub fn init1() {
     // enable TIM1 clock
     cpu::write!( RCC.apb2enr[TIM1EN;1], 1);
-   
+
     // apb2 timer clock is 168MHz
-    
+
     // set prescaler for 1MHz
     cpu::write!(TIM1.psc, 168 - 1);
 
@@ -74,13 +72,13 @@ impl MicroSeconds {
     pub fn sub(self, other: Self) -> MicroSeconds {
         if other.0 > self.0 {
             // wrap-around occurred
-            return MicroSeconds( u64::MAX - other.0 + self.0 + 1);
+            return MicroSeconds(u64::MAX - other.0 + self.0 + 1);
         }
         MicroSeconds(self.0 - other.0)
     }
 }
 
-#[cfg( target_arch = "arm")]
+#[cfg(target_arch = "arm")]
 #[inline(always)]
 pub fn current_time() -> MicroSeconds {
     let lower: u32;
@@ -90,7 +88,7 @@ pub fn current_time() -> MicroSeconds {
     unsafe {
         // Some Arm processors do not support th cpsid and cpsie instructions
         // so we need to use the PRIMASK register to disable interrupts in that case - not done here
-        
+
         // Read the value of the TIM1 counter
         asm!("cpsid i"); // disable interrupts
         lower = cpu::read!(TIM1.cnt);
@@ -104,7 +102,6 @@ pub fn current_time() -> MicroSeconds {
 
 #[cfg(feature = "std")]
 pub fn current_time() -> MicroSeconds {
-    
     let start = SystemTime::now();
     match start.duration_since(UNIX_EPOCH) {
         Ok(n) => MicroSeconds(n.as_micros() as u64),

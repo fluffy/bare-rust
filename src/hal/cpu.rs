@@ -1,5 +1,3 @@
-//use core::ptr;
-
 pub mod gen_cpu;
 pub use gen_cpu::*;
 
@@ -240,12 +238,12 @@ macro_rules! read {
         val
     }};
     ( $x:ident.$y:ident ) => {{
-        let val : u32;
+        let val: u32;
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
             val = cpu::read_reg(addr);
         }
-        val 
+        val
     }};
 }
 

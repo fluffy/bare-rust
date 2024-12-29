@@ -44,7 +44,7 @@ pub fn exit(ret: i32) -> ! {
     loop {}
 }
 
-#[cfg(not(target_arch = "arm"))]
+#[cfg(feature = "std")]
 pub fn exit(ret: i32) -> ! {
     std::process::exit(ret);
 }

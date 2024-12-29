@@ -1,9 +1,9 @@
+use core::ptr;
+
 use super::board;
 use super::cpu;
 use super::cpu::*;
 use crate::board::info::HAS_RCC;
-use core::ptr;
-//use super::cpu::gen_cpu::*;
 
 pub fn init() {
     // setup flash wait states and cache

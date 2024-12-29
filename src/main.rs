@@ -5,13 +5,13 @@
 extern crate std;
 
 use hal;
+use hal::console::Print;
+use hal::debug;
 use hal::led;
 use hal::led::Color;
-use hal::{debug, uart};
 
 mod stack;
 mod startup;
-//mod hal;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
@@ -29,16 +29,16 @@ fn main() -> () {
 fn my_main() -> ! {
     hal::init();
 
-    //#[cfg(feature = "exit")]
-    //hal::clock::validate();
+    #[cfg(feature = "exit")]
+    hal::validate();
 
-    uart::write1(b"Starting\r\n\0");
+    b"Starting\r\n".print_console();
 
     loop {
         led::set(Color::Green);
 
         // fib*34) getting 1.630 s on dev
-        // fib(34) getting 0.798 s on rel
+        // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed 
         debug::set(0, true);
         let start_time = hal::timer::current_time();
         fib(34);
@@ -46,19 +46,26 @@ fn my_main() -> ! {
         debug::set(0, false);
 
         let duration = end_time.sub(start_time);
-        uart::write1(b"  Duration: \0");
-        uart::write1_u64((duration.as_u64() ) / 1000); // convert to mS
-        uart::write1(b" mS\r\n\0");
+        b"  Duration: ".print_console();
+        let duration_ms = (duration.as_u64()) / 1000; // convert to mS
+        duration_ms.print_console();
+        b" mS\r\n".print_console();
 
         led::set(Color::Blue);
 
         fib(32);
 
-        let _stack_usage = stack::usage();
+        let stack_usage = stack::usage() as u32;
+
+        if cfg!(not(feature = "std")) {
+            b"  Stack usage: ".print_console();
+            stack_usage.print_console();
+            b" bytes\r\n".print_console();
+        }
 
         #[cfg(feature = "exit")]
         {
-            uart::write1(b"Stopping\r\n\0");
+            b"Stopping\r\n".print_console();
             hal::semihost::exit(0);
         }
     }
