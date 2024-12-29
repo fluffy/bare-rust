@@ -12,6 +12,7 @@ use super::cpu::*;
 
 pub use super::cpu::USART as USART1;
 
+#[inline(never)]
 pub fn init1(baud_rate: u64) {
     // enable USART1 & GPIO clock
     cpu::write!( RCC.apb2enr[USART1EN;1], 1);
@@ -76,15 +77,15 @@ pub fn write1(s: &[u8]) {
                 break;
             }
             #[cfg(feature = "std")]
-            std::print!( "{}" , *c as char);
+            std::print!("{}", *c as char);
         }
         return;
     }
     if cfg!(feature = "board-qemu") {
         let ptr = s.as_ptr();
-        
+
         unsafe {
-            // semihost WRITE0 
+            // semihost WRITE0
             asm!(
             "mov r0, #0x04", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#sys-write0-0x04
             "mov r1, {0}",
@@ -99,8 +100,33 @@ pub fn write1(s: &[u8]) {
         if *c == 0 {
             break;
         }
-        write_byte1( *c );
+        write_byte1(*c);
     }
     //write_byte1( '\r' as u8);
     //write_byte1( '\n' as u8);
+}
+
+pub fn write1_u64(v: u64) {
+    let mut num = v;
+    let mut buffer = [0u8; 20+1]; // u64 max is 20 digits
+    let mut len: usize = 0;
+
+    if num == 0 {
+        buffer[len] = b'0';
+        len += 1;
+    } else {
+        while num > 0 {
+            buffer[len] = (num % 10) as u8 + b'0';
+            num /= 10;
+            len += 1;
+        }
+    }
+    
+    buffer[len] = 0; // null terminate
+    len += 1;
+    
+    while len > 0 {
+        len -= 1;
+        write_byte1(buffer[len]);
+    }
 }

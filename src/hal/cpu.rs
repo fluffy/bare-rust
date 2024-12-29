@@ -64,6 +64,18 @@ pub struct RccReg {
 pub const RCC: *mut RccReg = 0x4002_3800 as *mut RccReg;
 
 #[repr(C)]
+pub struct NVICReg {
+    pub iser: [u32; 8], // Interrupt Set-Enable Registers
+    pub icer: [u32; 8], // Interrupt Clear-Enable Registers
+    pub ispr: [u32; 8], // Interrupt Set-Pending Registers
+    pub icpr: [u32; 8], // Interrupt Clear-Pending Registers
+    pub iabr: [u32; 8], // Interrupt Active Bit Registers
+    pub ipr: [u32; 60], // Interrupt Priority Registers
+    pub stir: u32,      // Software Trigger Interrupt Register
+}
+pub const NVIC: *mut NVICReg = 0xE000_E100 as *mut NVICReg;
+
+#[repr(C)]
 pub struct GpioReg {
     pub moder: u32,
     pub otyper: u32,
@@ -97,8 +109,33 @@ pub struct UsartReg {
 }
 
 pub const USART1: *mut UsartReg = 0x4001_1000 as *mut UsartReg;
-//pub const USART2: *mut UsartReg = 0x4000_4400 as *mut UsartReg;
 
+#[repr(C)]
+pub struct TimAdvReg {
+    pub cr1: u32,
+    pub cr2: u32,
+    pub smcr: u32,
+    pub dier: u32,
+    pub sr: u32,
+    pub egr: u32,
+    pub ccmr1: u32,
+    pub ccmr2: u32,
+    pub ccer: u32,
+    pub cnt: u32,
+    pub psc: u32,
+    pub arr: u32,
+    pub rcr: u32,
+    pub ccr1: u32,
+    pub ccr2: u32,
+    pub ccr3: u32,
+    pub ccr4: u32,
+    pub bdtr: u32,
+    pub dcr: u32,
+    pub dmar: u32,
+}
+pub const TIM1: *mut TimAdvReg = 0x4001_0000 as *mut TimAdvReg;
+
+#[inline(always)]
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     if cfg!(feature = "board-sim") {
     } else {
@@ -111,6 +148,7 @@ pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     }
 }
 
+#[inline(always)]
 pub fn write_reg(addr: *mut u32, val: u32) {
     if cfg!(feature = "board-sim") {
     } else {
@@ -120,6 +158,7 @@ pub fn write_reg(addr: *mut u32, val: u32) {
     }
 }
 
+#[inline(always)]
 pub fn read_reg(addr: *mut u32) -> u32 {
     if cfg!(feature = "board-sim") {
         0
@@ -151,6 +190,14 @@ macro_rules! write {
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
             cpu::update_reg(addr, mask, val);
+        }
+    }};
+
+    ( $x:ident.$y:ident[$z:expr],  $data:expr  ) => {{
+        let val = $data;
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y[$z]);
+            cpu::write_reg(addr, val);
         }
     }};
 
@@ -191,6 +238,14 @@ macro_rules! read {
         val = val >> offset;
         val = val & mask;
         val
+    }};
+    ( $x:ident.$y:ident ) => {{
+        let val : u32;
+        unsafe {
+            let addr = ptr::addr_of_mut!((*$x).$y);
+            val = cpu::read_reg(addr);
+        }
+        val 
     }};
 }
 

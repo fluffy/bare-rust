@@ -35,23 +35,30 @@ fn my_main() -> ! {
     uart::write1(b"Starting\r\n\0");
 
     loop {
-        led::set(Color::Blue);
-        debug::set(0, true);
-
-        // getting 1.630 s on dev
-        // getting 0.798 s on rel
-        fib(34);
-
-        debug::set(0, false);
         led::set(Color::Green);
 
-        fib(33);
+        // fib*34) getting 1.630 s on dev
+        // fib(34) getting 0.798 s on rel
+        debug::set(0, true);
+        let start_time = hal::timer::current_time();
+        fib(34);
+        let end_time = hal::timer::current_time();
+        debug::set(0, false);
+
+        let duration = end_time.sub(start_time);
+        uart::write1(b"  Duration: \0");
+        uart::write1_u64((duration.as_u64() ) / 1000); // convert to mS
+        uart::write1(b" mS\r\n\0");
+
+        led::set(Color::Blue);
+
+        fib(32);
 
         let _stack_usage = stack::usage();
 
         #[cfg(feature = "exit")]
         {
-            uart::write1( b"Stopping\r\n\0");
+            uart::write1(b"Stopping\r\n\0");
             hal::semihost::exit(0);
         }
     }
