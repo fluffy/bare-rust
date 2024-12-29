@@ -105,3 +105,28 @@ pub fn write1(s: &[u8]) {
     //write_byte1( '\r' as u8);
     //write_byte1( '\n' as u8);
 }
+
+pub fn write1_u64(v: u64) {
+    let mut num = v;
+    let mut buffer = [0u8; 20+1]; // u64 max is 20 digits
+    let mut len: usize = 0;
+
+    if num == 0 {
+        buffer[len] = b'0';
+        len += 1;
+    } else {
+        while num > 0 {
+            buffer[len] = (num % 10) as u8 + b'0';
+            num /= 10;
+            len += 1;
+        }
+    }
+    
+    buffer[len] = 0; // null terminate
+    len += 1;
+    
+    while len > 0 {
+        len -= 1;
+        write_byte1(buffer[len]);
+    }
+}
