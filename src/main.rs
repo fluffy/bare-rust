@@ -38,7 +38,7 @@ fn my_main() -> ! {
         led::set(Color::Green);
 
         // fib*34) getting 1.630 s on dev
-        // fib(34) getting 0.798 s on rel
+        // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed 
         debug::set(0, true);
         let start_time = hal::timer::current_time();
         fib(34);

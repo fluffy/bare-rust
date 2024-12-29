@@ -5,7 +5,7 @@ mod clock;
 pub mod console;
 mod cpu;
 pub mod debug;
-mod gpio;
+pub mod gpio;
 pub mod led;
 pub mod semihost;
 pub mod timer;
