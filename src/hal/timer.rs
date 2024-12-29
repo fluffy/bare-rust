@@ -1,10 +1,14 @@
-use core::arch::asm;
 
+#[cfg(not(feature = "std"))]
+use core::arch::asm;
 
 use core::ptr;
 
 #[cfg(feature = "std")]
 extern crate std;
+#[cfg(feature = "std")]
+use std::time::{SystemTime, UNIX_EPOCH};
+
 
 //use super::board;
 use super::cpu;
@@ -76,6 +80,7 @@ impl MicroSeconds {
     }
 }
 
+#[cfg( target_arch = "arm")]
 #[inline(always)]
 pub fn current_time() -> MicroSeconds {
     let lower: u32;
@@ -83,6 +88,9 @@ pub fn current_time() -> MicroSeconds {
 
     #[allow(unused_unsafe)] // the cpu::read! macro uses unsafe
     unsafe {
+        // Some Arm processors do not support th cpsid and cpsie instructions
+        // so we need to use the PRIMASK register to disable interrupts in that case - not done here
+        
         // Read the value of the TIM1 counter
         asm!("cpsid i"); // disable interrupts
         lower = cpu::read!(TIM1.cnt);
@@ -92,4 +100,14 @@ pub fn current_time() -> MicroSeconds {
 
     // Return the combined value
     MicroSeconds(((upper as u64) * 10_000) + (lower as u64))
+}
+
+#[cfg(feature = "std")]
+pub fn current_time() -> MicroSeconds {
+    
+    let start = SystemTime::now();
+    match start.duration_since(UNIX_EPOCH) {
+        Ok(n) => MicroSeconds(n.as_micros() as u64),
+        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
+    }
 }
