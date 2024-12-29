@@ -64,4 +64,3 @@ pub fn write1(c: u8) {
     while (cpu::read!(USART1.sr[TXE;1]) == 0) {}
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
-

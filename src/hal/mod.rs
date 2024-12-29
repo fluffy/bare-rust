@@ -1,15 +1,15 @@
 #![no_std]
 
 mod board;
-mod cpu;
 mod clock;
+pub mod console;
+mod cpu;
 pub mod debug;
 mod gpio;
 pub mod led;
 pub mod semihost;
 pub mod timer;
 mod uart;
-pub mod console;
 
 #[inline(never)]
 pub fn init() {
@@ -28,11 +28,11 @@ pub fn init() {
 
     // do after uart is up
     console::init();
-    
+
     // Do last as this starts schedule
     timer::init1();
- }
+}
 
-pub fn validate () {
+pub fn validate() {
     clock::validate();
 }

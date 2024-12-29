@@ -5,7 +5,6 @@ use super::cpu;
 use super::cpu::*;
 use crate::board::info::HAS_RCC;
 
-
 pub fn init() {
     // setup flash wait states and cache
     {

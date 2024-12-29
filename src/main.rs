@@ -5,10 +5,10 @@
 extern crate std;
 
 use hal;
-use hal::led;
-use hal::debug;
-use hal::led::Color;
 use hal::console::Print;
+use hal::debug;
+use hal::led;
+use hal::led::Color;
 
 mod stack;
 mod startup;
