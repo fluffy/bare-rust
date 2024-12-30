@@ -1,8 +1,10 @@
 [workspace]
 members = ["crates/*"]
+default-members = ["crates/app"]
 resolver = "2"
 
 [workspace.package]
+#name = "bare-rust"
 authors = ["Cullen Jennings <fluffy@iii.ca>"]
 version = "0.1.1"
 repository = "git@github.com:fluffy/bare-rust.git"
