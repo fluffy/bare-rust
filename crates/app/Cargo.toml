@@ -7,35 +7,18 @@ version = "0.1.1"
 repository = "git@github.com:fluffy/bare-rust.git"
 license = "BSD-2-Clause"
 
+
 [dependencies]
 #std = {  optional = true }
+hal = { path = "../hal" }
+dev = { path = "../dev" }
 
-[lib]
-name = "hal"
-path = "src/hal/mod.rs"
-bench = false
-test = false
 
 [[bin]]
 name = "app"
 test = false
 bench = false
 
-[profile.release]
-debug = "limited"
-#opt-level = "s"
-opt-level = 3
-lto = "fat"
-panic = "abort"
-
-[profile.dev]
-#opt-level = 3
-#opt-level = "s"
-opt-level = 1
-debug = true
-strip = "none"
-lto = "fat"
-panic = "abort"
 
 [features]
 #default = [ "board-blinkA" ]

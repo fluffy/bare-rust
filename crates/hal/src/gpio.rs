@@ -1,7 +1,7 @@
 use core::ptr;
 
 use super::cpu;
-pub use super::cpu::gen_cpu::*;
+pub use super::svd::*;
 pub use super::cpu::*;
 
 pub fn init() {

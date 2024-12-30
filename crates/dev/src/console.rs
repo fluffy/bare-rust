@@ -1,7 +1,9 @@
 #[cfg(not(feature = "std"))]
 use core::arch::asm;
 
-use super::uart;
+extern crate hal;
+
+use hal::uart;
 
 #[cfg(feature = "std")]
 extern crate std;

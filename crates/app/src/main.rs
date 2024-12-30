@@ -4,12 +4,15 @@
 #[cfg(feature = "std")]
 extern crate std;
 
+extern crate hal;
+extern crate dev;
+
 use crate::msg::v_mpsc;
-use hal;
-use hal::console::Print;
-use hal::debug;
-use hal::led;
-use hal::led::Color;
+//use hal;
+use dev::console::Print;
+use dev::debug;
+use dev::led;
+use dev::led::Color;
 
 mod msg;
 mod stack;
@@ -87,12 +90,12 @@ fn my_main() -> ! {
         duration_ms.print_console();
         b" mS\r\n".print_console();
 
-        let bool = hal::button::read_ptt();
+        let bool = dev::button::read_ptt();
         if bool {
             b"  PTT button pressed\r\n".print_console();
         }
 
-        led::set(Color::Blue);
+        dev::led::set( Color::Blue);
 
         fib(32);
 

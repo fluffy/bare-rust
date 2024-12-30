@@ -1,8 +1,15 @@
-use super::board;
+
 use core::ptr;
 
-use super::cpu;
-use super::cpu::*;
+
+//extern crate hal;
+
+use hal::board;
+use hal::cpu;
+//use hal::svd;
+
+
+use hal::cpu::*;
 
 
 #[inline(never)]
@@ -43,18 +50,18 @@ pub fn validate() {
         }
 
         // Check if GPIO_C is enabled
-        if cpu::read!(RCC.ahb1enr[GPIOCEN;1]) != 1 {
+        if hal::read!(RCC.ahb1enr[GPIOCEN;1]) != 1 {
             panic!("GPIO_C not enabled");
         }
 
         // Check if pin is set for input
-        let moder = cpu::read!(gpio.moder[ pin_num * 2 ; 2]);
+        let moder = hal::read!(gpio.moder[ pin_num * 2 ; 2]);
         if moder != 0b00 {
             panic!("PTT button not set for input");
         }
 
         // Check if pin has pull-down enabled
-        let pupdr = cpu::read!(gpio.pupdr[ pin_num * 2 ; 2]);
+        let pupdr = hal::read!(gpio.pupdr[ pin_num * 2 ; 2]);
         if board::info::PTT_BUTTON_PULL_UP {
             if pupdr != 0b01 {
                 panic!("PTT button not set for pull-up");
@@ -75,18 +82,18 @@ pub fn validate() {
         }
 
         // Check if GPIO_C is enabled
-        if cpu::read!(RCC.ahb1enr[GPIOCEN;1]) != 1 {
+        if hal::read!(RCC.ahb1enr[GPIOCEN;1]) != 1 {
             panic!("GPIO_C not enabled");
         }
 
         // Check if pin is set for input
-        let moder = cpu::read!(gpio.moder[ pin_num * 2 ; 2]);
+        let moder = hal::read!(gpio.moder[ pin_num * 2 ; 2]);
         if moder != 0b00 {
             panic!("AI button not set for input");
         }
 
         // Check if pin has pull-down enabled
-        let pupdr = cpu::read!(gpio.pupdr[ pin_num * 2 ; 2]);
+        let pupdr = hal::read!(gpio.pupdr[ pin_num * 2 ; 2]);
         if board::info::AI_BUTTON_PULL_UP {
             if pupdr != 0b01 {
                 panic!("AI button not set for pull-up");

@@ -1,5 +1,6 @@
-pub mod gen_cpu;
-pub use gen_cpu::*;
+
+pub use super::svd;
+pub use super::svd::*;
 
 #[cfg(feature = "std")]
 extern crate std;
@@ -207,6 +208,7 @@ pub fn read_reg(addr: *mut u32) -> u32 {
     
 }
 
+#[macro_export]
 macro_rules! write {
     ( $x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
         let offset = $x::$y::$z;
@@ -252,6 +254,7 @@ macro_rules! write {
 
 pub(crate) use write;
 
+#[macro_export]
 macro_rules! read {
     ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
         let offset = $x::$y::$z;

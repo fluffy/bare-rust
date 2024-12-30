@@ -2,7 +2,7 @@
 authors = ["Cullen Jennings <fluffy@iii.ca>"]
 edition = "2021"
 readme = "README.md"
-name = "app"
+name = "hal"
 version = "0.1.1"
 repository = "git@github.com:fluffy/bare-rust.git"
 license = "BSD-2-Clause"
@@ -12,30 +12,9 @@ license = "BSD-2-Clause"
 
 [lib]
 name = "hal"
-path = "src/hal/mod.rs"
+path = "src/mod.rs"
 bench = false
 test = false
-
-[[bin]]
-name = "app"
-test = false
-bench = false
-
-[profile.release]
-debug = "limited"
-#opt-level = "s"
-opt-level = 3
-lto = "fat"
-panic = "abort"
-
-[profile.dev]
-#opt-level = 3
-#opt-level = "s"
-opt-level = 1
-debug = true
-strip = "none"
-lto = "fat"
-panic = "abort"
 
 [features]
 #default = [ "board-blinkA" ]

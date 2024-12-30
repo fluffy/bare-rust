@@ -1,4 +1,6 @@
-use super::board;
+extern crate hal;
+
+use hal::board;
 
 #[cfg(feature = "std")]
 extern crate std;

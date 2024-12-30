@@ -62,7 +62,7 @@ pub struct ButtonTask {
 
 impl Task for ButtonTask {
     fn run(&self, sender: crate::v_mpsc::Sender) {
-        let state = hal::button::read_ptt();
+        let state = dev::button::read_ptt();
         if state != self.prev_state {
             sender.send(crate::msg::Msg::PttButton(state));
             //self.prev_state = state;
