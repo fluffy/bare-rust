@@ -9,8 +9,6 @@ use std::collections::HashMap;
 #[cfg(feature = "board-sim")]
 use std::sync::Mutex;
 
-
-
 #[repr(C)]
 pub struct FlashReg {
     pub acr: u32,
