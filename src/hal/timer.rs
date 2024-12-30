@@ -71,12 +71,14 @@ impl MicroSeconds {
 
     pub fn sub(self, other: Self) -> MicroSeconds {
         if other.0 > self.0 {
-            // wrap-around occurred
-            return MicroSeconds(u64::MAX - other.0 + self.0 + 1);
+            // wrap-around occurred ( happens about every 12 hours )
+            let max : u64 = (u32::MAX as u64) * 10_000;
+            return MicroSeconds( max - other.0 + self.0 + 1);
         }
         MicroSeconds(self.0 - other.0)
     }
 }
+
 
 #[cfg(target_arch = "arm")]
 #[inline(always)]
@@ -104,7 +106,7 @@ pub fn current_time() -> MicroSeconds {
 pub fn current_time() -> MicroSeconds {
     let start = SystemTime::now();
     match start.duration_since(UNIX_EPOCH) {
-        Ok(n) => MicroSeconds(n.as_micros() as u64),
+        Ok(n) => MicroSeconds(  (n.as_micros() as u64) % ((u32::MAX as u64)*10_000) ),
         Err(_) => panic!("bad system time"),
     }
 }
