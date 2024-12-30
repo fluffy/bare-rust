@@ -1,0 +1,49 @@
+[package]
+authors = ["Cullen Jennings <fluffy@iii.ca>"]
+edition = "2021"
+readme = "README.md"
+name = "app"
+version = "0.1.1"
+repository = "git@github.com:fluffy/bare-rust.git"
+license = "BSD-2-Clause"
+
+[dependencies]
+#std = {  optional = true }
+
+[lib]
+name = "hal"
+path = "src/hal/mod.rs"
+bench = false
+test = false
+
+[[bin]]
+name = "app"
+test = false
+bench = false
+
+[profile.release]
+debug = "limited"
+#opt-level = "s"
+opt-level = 3
+lto = "fat"
+panic = "abort"
+
+[profile.dev]
+#opt-level = 3
+#opt-level = "s"
+opt-level = 1
+debug = true
+strip = "none"
+lto = "fat"
+panic = "abort"
+
+[features]
+#default = [ "board-blinkA" ]
+#default = [ "board-hactar12" ]
+default = [ "board-sim" ]
+std = []
+exit = []
+board-hactar12 = []
+board-blinkA = []
+board-qemu = [ ]
+board-sim = [ "std" ]
