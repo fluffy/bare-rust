@@ -1,6 +1,14 @@
 pub mod gen_cpu;
 pub use gen_cpu::*;
 
+#[cfg(feature = "std")]
+extern crate std;
+
+#[cfg(feature = "board-sim")]
+use std::collections::HashMap;
+#[cfg(feature = "board-sim")]
+use std::sync::Mutex;
+
 #[repr(C)]
 pub struct FlashReg {
     pub acr: u32,
@@ -136,6 +144,10 @@ pub const TIM1: *mut TimAdvReg = 0x4001_0000 as *mut TimAdvReg;
 #[inline(always)]
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     if cfg!(feature = "board-sim") {
+        let mut v: u32 = read_reg(addr);
+        v &= !mask;
+        v |= val;
+        write_reg(addr, v);
     } else {
         unsafe {
             let mut v: u32 = core::ptr::read_volatile(addr);
@@ -146,23 +158,53 @@ pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     }
 }
 
+#[cfg(not(feature = "board-sim"))]
 #[inline(always)]
 pub fn write_reg(addr: *mut u32, val: u32) {
-    if cfg!(feature = "board-sim") {
-    } else {
+   
         unsafe {
             core::ptr::write_volatile(addr, val);
         }
-    }
+    
+}
+#[cfg(feature = "board-sim")]
+#[inline(always)]
+pub fn write_reg(addr: *mut u32, val: u32) {
+   
+        unsafe {
+            if let Some(ref map_mutex) = SIM {
+                let mut map = map_mutex.lock().unwrap();
+                map.insert(addr, val);
+            }
+        }
+   
 }
 
+#[cfg(not(feature = "board-sim"))]
 #[inline(always)]
 pub fn read_reg(addr: *mut u32) -> u32 {
-    if cfg!(feature = "board-sim") {
-        0
-    } else {
+    
         unsafe { core::ptr::read_volatile(addr) }
-    }
+    
+}
+#[cfg(feature = "board-sim")]
+#[inline(always)]
+pub fn read_reg(addr: *mut u32) -> u32 {
+
+        unsafe {
+            if let Some(ref map_mutex) = SIM {
+                let map = map_mutex.lock().unwrap();
+                if let Some(value) = map.get( &addr) {
+                    let my_value: u32 = *value;
+                    my_value
+                } else {
+                    0
+                }
+            } else {
+                0
+            }
+        }
+    
 }
 
 macro_rules! write {
@@ -248,3 +290,24 @@ macro_rules! read {
 }
 
 pub(crate) use read;
+
+#[cfg(feature = "board-sim")]
+static mut SIM: Option<Mutex<&'static mut HashMap< *mut u32, u32>>> = None;
+
+#[cfg(not(feature = "board-sim"))]
+fn init_sim() {}
+
+#[cfg(feature = "board-sim")]
+fn init_sim() {
+    // initialize the simulator memory
+    static mut MEM: Option<HashMap<*mut u32, u32>> = None;
+    #[allow(static_mut_refs)]
+    unsafe {
+        MEM = Some(HashMap::new());
+        SIM = Some(Mutex::new(MEM.as_mut().unwrap()));
+    }
+}
+
+pub fn init() {
+    init_sim();
+}

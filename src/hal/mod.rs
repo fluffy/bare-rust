@@ -14,6 +14,8 @@ mod uart;
 
 #[inline(never)]
 pub fn init() {
+    cpu::init();
+    
     // always set up clocks first
     clock::init();
 

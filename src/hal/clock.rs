@@ -8,6 +8,14 @@ use super::board::info::HAS_RCC;
 
 #[inline(never)]
 pub fn init() {
+    if cfg!(feature = "board-sim") {
+        cpu::write!(RCC.cfgr[SWS0;2], 0b10);
+        cpu::write!(RCC.cr[PLLRDY;1], 1);
+        cpu::write!(RCC.cr[HSERDY;1], 1);
+        cpu::write!(RCC.pllcfgr[PLLSRC;1], 1);
+        cpu::write!(RCC.pllcfgr[PLLM0;6], board::info::CLOCK_PLL_M as u32);
+    }
+
     // setup flash wait states and cache
     {
         // set latency to 5 wait states - NOTE, if voltage is changed, need to change this
@@ -79,10 +87,6 @@ pub fn init() {
 
 #[inline(never)]
 pub fn validate() {
-    if cfg!(feature = "board-sim") {
-        return;
-    }
-
     // Check if HSE is ready
     if HAS_RCC {
         if cpu::read!(RCC.cr[HSERDY;1]) != 1 {
