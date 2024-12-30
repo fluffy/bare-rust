@@ -105,6 +105,6 @@ pub fn current_time() -> MicroSeconds {
     let start = SystemTime::now();
     match start.duration_since(UNIX_EPOCH) {
         Ok(n) => MicroSeconds(n.as_micros() as u64),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
+        Err(_) => panic!("bad system time"),
     }
 }
