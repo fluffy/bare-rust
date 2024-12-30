@@ -4,14 +4,17 @@
 #[cfg(feature = "std")]
 extern crate std;
 
+use crate::msg::v_mpsc;
 use hal;
 use hal::console::Print;
 use hal::debug;
 use hal::led;
 use hal::led::Color;
 
+mod msg;
 mod stack;
 mod startup;
+mod tasks;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
@@ -26,8 +29,23 @@ fn main() -> () {
     my_main();
 }
 
+fn dispatch(msg: msg::Msg) {
+    match msg {
+        msg::Msg::PttButton(pressed) => {
+            if pressed {
+                b"  PTT button pressed\r\n".print_console();
+            } else {
+                b"  PTT button released\r\n".print_console();
+            }
+        }
+        _ => {}
+    }
+}
+
 #[inline(never)]
 fn my_main() -> ! {
+    //msg::test_msg();
+
     hal::init();
 
     //#[cfg(feature = "exit")]
@@ -35,8 +53,25 @@ fn my_main() -> ! {
 
     b"Starting\r\n".print_console();
 
+    let ( sender, receiver) = v_mpsc::channel();
+
+    let button_task = tasks::ButtonTask { prev_state: false };
+
+    let mut task_mgr = tasks::TaskMgr::new(sender);
+    task_mgr.add_task(&button_task);
+
     loop {
         led::set(Color::Green);
+
+        task_mgr.run( );
+
+        loop {
+            let msg = receiver.recv();
+            if msg == msg::Msg::None {
+                break;
+            }
+            dispatch(msg);
+        }
 
         // fib*34) getting 1.630 s on dev
         // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed
