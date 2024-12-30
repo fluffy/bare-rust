@@ -4,6 +4,7 @@ use core::ptr;
 use super::cpu;
 use super::cpu::*;
 
+
 #[inline(never)]
 pub fn init() {
     if board::info::HAS_PTT_BUTTON {

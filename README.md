@@ -51,3 +51,10 @@ cargo run --no-default-features --features board-sim,exit
 ```
 
 # Notes
+
+Useful things to look at size of binary:
+```aiignore
+arm-none-eabi-size target/thumbv7em-none-eabihf/debug/app
+cargo size --release -- -A
+cargo nm --no-default-features --features board-blinkA  --target=thumbv7em-none-eabihf  --release -- -a -n
+```
