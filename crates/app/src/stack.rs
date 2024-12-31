@@ -48,7 +48,7 @@ pub fn usage(repaint: bool) -> usize {
             upper_bound = mid;
         }
     }
-    
+
     // fine tune the upper bound
     upper_bound = (upper_bound & !0x3) + 4;
     if true {
@@ -92,6 +92,6 @@ pub fn usage(repaint: bool) -> usize {
 }
 
 #[cfg(not(target_arch = "arm"))]
-pub fn usage() -> usize {
+pub fn usage( _repaint: bool ) -> usize {
     0
 }
