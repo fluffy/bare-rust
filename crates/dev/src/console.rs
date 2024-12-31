@@ -3,8 +3,8 @@ use core::arch::asm;
 
 extern crate hal;
 
-use hal::uart;
 use hal::board;
+use hal::uart;
 
 #[cfg(feature = "std")]
 extern crate std;

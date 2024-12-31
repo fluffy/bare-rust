@@ -28,24 +28,24 @@ pub fn set(c: Color) {
             board::info::LED_GREEN_PIN.low();
             board::info::LED_BLUE_PIN.low();
             if board::info::IS_SIM {
-                   #[cfg(feature = "std")]
-                   std::print!("LED: RED\r\n");
+                #[cfg(feature = "std")]
+                std::print!("LED: RED\r\n");
             }
         }
         Color::Green => {
             board::info::LED_RED_PIN.low();
             board::info::LED_GREEN_PIN.high();
             board::info::LED_BLUE_PIN.low();
-             if board::info::IS_SIM  {
-                 #[cfg(feature = "std")]
-                 std::print!("LED: GREEN\r\n");
+            if board::info::IS_SIM {
+                #[cfg(feature = "std")]
+                std::print!("LED: GREEN\r\n");
             }
         }
         Color::Blue => {
             board::info::LED_RED_PIN.low();
             board::info::LED_GREEN_PIN.low();
             board::info::LED_BLUE_PIN.high();
-            if board::info::IS_SIM  {
+            if board::info::IS_SIM {
                 #[cfg(feature = "std")]
                 std::print!("LED: BLUE\r\n");
             }
@@ -54,7 +54,7 @@ pub fn set(c: Color) {
             board::info::LED_RED_PIN.low();
             board::info::LED_GREEN_PIN.low();
             board::info::LED_BLUE_PIN.low();
-            if board::info::IS_SIM  {
+            if board::info::IS_SIM {
                 #[cfg(feature = "std")]
                 std::print!("LED: BLACK\r\n");
             }
@@ -63,7 +63,7 @@ pub fn set(c: Color) {
             board::info::LED_RED_PIN.low();
             board::info::LED_GREEN_PIN.low();
             board::info::LED_BLUE_PIN.low();
-            if board::info::IS_SIM   {
+            if board::info::IS_SIM {
                 #[cfg(feature = "std")]
                 std::print!("LED: WHITE\r\n");
             }
