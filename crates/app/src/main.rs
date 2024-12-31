@@ -73,6 +73,14 @@ fn my_main() -> ! {
         task_mgr.run();
         dispatch::process(receiver);
 
+        let now = hal::timer::current_time();
+
+        if false {
+            b"  now=".print_console();
+            now.as_u64().print_console();
+            b" uS\r\n".print_console();
+        }
+        
         #[cfg(feature = "exit")]
         {
             b"Stopping\r\n".print_console();
