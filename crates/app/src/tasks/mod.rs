@@ -1,6 +1,7 @@
 pub mod buttons_task;
 mod no_task;
 
+use dev::console::Print;
 use crate::msg::Msg;
 use crate::stack;
 
@@ -35,6 +36,7 @@ pub struct TaskMgr<'a> {
 const NO_TASK: no_task::NoTask = no_task::NoTask {};
 
 impl<'a> TaskMgr<'a> {
+    
     pub fn new(s: &'a mut crate::v_mpsc::Sender<Msg>, bsp: &'a mut dev::BSP) -> TaskMgr<'a> {
         TaskMgr {
             tasks: [&NO_TASK; MAX_TASKS],
@@ -52,6 +54,7 @@ impl<'a> TaskMgr<'a> {
         self.tasks[self.num_tasks] = task;
         self.num_tasks += 1;
     }
+    
     pub fn run(&mut self) {
         let base_stack_usage = stack::usage() as u32;
 
@@ -75,11 +78,26 @@ impl<'a> TaskMgr<'a> {
 
             let duration = end_time.sub(start_time).as_u64();
             if duration > info.time_budget_us as u64 {
+                b"Exceededtime budget\r\n".print_console();
+
+                b" start=".print_console();
+                start_time.as_u64().print_console();
+                b" us\r\n".print_console();
+
+                b" end=".print_console();
+                end_time.as_u64().print_console();
+                b" us\r\n".print_console();
+
+                b" duration=".print_console();
+                duration.print_console();
+                b" us\r\n".print_console();
+                
                 panic!("Task {} overran time budget", info.name);
-            }
+              }
 
             let stack_usage = end_stack_usage - base_stack_usage;
             if stack_usage > info.mem_budget_bytes {
+                b"Exceeded memorry budget\r\n".print_console();
                 panic!("Task {} overran memory budget", info.name);
             }
         }
