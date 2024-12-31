@@ -8,16 +8,16 @@ use hal::cpu;
 use hal::cpu::*;
 
 pub struct Buttons {
-    ptt: bool,
-    ai: bool,
+    prev_ptt: bool,
+    prev_ai: bool,
 }
 
 impl Buttons {
     #[inline(never)]
     pub fn new() -> Self {
         Buttons {
-            ptt: false,
-            ai: false,
+            prev_ptt: false,
+            prev_ai: false,
         }
     }
 
@@ -113,10 +113,23 @@ impl Buttons {
 
     }
 
-    pub fn read_ptt(&self) -> bool {
+    pub fn read_ptt(&mut self) -> (bool, bool) {
         if board::info::HAS_PTT_BUTTON {
-            return board::info::PTT_BUTTON.read() != board::info::PTT_BUTTON_PULL_UP;
+            let state =  board::info::PTT_BUTTON.read() != board::info::PTT_BUTTON_PULL_UP;
+            let changed = state != self.prev_ptt;
+            self.prev_ptt = state;
+            return (state, changed);
         }
-        false
+        (false, false)
+    }
+    
+    pub fn read_ai(&mut self) -> (bool, bool) {
+        if board::info::HAS_AI_BUTTON {
+            let state =  board::info::AI_BUTTON.read() != board::info::AI_BUTTON_PULL_UP;
+            let changed = state != self.prev_ai;
+            self.prev_ai = state;
+            return (state, changed);
+        }
+        (false, false)
     }
 }
