@@ -46,6 +46,7 @@ pub fn init1() {
 
 static mut TICK_COUNTER: u32 = 0;
 
+#[inline(never)]
 pub fn handle_tim1_irq() {
     // clear update interrupt flag
     cpu::write!(TIM1.sr[UIF;1], 0);
@@ -53,9 +54,37 @@ pub fn handle_tim1_irq() {
     unsafe {
         // only the interrupt handler changes this and
         // interrupts disabled when it is read
-        TICK_COUNTER += 1;
+        let mut v: u32 = core::ptr::read_volatile( &TICK_COUNTER );
+        v+= 1;
+        core::ptr::write_volatile( &mut TICK_COUNTER, v);
+        //TICK_COUNTER += 1;
     }
 }
+
+#[cfg(target_arch = "arm")]
+#[inline(never)]
+pub fn current_time() -> MicroSeconds {
+    let lower: u32;
+    let upper: u32;
+
+    #[allow(unused_unsafe)] // the cpu::read! macro uses unsafe
+    unsafe {
+        // Some Arm processors do not support th cpsid and cpsie instructions
+        // so we need to use the PRIMASK register to disable interrupts in that case - not done here
+
+        // Read the value of the TIM1 counter
+        asm!("cpsid i"); // disable interrupts
+        let mut v: u32 = core::ptr::read_volatile( &TICK_COUNTER );
+        upper = v;
+        lower = cpu::read!(TIM1.cnt);
+        //upper = TICK_COUNTER;
+        asm!("cpsie i"); // enable interrupts
+    }
+
+    // Return the combined value
+    MicroSeconds(((upper as u64) * 10_000) + (lower as u64))
+}
+
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct MicroSeconds(pub u64);
@@ -77,28 +106,6 @@ impl MicroSeconds {
         }
         MicroSeconds(self.0 - other.0)
     }
-}
-
-#[cfg(target_arch = "arm")]
-#[inline(always)]
-pub fn current_time() -> MicroSeconds {
-    let lower: u32;
-    let upper: u32;
-
-    #[allow(unused_unsafe)] // the cpu::read! macro uses unsafe
-    unsafe {
-        // Some Arm processors do not support th cpsid and cpsie instructions
-        // so we need to use the PRIMASK register to disable interrupts in that case - not done here
-
-        // Read the value of the TIM1 counter
-        asm!("cpsid i"); // disable interrupts
-        lower = cpu::read!(TIM1.cnt);
-        upper = TICK_COUNTER;
-        asm!("cpsie i"); // enable interrupts
-    }
-
-    // Return the combined value
-    MicroSeconds(((upper as u64) * 10_000) + (lower as u64))
 }
 
 #[cfg(feature = "std")]
