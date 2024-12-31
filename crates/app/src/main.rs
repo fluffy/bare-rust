@@ -7,7 +7,7 @@ extern crate std;
 extern crate dev;
 extern crate hal;
 
-use crate::msg::v_mpsc;
+use crate::channel::v_mpsc;
 //use hal;
 use dev::console::Print;
 use dev::debug;
@@ -18,6 +18,7 @@ mod msg;
 mod stack;
 mod startup;
 mod tasks;
+mod channel;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
