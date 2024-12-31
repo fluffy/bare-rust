@@ -62,7 +62,7 @@ fn my_main() -> ! {
 
     let button_task = tasks::ButtonTask { };
 
-    let mut task_mgr = tasks::TaskMgr::new( &mut sender);
+    let mut task_mgr = tasks::TaskMgr::new( &mut sender, &mut bsp);
     task_mgr.add_task(&button_task);
 
     loop {
@@ -92,15 +92,15 @@ fn my_main() -> ! {
         duration_ms.print_console();
         b" mS\r\n".print_console();
 
-        let (val,changed) = bsp.button.read_ptt();
-        if val && changed {
-            b"  Direct PTT button pressed\r\n".print_console();
-        }
+        //let (val,changed) = bsp.button.read_ptt();
+        //if val && changed {
+        //    b"  Direct PTT button pressed\r\n".print_console();
+        //}
 
-        let (val,changed) = bsp.button.read_ai();
-        if val && changed {
-            b"  Direct AI button pressed\r\n".print_console();
-        }
+        //let (val,changed) = bsp.button.read_ai();
+        //if val && changed {
+        //    b"  Direct AI button pressed\r\n".print_console();
+        //}
 
         dev::led::set(Color::Blue);
 

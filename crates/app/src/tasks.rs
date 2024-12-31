@@ -1,8 +1,10 @@
 #[cfg(feature = "std")]
 extern crate std;
 
+extern crate dev;
+
 pub trait Task {
-    fn run(&self, sender: &mut crate::v_mpsc::Sender);
+    fn run(&self, sender: &mut crate::v_mpsc::Sender, bsp: &mut dev::BSP);
 }
 
 const MAX_TASKS: usize = 10;
@@ -11,14 +13,16 @@ pub struct TaskMgr<'a> {
     tasks: [&'a dyn Task; MAX_TASKS],
     num_tasks: usize,
     sender: &'a mut crate::v_mpsc::Sender,
+    bsp: &'a mut dev::BSP,
 }
 
 impl<'a> TaskMgr<'a> {
-    pub fn new(s: &'a mut crate::v_mpsc::Sender) -> TaskMgr<'a> {
+    pub fn new(s: &'a mut crate::v_mpsc::Sender, bsp_in: &'a mut dev::BSP) -> TaskMgr<'a> {
         TaskMgr {
-            tasks: [ &NO_TASK; MAX_TASKS],
+            tasks: [&NO_TASK; MAX_TASKS],
             num_tasks: 0,
             sender: s,
+            bsp: bsp_in,
         }
     }
 
@@ -31,9 +35,9 @@ impl<'a> TaskMgr<'a> {
     }
 
     pub fn run(&mut self) {
-        for i in 0..MAX_TASKS {
+        for i in 0..self.num_tasks {
             let t = self.tasks[i];
-                 t.run(self.sender);
+            t.run(self.sender, self.bsp);
         }
     }
 }
@@ -43,8 +47,8 @@ pub struct NoTask {}
 const NO_TASK: NoTask = NoTask {};
 
 impl Task for NoTask {
-    fn run(&self, _sender: &mut crate::v_mpsc::Sender) {
-        panic!("Not implemented");
+    fn run(&self, _sender: &mut crate::v_mpsc::Sender, _bsp: &mut dev::BSP) {
+        panic!("NoTask should never run");
     }
 }
 
@@ -53,12 +57,11 @@ pub struct ButtonTask {
 }
 
 impl Task for ButtonTask {
-    fn run(&self, sender: &mut crate::v_mpsc::Sender) {
+    fn run(&self, sender: &mut crate::v_mpsc::Sender, bsp: &mut dev::BSP) {
         // junk sender.send(crate::msg::Msg::None );
-       // let state = dev::button::read_ptt();
-       // if state != self.prev_state {
-       //     sender.send(crate::msg::Msg::PttButton(state));
-       //     //self.prev_state = state;
-       // }
+        let (state, changed) = bsp.button.read_ptt();
+        if changed {
+            sender.send(crate::msg::Msg::PttButton(state));
+        }
     }
 }
