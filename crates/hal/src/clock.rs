@@ -9,7 +9,7 @@ use super::board;
 
 #[inline(never)]
 pub fn init() {
-    if cfg!(feature = "board-sim") {
+    if board::info::IS_SIM {
         cpu::write!(RCC.cfgr[SWS0;2], 0b10);
         cpu::write!(RCC.cr[PLLRDY;1], 1);
         cpu::write!(RCC.cr[HSERDY;1], 1);
