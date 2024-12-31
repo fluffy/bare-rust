@@ -13,7 +13,7 @@ const NO_TASK_INFO: TaskInfo = TaskInfo {
 };
 
 impl Task for NoTask {
-    fn run(&self, _msg: &Msg, _sender: &mut crate::v_mpsc::Sender, _bsp: &mut dev::BSP) {
+    fn run(&self, _msg: &Msg, _sender: &mut crate::v_mpsc::Sender<Msg>, _bsp: &mut dev::BSP) {
         panic!("NoTask should never run");
     }
 

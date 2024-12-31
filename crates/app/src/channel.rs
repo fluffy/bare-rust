@@ -1,3 +1,5 @@
+//use core::marker::PhantomData;
+
 
 use crate::msg::Msg;
 
@@ -12,11 +14,13 @@ pub mod v_mpsc {
     static mut NUM_Q: usize = 0;
 
     #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-    pub struct Sender {
+    pub struct Sender<T> {
         ch: usize,
+        //remove_me: T, // TODO 
+        _marker: core::marker::PhantomData<T>,
     }
 
-    impl Sender {
+    impl<T> Sender<T> {
         pub fn send(&self, msg: Msg) {
             let ch = self.ch;
             let q_len = unsafe { Q_LEN[ch] };
@@ -29,11 +33,13 @@ pub mod v_mpsc {
     }
 
     #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-    pub struct Receiver {
+    pub struct Receiver<T> {
         ch: usize,
+        //remove_me: T, // TODO
+        _marker: core::marker::PhantomData<T>,
     }
 
-    impl Receiver {
+    impl<T> Receiver<T> {
         pub fn recv(&self) -> Msg {
             let ch = self.ch;
             let q_len = unsafe { Q_LEN[ch] };
@@ -49,15 +55,15 @@ pub mod v_mpsc {
         }
     }
 
-    pub fn channel() -> (Sender, Receiver) {
+    pub fn channel<T>() -> (Sender<T>, Receiver<T>) {
         let ch = unsafe { NUM_Q };
         unsafe { NUM_Q += 1 };
         if ch >= NUM_QUEUES {
             panic!("Too many channels");
         }
 
-        let sender = Sender { ch };
-        let receiver = Receiver { ch };
+        let sender = Sender { ch  , _marker: core::marker::PhantomData  } as Sender<T>;
+        let receiver = Receiver { ch , _marker: core::marker::PhantomData   } as Receiver<T>;
 
         (sender, receiver)
     }

@@ -16,7 +16,7 @@ pub struct TaskInfo {
 }
 
 pub trait Task {
-    fn run(&self, msg: &Msg, sender: &mut crate::v_mpsc::Sender, bsp: &mut dev::BSP);
+    fn run(&self, msg: &Msg, sender: &mut crate::v_mpsc::Sender<Msg>, bsp: &mut dev::BSP);
     
     fn info(&self) -> &'static TaskInfo;
 }
@@ -26,7 +26,7 @@ const MAX_TASKS: usize = 10;
 pub struct TaskMgr<'a> {
     tasks: [&'a dyn Task; MAX_TASKS],
     num_tasks: usize,
-    sender: &'a mut crate::v_mpsc::Sender,
+    sender: &'a mut crate::v_mpsc::Sender<Msg>,
     bsp: &'a mut dev::BSP,
 }
 
@@ -34,7 +34,7 @@ pub struct TaskMgr<'a> {
 const NO_TASK: no_task::NoTask = no_task::NoTask {};
 
 impl<'a> TaskMgr<'a> {
-    pub fn new(s: &'a mut crate::v_mpsc::Sender, bsp_in: &'a mut dev::BSP) -> TaskMgr<'a> {
+    pub fn new(s: &'a mut crate::v_mpsc::Sender<Msg>, bsp_in: &'a mut dev::BSP) -> TaskMgr<'a> {
         TaskMgr {
             tasks: [&NO_TASK; MAX_TASKS],
             num_tasks: 0,

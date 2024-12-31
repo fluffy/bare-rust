@@ -15,7 +15,7 @@ const BUTTON_TASK_INFO: TaskInfo = TaskInfo {
 };
 
 impl Task for ButtonTask {
-    fn run(&self, _incoming_msg: &Msg, sender: &mut crate::v_mpsc::Sender, bsp: &mut dev::BSP) {
+    fn run(&self, _incoming_msg: &Msg, sender: &mut crate::v_mpsc::Sender<Msg>, bsp: &mut dev::BSP) {
         // junk sender.send(crate::msg::Msg::None );
         let (state, changed) = bsp.button.read_ptt();
         if changed {
