@@ -58,7 +58,7 @@ pub fn init1(baud_rate: u64) {
 }
 
 pub fn write1(c: u8) {
-    if cfg!(feature = "board-sim") {
+    if board::info::IS_SIM {
         return;
     }
     while (cpu::read!(USART1.sr[TXE;1]) == 0) {}

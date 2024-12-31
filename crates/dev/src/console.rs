@@ -1,7 +1,10 @@
 #[cfg(not(feature = "std"))]
 use core::arch::asm;
 
-use super::uart;
+extern crate hal;
+
+use hal::board;
+use hal::uart;
 
 #[cfg(feature = "std")]
 extern crate std;
@@ -17,8 +20,8 @@ impl Print for [u8] {
     fn print_console(&self) {
         let s = self;
 
-        #[cfg(feature = "std")]
-        if cfg!(feature = "board-sim") {
+        if board::info::IS_SIM {
+            #[cfg(feature = "std")]
             for c in s {
                 std::print!("{}", *c as char);
             }

@@ -2,10 +2,10 @@
 use core::ptr;
 
 #[cfg(not(feature = "std"))]
-use hal::led;
+use dev::led;
 
 #[cfg(not(feature = "std"))]
-use hal::led::Color;
+use dev::led::Color;
 
 #[cfg(not(feature = "std"))]
 extern "C" {

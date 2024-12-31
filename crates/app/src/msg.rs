@@ -1,8 +1,5 @@
-
-
 #[cfg(feature = "std")]
 extern crate std;
-
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Msg {
@@ -20,7 +17,7 @@ pub mod v_mpsc {
     const Q_SIZE: usize = 10;
     const NUM_QUEUES: usize = 2;
 
-    static mut Q:[ [Msg; Q_SIZE]; NUM_QUEUES] = [[Msg::None; Q_SIZE]; NUM_QUEUES];
+    static mut Q: [[Msg; Q_SIZE]; NUM_QUEUES] = [[Msg::None; Q_SIZE]; NUM_QUEUES];
     static mut Q_LEN: [usize; NUM_QUEUES] = [0; NUM_QUEUES];
     static mut NUM_Q: usize = 0;
 
@@ -54,8 +51,8 @@ pub mod v_mpsc {
                 return Msg::None;
             }
             let msg = unsafe { Q[ch][0] };
-            for i in 0..q_len-1 {
-                unsafe { Q[ch][i] = Q[ch][i+1] };
+            for i in 0..q_len - 1 {
+                unsafe { Q[ch][i] = Q[ch][i + 1] };
             }
             unsafe { Q_LEN[ch] -= 1 };
             msg
@@ -84,7 +81,11 @@ pub fn test_msg() {
     tx.send(Msg::AiButton(true));
     tx.send(Msg::PttButton(false));
     tx.send(Msg::Keyboard { key: 'a' });
-    tx.send(Msg::MoqObject { name: 1, group: 2, id: 3 });
+    tx.send(Msg::MoqObject {
+        name: 1,
+        group: 2,
+        id: 3,
+    });
     tx.send(Msg::Shutdown);
 
     loop {
@@ -98,7 +99,9 @@ pub fn test_msg() {
             Msg::AiButton(b) => std::println!("AiButton: {}", b),
             Msg::PttButton(b) => std::println!("PttButton: {}", b),
             Msg::Keyboard { key } => std::println!("Keyboard: {}", key),
-            Msg::MoqObject { name, group, id } => std::println!("MoqObject: {} {} {}", name, group, id),
+            Msg::MoqObject { name, group, id } => {
+                std::println!("MoqObject: {} {} {}", name, group, id)
+            }
         }
     }
 }

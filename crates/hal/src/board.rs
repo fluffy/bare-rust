@@ -4,7 +4,9 @@
     feature = "board-qemu",
     feature = "board-sim"
 )))]
-compile_error!("Must specify a board as compile feature. Try --features=board-sim");
+compile_error!(
+    "Must specify a board as compile feature. Try --features=hal/board-sim,dev/std,app/std"
+);
 
 #[cfg(all(feature = "board-hactar12", feature = "board-sim"))]
 compile_error!(
@@ -27,6 +29,8 @@ pub mod info {
     use crate::gpio;
 
     pub const HAS_RCC: bool = true;
+    pub const IS_SIM: bool = false;
+
     pub const CLOCK_PLL_M: u32 = 12;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
@@ -41,7 +45,7 @@ pub mod info {
     pub const HAS_AI_BUTTON: bool = true;
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = true;
-    
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -52,6 +56,8 @@ pub mod info {
     use crate::gpio;
 
     pub const HAS_RCC: bool = true;
+    pub const IS_SIM: bool = false;
+
     pub const CLOCK_PLL_M: u32 = 8;
 
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
@@ -67,7 +73,7 @@ pub mod info {
     pub const HAS_AI_BUTTON: bool = false;
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 13);
     pub const AI_BUTTON_PULL_UP: bool = false;
-    
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -78,6 +84,8 @@ pub mod info {
     use crate::gpio;
 
     pub const HAS_RCC: bool = false;
+    pub const IS_SIM: bool = false;
+
     pub const CLOCK_PLL_M: u32 = 12;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
@@ -92,7 +100,7 @@ pub mod info {
     pub const HAS_AI_BUTTON: bool = false;
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = true;
-    
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -103,6 +111,8 @@ pub mod info {
     use crate::gpio;
 
     pub const HAS_RCC: bool = false;
+    pub const IS_SIM: bool = true;
+
     pub const CLOCK_PLL_M: u32 = 12;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
@@ -117,7 +127,7 @@ pub mod info {
     pub const HAS_AI_BUTTON: bool = false;
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = false;
-    
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }

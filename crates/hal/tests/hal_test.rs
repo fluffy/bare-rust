@@ -3,7 +3,6 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-
 #[cfg(test)]
 mod tests {
     #[test]

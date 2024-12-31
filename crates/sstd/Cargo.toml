@@ -1,0 +1,21 @@
+[package]
+authors = ["Cullen Jennings <fluffy@iii.ca>"]
+edition = "2021"
+readme = "README.md"
+name = "sstd"
+version = "0.1.1"
+repository = "git@github.com:fluffy/bare-rust.git"
+license = "BSD-2-Clause"
+
+[dependencies]
+#std = {  optional = true }
+
+[lib]
+name = "sstd"
+path = "src/mod.rs"
+bench = false
+test = false
+
+[features]
+std = []
+

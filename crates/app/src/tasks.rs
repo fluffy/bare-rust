@@ -1,4 +1,3 @@
-
 #[cfg(feature = "std")]
 extern crate std;
 
@@ -9,13 +8,13 @@ pub trait Task {
 const MAX_TASKS: usize = 10;
 
 pub struct TaskMgr<'a> {
-    tasks: [ Option< &'a dyn Task>; MAX_TASKS],
+    tasks: [Option<&'a dyn Task>; MAX_TASKS],
     num_tasks: usize,
     sender: crate::v_mpsc::Sender,
 }
 
 impl<'a> TaskMgr<'a> {
-    pub fn new( s: crate::v_mpsc::Sender) -> TaskMgr<'a> {
+    pub fn new(s: crate::v_mpsc::Sender) -> TaskMgr<'a> {
         TaskMgr {
             tasks: [None; MAX_TASKS],
             num_tasks: 0,
@@ -31,28 +30,27 @@ impl<'a> TaskMgr<'a> {
         self.num_tasks += 1;
     }
 
-    pub fn run(&mut self ) {
+    pub fn run(&mut self) {
         for i in 0..MAX_TASKS {
             match self.tasks[i] {
                 Some(ref mut task) => {
                     //panic!("Not implemented");
                     let t = *task; //as &mut dyn Task;
-                    let s= self.sender.clone();
+                    let s = self.sender.clone();
                     //task.run(sender.clone());
                     //let t2 = t as *mut dyn Task;
                     t.run(s);
-                },
+                }
                 None => break,
             }
         }
     }
 }
 
-pub struct NoTask {
-}
+pub struct NoTask {}
 impl Task for NoTask {
     fn run(&self, _sender: crate::v_mpsc::Sender) {
-       panic!("Not implemented");
+        panic!("Not implemented");
     }
 }
 
@@ -62,7 +60,7 @@ pub struct ButtonTask {
 
 impl Task for ButtonTask {
     fn run(&self, sender: crate::v_mpsc::Sender) {
-        let state = hal::button::read_ptt();
+        let state = dev::button::read_ptt();
         if state != self.prev_state {
             sender.send(crate::msg::Msg::PttButton(state));
             //self.prev_state = state;
