@@ -1,10 +1,9 @@
 use core::ptr;
 
-//extern crate hal;
+extern crate hal;
 
 use hal::board;
 use hal::cpu;
-//use hal::svd;
 
 use hal::cpu::*;
 
@@ -33,9 +32,9 @@ pub fn init() {
 
 #[inline(never)]
 pub fn validate() {
-    if cfg!(feature = "board-sim") {
-        return;
-    }
+    //if cfg!(feature = "board-sim") {
+    //    return;
+    //}
 
     if board::info::HAS_PTT_BUTTON {
         let pin_num: u32 = board::info::PTT_BUTTON.1 as u32;

@@ -5,7 +5,7 @@ use super::cpu;
 use super::cpu::*;
 
 use super::board;
-use super::board::info::HAS_RCC;
+
 
 #[inline(never)]
 pub fn init() {
@@ -34,7 +34,7 @@ pub fn init() {
         cpu::write!(RCC.cr[HSEON;1], 1);
 
         // wait for HSE to be ready
-        if HAS_RCC {
+        if board::info::HAS_RCC {
             while (cpu::read!(RCC.cr[HSERDY;1]) != 1) {}
         }
 
@@ -64,7 +64,7 @@ pub fn init() {
         // enable PLL
         cpu::write!(RCC.cr[PLLON;1], 0b1);
         // wait for PLL to be ready
-        if HAS_RCC {
+        if board::info::HAS_RCC  {
             while (cpu::read!(RCC.cr[PLLRDY;1]) != 1) {}
         }
 
@@ -80,7 +80,7 @@ pub fn init() {
         cpu::write!(RCC.cfgr[SW0;2], 0b10 );
 
         // wait for clock to switch to PLL
-        if HAS_RCC {
+        if board::info::HAS_RCC  {
             while (cpu::read!(RCC.cfgr[SWS0;2]) != 0b10) {}
         }
     }
@@ -89,14 +89,14 @@ pub fn init() {
 #[inline(never)]
 pub fn validate() {
     // Check if HSE is ready
-    if HAS_RCC {
+    if board::info::HAS_RCC  {
         if cpu::read!(RCC.cr[HSERDY;1]) != 1 {
             panic!("HSE not ready");
         }
     }
 
     // Check if PLL is ready
-    if HAS_RCC {
+    if board::info::HAS_RCC  {
         if cpu::read!(RCC.cr[PLLRDY;1]) != 1 {
             panic!("PLL not ready");
         }

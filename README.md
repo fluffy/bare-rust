@@ -12,7 +12,7 @@ openocd --file openocd.cfg
 ```
 and leave running. Then in another window do 
 ```aiignore
-cargo run --features app/board-blinkA,hal/board-blinkA,dev/board-blinkA  --target=thumbv7em-none-eabihf
+cargo run --features hal/board-blinkA --target=thumbv7em-none-eabihf
 ```
 this will bring you to gdb prompt where you can type "c" to continue.
 
@@ -48,7 +48,7 @@ arm-none-eabi-gdb -q  target/thumbv7em-none-eabihf/debug/app --init-eval-command
 # Running on the Simulator
 
 ```aiignore
-cargo run  --features dev/board-sim,hal/board-sim,app/std,app/exit
+cargo run --features hal/board-sim,dev/std,app/std,app/exit
 ```
 
 # Notes

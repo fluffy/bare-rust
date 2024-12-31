@@ -4,6 +4,7 @@ use core::arch::asm;
 extern crate hal;
 
 use hal::uart;
+use hal::board;
 
 #[cfg(feature = "std")]
 extern crate std;
@@ -19,8 +20,8 @@ impl Print for [u8] {
     fn print_console(&self) {
         let s = self;
 
-        #[cfg(feature = "std")]
-        if cfg!(feature = "board-sim") {
+        if board::info::IS_SIM {
+            #[cfg(feature = "std")]
             for c in s {
                 std::print!("{}", *c as char);
             }
