@@ -106,6 +106,15 @@ impl<'a> TaskMgr<'a> {
                 b"Exceeded memorry budget\r\n".print_console();
                 panic!("Task {} overran memory budget", info.name);
             }
+            
+            // Update metrics
+            self.metrics.task_run_count[i] += 1;
+            if stack_usage > self.metrics.task_max_stack[i] {
+                self.metrics.task_max_stack[i] = stack_usage;
+            }
+            if duration as u32 > self.metrics.task_max_duration_us[i] {
+                self.metrics.task_max_duration_us[i] = duration as u32;
+            }
         }
     }
 }
