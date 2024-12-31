@@ -5,14 +5,24 @@ use hal::board;
 #[cfg(feature = "std")]
 extern crate std;
 
-#[inline(never)]
-pub fn init() {
-    board::info::LED_RED_PIN.output();
-    board::info::LED_GREEN_PIN.output();
-    board::info::LED_BLUE_PIN.output();
+pub struct Led {}
 
-    set(Color::Black);
+impl Led {
+    #[inline(never)]
+    pub fn new() -> Self {
+        Led {}
+    }
+
+    #[inline(never)]
+    pub fn init(&self) {
+        board::info::LED_RED_PIN.output();
+        board::info::LED_GREEN_PIN.output();
+        board::info::LED_BLUE_PIN.output();
+
+        set(Color::Black);
+    }
 }
+
 
 pub enum Color {
     Black,

@@ -55,15 +55,15 @@ impl Task for NoTask {
 }
 
 pub struct ButtonTask {
-    pub prev_state: bool,
+    //pub prev_state: bool,
 }
 
 impl Task for ButtonTask {
     fn run(&self, sender: crate::v_mpsc::Sender) {
-        let state = dev::button::read_ptt();
-        if state != self.prev_state {
-            sender.send(crate::msg::Msg::PttButton(state));
-            //self.prev_state = state;
-        }
+       // let state = dev::button::read_ptt();
+       // if state != self.prev_state {
+       //     sender.send(crate::msg::Msg::PttButton(state));
+       //     //self.prev_state = state;
+       // }
     }
 }
