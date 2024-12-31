@@ -12,6 +12,7 @@ impl Metrics {
     pub fn new() -> Self {
         Metrics {
             task_run_count: [0; MAX_TASKS],
+            
             task_max_stack: [0; MAX_TASKS],
             task_max_duration_us: [0; MAX_TASKS],
         }

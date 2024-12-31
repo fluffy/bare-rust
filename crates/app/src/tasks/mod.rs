@@ -1,6 +1,8 @@
-pub mod buttons_task;
 mod no_task;
-mod fib_task;
+pub mod fib_task;
+pub mod metrics_task;
+pub mod buttons_task;
+
 use crate::metrics::Metrics;
 
 use dev::console::Print;
@@ -14,7 +16,7 @@ extern crate dev;
 
 pub struct TaskInfo {
     pub name: &'static str,
-    pub run_every_ms: u32,
+    pub run_every_us: u32,
     pub time_budget_us: u32,
     pub mem_budget_bytes: u32,
 }
@@ -70,7 +72,7 @@ impl<'a> TaskMgr<'a> {
 
             let now = hal::timer::current_time();
 
-            if now.sub(self.last_run[i]).as_u64() < info.run_every_ms as u64 {
+            if now.sub(self.last_run[i]).as_u64() < info.run_every_us as u64 {
                 continue;
             }
 

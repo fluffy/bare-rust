@@ -52,13 +52,22 @@ fn my_main() -> ! {
 
     let (mut sender, receiver): (v_mpsc::Sender<msg::Msg>, v_mpsc::Receiver<msg::Msg>) =
         v_mpsc::channel();
-
-    let button_task = tasks::buttons_task::ButtonTask {};
+    
 
     let mut metrics = metrics::Metrics::new();
     
     let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut metrics);
+
+
+    let button_task = tasks::buttons_task::ButtonTask {};
     task_mgr.add_task(&button_task);
+    
+    let metrics_task = tasks::metrics_task::MetricsTask {};
+    task_mgr.add_task(&metrics_task);
+    
+    //let fib_task = tasks::fib_task::FibTask {};
+    //task_mgr.add_task(&fib_task);
+
 
     led::set(Color::Green);
 
