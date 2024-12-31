@@ -16,8 +16,8 @@ pub mod v_mpsc {
     #[derive(Debug, Copy, Clone, PartialEq, Eq)]
     pub struct Sender<T> {
         ch: usize,
-        //remove_me: T, // TODO 
-        _marker: core::marker::PhantomData<T>,
+        _marker: *const T, 
+        //_marker: core::marker::PhantomData<T>,
     }
 
     impl<T> Sender<T> {
@@ -35,8 +35,8 @@ pub mod v_mpsc {
     #[derive(Debug, Copy, Clone, PartialEq, Eq)]
     pub struct Receiver<T> {
         ch: usize,
-        //remove_me: T, // TODO
-        _marker: core::marker::PhantomData<T>,
+        _marker: *const T,
+        //_marker: core::marker::PhantomData<T>,
     }
 
     impl<T> Receiver<T> {
@@ -62,8 +62,14 @@ pub mod v_mpsc {
             panic!("Too many channels");
         }
 
-        let sender = Sender { ch  , _marker: core::marker::PhantomData  } as Sender<T>;
-        let receiver = Receiver { ch , _marker: core::marker::PhantomData   } as Receiver<T>;
+        let sender = Sender { ch:ch  ,
+            _marker: core::ptr::null(), 
+            //_marker: core::marker::PhantomData  
+        } as Sender<T>;
+        let receiver = Receiver { ch:ch ,
+            _marker: core::ptr::null(),
+            //_marker: core::marker::PhantomData
+        } as Receiver<T>;
 
         (sender, receiver)
     }
