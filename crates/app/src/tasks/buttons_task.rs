@@ -7,10 +7,10 @@ pub struct ButtonTask {
 }
 
 const BUTTON_TASK_INFO: TaskInfo = TaskInfo {
+    name: "Button",
     run_every_ms: 100,
-    run_offset_ms: 5,
-    time_budget_us: 100,
-    mem_budget_bytes: 50,
+    time_budget_us: 5000,
+    mem_budget_bytes: 500,
 };
 
 impl Task for ButtonTask {

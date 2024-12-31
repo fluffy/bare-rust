@@ -5,8 +5,8 @@ use crate::tasks::TaskInfo;
 pub struct NoTask {}
 
 const NO_TASK_INFO: TaskInfo = TaskInfo {
+    name: "NoTask",
     run_every_ms: 0,
-    run_offset_ms: 0,
     time_budget_us: 0,
     mem_budget_bytes: 0,
 };

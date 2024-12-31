@@ -554,6 +554,157 @@ pub mod TIM_ADV {
         pub const DTG: u32 = 0;
     }
 }
+pub mod TIM_GEN {
+    pub mod cr1 {
+        pub const CKD: u32 = 8;
+        pub const ARPE: u32 = 7;
+        pub const CMS: u32 = 5;
+        pub const DIR: u32 = 4;
+        pub const OPM: u32 = 3;
+        pub const URS: u32 = 2;
+        pub const UDIS: u32 = 1;
+        pub const CEN: u32 = 0;
+    }
+    pub mod cr2 {
+        pub const TI1S: u32 = 7;
+        pub const MMS: u32 = 4;
+        pub const CCDS: u32 = 3;
+    }
+    pub mod smcr {
+        pub const ETP: u32 = 15;
+        pub const ECE: u32 = 14;
+        pub const ETPS: u32 = 12;
+        pub const ETF: u32 = 8;
+        pub const MSM: u32 = 7;
+        pub const TS: u32 = 4;
+        pub const SMS: u32 = 0;
+    }
+    pub mod dier {
+        pub const TDE: u32 = 14;
+        pub const CC4DE: u32 = 12;
+        pub const CC3DE: u32 = 11;
+        pub const CC2DE: u32 = 10;
+        pub const CC1DE: u32 = 9;
+        pub const UDE: u32 = 8;
+        pub const TIE: u32 = 6;
+        pub const CC4IE: u32 = 4;
+        pub const CC3IE: u32 = 3;
+        pub const CC2IE: u32 = 2;
+        pub const CC1IE: u32 = 1;
+        pub const UIE: u32 = 0;
+    }
+    pub mod sr {
+        pub const CC4OF: u32 = 12;
+        pub const CC3OF: u32 = 11;
+        pub const CC2OF: u32 = 10;
+        pub const CC1OF: u32 = 9;
+        pub const TIF: u32 = 6;
+        pub const CC4IF: u32 = 4;
+        pub const CC3IF: u32 = 3;
+        pub const CC2IF: u32 = 2;
+        pub const CC1IF: u32 = 1;
+        pub const UIF: u32 = 0;
+    }
+    pub mod egr {
+        pub const TG: u32 = 6;
+        pub const CC4G: u32 = 4;
+        pub const CC3G: u32 = 3;
+        pub const CC2G: u32 = 2;
+        pub const CC1G: u32 = 1;
+        pub const UG: u32 = 0;
+    }
+    pub mod ccmr1_output {
+        pub const OC2CE: u32 = 15;
+        pub const OC2M: u32 = 12;
+        pub const OC2PE: u32 = 11;
+        pub const OC2FE: u32 = 10;
+        pub const CC2S: u32 = 8;
+        pub const OC1CE: u32 = 7;
+        pub const OC1M: u32 = 4;
+        pub const OC1PE: u32 = 3;
+        pub const OC1FE: u32 = 2;
+        pub const CC1S: u32 = 0;
+    }
+    pub mod ccmr1_input {
+        pub const IC2F: u32 = 12;
+        pub const IC2PCS: u32 = 10;
+        pub const CC2S: u32 = 8;
+        pub const IC1F: u32 = 4;
+        pub const ICPCS: u32 = 2;
+        pub const CC1S: u32 = 0;
+    }
+    pub mod ccmr2_output {
+        pub const OC4CE: u32 = 15;
+        pub const OC4M: u32 = 12;
+        pub const OC4PE: u32 = 11;
+        pub const OC4FE: u32 = 10;
+        pub const CC4S: u32 = 8;
+        pub const OC3CE: u32 = 7;
+        pub const OC3M: u32 = 4;
+        pub const OC3PE: u32 = 3;
+        pub const OC3FE: u32 = 2;
+        pub const CC3S: u32 = 0;
+    }
+    pub mod ccmr2_input {
+        pub const IC4F: u32 = 12;
+        pub const IC4PSC: u32 = 10;
+        pub const CC4S: u32 = 8;
+        pub const IC3F: u32 = 4;
+        pub const IC3PSC: u32 = 2;
+        pub const CC3S: u32 = 0;
+    }
+    pub mod ccer {
+        pub const CC4NP: u32 = 15;
+        pub const CC4P: u32 = 13;
+        pub const CC4E: u32 = 12;
+        pub const CC3NP: u32 = 11;
+        pub const CC3P: u32 = 9;
+        pub const CC3E: u32 = 8;
+        pub const CC2NP: u32 = 7;
+        pub const CC2P: u32 = 5;
+        pub const CC2E: u32 = 4;
+        pub const CC1NP: u32 = 3;
+        pub const CC1P: u32 = 1;
+        pub const CC1E: u32 = 0;
+    }
+    pub mod cnt {
+        pub const CNT_H: u32 = 16;
+        pub const CNT_L: u32 = 0;
+    }
+    pub mod psc {
+        pub const PSC: u32 = 0;
+    }
+    pub mod arr {
+        pub const ARR_H: u32 = 16;
+        pub const ARR_L: u32 = 0;
+    }
+    pub mod ccr1 {
+        pub const CCR1_H: u32 = 16;
+        pub const CCR1_L: u32 = 0;
+    }
+    pub mod ccr2 {
+        pub const CCR2_H: u32 = 16;
+        pub const CCR2_L: u32 = 0;
+    }
+    pub mod ccr3 {
+        pub const CCR3_H: u32 = 16;
+        pub const CCR3_L: u32 = 0;
+    }
+    pub mod ccr4 {
+        pub const CCR4_H: u32 = 16;
+        pub const CCR4_L: u32 = 0;
+    }
+    pub mod dcr {
+        pub const DBL: u32 = 8;
+        pub const DBA: u32 = 0;
+    }
+    pub mod dmar {
+        pub const DMAB: u32 = 0;
+    }
+    pub mod or {
+        pub const ITR1_RMP: u32 = 10;
+    }
+}
 pub mod FLASH {
     pub mod acr {
         pub const LATENCY: u32 = 0;

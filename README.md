@@ -49,6 +49,7 @@ arm-none-eabi-gdb -q  target/thumbv7em-none-eabihf/debug/app --init-eval-command
 
 ```aiignore
 cargo run --features hal/board-sim,dev/std,app/std,app/exit
+cargo test --verbose --workspace --features hal/board-sim,dev/std,app/std
 ```
 
 # Notes

@@ -73,6 +73,14 @@ fn my_main() -> ! {
         task_mgr.run();
         dispatch::process(receiver);
 
+        let now = hal::timer::current_time();
+
+        if false {
+            b"  now=".print_console();
+            (now.as_u64()/1000).print_console();
+            b" mS\r\n".print_console();
+        }
+        
         #[cfg(feature = "exit")]
         {
             b"Stopping\r\n".print_console();
@@ -81,7 +89,7 @@ fn my_main() -> ! {
     }
 }
 
-pub fn fib_test() {
+fn fib_test() {
     // fib*34) getting 1.630 s on dev
     // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed
 
@@ -102,7 +110,7 @@ pub fn fib_test() {
     b" mS\r\n".print_console();
 }
 
-pub fn fib(x: usize) -> u32 {
+fn fib(x: usize) -> u32 {
     if x > 2 {
         fib(x - 1) + fib(x - 2)
     } else {

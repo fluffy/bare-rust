@@ -141,6 +141,31 @@ pub struct TimAdvReg {
 }
 pub const TIM1: *mut TimAdvReg = 0x4001_0000 as *mut TimAdvReg;
 
+#[repr(C)]
+pub struct TimGenReg {
+    pub cr1: u32,
+    pub cr2: u32,
+    pub smcr: u32,
+    pub dier: u32,
+    pub sr: u32,
+    pub egr: u32,
+    pub ccmr1: u32,
+    pub ccmr2: u32,
+    pub ccer: u32,
+    pub cnt: u32,
+    pub psc: u32,
+    pub arr: u32,
+    pub rcr: u32,
+    pub ccr1: u32,
+    pub ccr2: u32,
+    pub ccr3: u32,
+    pub ccr4: u32,
+    pub bdtr: u32,
+    pub dcr: u32,
+    pub dmar: u32,
+}
+pub const TIM2: *mut TimGenReg = 0x4000_0000 as *mut TimGenReg;
+
 #[inline(always)]
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     if cfg!(feature = "board-sim") {

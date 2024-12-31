@@ -19,7 +19,7 @@ mod tests {
 
     #[test]
     fn test_sub_with_wrap_around() {
-        let max: u64 = (u32::MAX as u64) * 10_000;
+        let max: u64 =  3600 * 1000_000;
         let time1 = MicroSeconds::new(5000);
         let time2 = MicroSeconds::new(max - 5000);
         let result = time1.sub(time2);

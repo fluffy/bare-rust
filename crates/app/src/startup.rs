@@ -16,6 +16,7 @@ extern "C" {
 use core::panic::PanicInfo;
 
 #[cfg(not(feature = "std"))]
+#[inline(never)]
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
     led::set(Color::Red);
@@ -37,6 +38,7 @@ extern "C" {
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
+#[inline(never)]
 #[allow(static_mut_refs)]
 pub extern "C" fn Reset_Handler() -> ! {
     unsafe {
@@ -60,6 +62,7 @@ pub extern "C" fn Reset_Handler() -> ! {
 }
 
 #[cfg(not(feature = "std"))]
+#[inline(never)]
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
     led::set(Color::Red);
@@ -76,28 +79,34 @@ pub extern "C" fn Default_Handler() {
 pub extern "C" fn Default_HandlerA() {
     Default_Handler();
 }
+
 #[cfg(not(feature = "std"))]
 #[no_mangle]
 pub extern "C" fn Default_HandlerB() {
     Default_Handler();
 }
+
 #[cfg(not(feature = "std"))]
 #[no_mangle]
+
 pub extern "C" fn Default_HandlerC() {
     Default_Handler();
 }
 #[cfg(not(feature = "std"))]
 #[no_mangle]
+
 pub extern "C" fn Default_HandlerD() {
     Default_Handler();
 }
 #[cfg(not(feature = "std"))]
 #[no_mangle]
+
 pub extern "C" fn Default_HandlerE() {
     Default_Handler();
 }
 #[cfg(not(feature = "std"))]
 #[no_mangle]
+
 pub extern "C" fn Default_HandlerF() {
     Default_Handler();
 }
@@ -145,7 +154,13 @@ pub extern "C" fn Default_Handler6() {
 #[cfg(not(feature = "std"))]
 #[no_mangle]
 pub extern "C" fn TIM1_UP_TIM10_IRQHandler() {
-    hal::timer::handle_tim1_irq();
+    //hal::timer::handle_tim1_irq();
+}
+
+#[cfg(not(feature = "std"))]
+#[no_mangle]
+pub extern "C" fn TIM2_IRQHandler() {
+    hal::timer::handle_tim2_irq();
 }
 
 #[allow(dead_code)]
@@ -278,7 +293,7 @@ pub static Exceptions: [IrqVector; 14 + 82] = [
         handler: Default_Handler3,
     }, // TIM1_CC
     IrqVector {
-        handler: Default_Handler,
+        handler: TIM2_IRQHandler,
     }, // TIM2
     IrqVector {
         handler: Default_Handler,
