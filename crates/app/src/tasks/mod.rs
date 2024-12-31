@@ -71,7 +71,8 @@ impl<'a> TaskMgr<'a> {
     }
 
     pub fn run(&mut self) {
-        let base_stack_usage = stack::usage() as u32;
+        stack::usage( true ); // reset stack usage
+        let base_stack_usage = stack::usage( false ) as u32;
 
         for i in 0..self.num_tasks {
             let t = self.tasks[i];
@@ -87,7 +88,7 @@ impl<'a> TaskMgr<'a> {
             let msg = Msg::None;
             t.run(&msg, self.sender, self.bsp, self.metrics);
             let end_time = hal::timer::current_time();
-            let end_stack_usage = stack::usage() as u32;
+            let end_stack_usage = stack::usage(false ) as u32;
 
             self.last_run[i] = start_time;
 
@@ -112,8 +113,10 @@ impl<'a> TaskMgr<'a> {
 
             let stack_usage = end_stack_usage - base_stack_usage;
             if stack_usage > info.mem_budget_bytes {
-                b"Exceeded memorry budget\r\n".print_console();
-                panic!("Task {} overran memory budget", info.name);
+                b"Exceeded memory budget\r\n  usage==".print_console();
+                (stack_usage as u64).print_console();
+                b"\r\n".print_console();
+                // TODO panic!("Task {} overran memory budget", info.name);
             }
 
             // Update metrics

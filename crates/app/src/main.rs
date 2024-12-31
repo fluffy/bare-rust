@@ -68,7 +68,7 @@ fn my_main() -> ! {
 
     led::set(Color::Green);
 
-    let stack_usage = stack::usage() as u32;
+    let stack_usage = stack::usage(false) as u32;
     if cfg!(not(feature = "std")) {
         b"  Starting stack usage: ".print_console();
         stack_usage.print_console();
