@@ -77,8 +77,8 @@ fn my_main() -> ! {
 
         if false {
             b"  now=".print_console();
-            now.as_u64().print_console();
-            b" uS\r\n".print_console();
+            (now.as_u64()/1000).print_console();
+            b" mS\r\n".print_console();
         }
         
         #[cfg(feature = "exit")]

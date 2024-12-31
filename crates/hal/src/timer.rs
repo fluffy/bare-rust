@@ -14,19 +14,22 @@ use super::cpu::*;
 
 pub use super::cpu::TIM_GEN as TIM2;
 
+const TIME_WRAP_AROUND: u32 = 3600 * 1000_000; // 1 hour@1Mhz
+
 #[inline(never)]
 pub fn init1() {
     // enable TIM2 clock
     //cpu::write!( RCC.apb2enr[TIM2EN;1], 1);
     cpu::write!( RCC.apb1enr[TIM2EN;1], 1);
 
-    // apb2 timer clock is 168MHz
+    // TIM1 is apb2 timer clock is 168MHz and 16 bits
+    // TIM2 is apb1 timer clock is 84MHz and 32 bits
 
     // set prescaler for 1MHz
-    cpu::write!(TIM2.psc, 168 - 1);
+    cpu::write!(TIM2.psc, 84 - 1);
 
-    // set auto-reload for 10ms
-    cpu::write!(TIM2.arr, 10000 - 1);
+    // set auto-reload for 3600 seconds (1 hour)
+    cpu::write!(TIM2.arr, TIME_WRAP_AROUND - 1);
 
     // force load of prescaler and auto-reload
     cpu::write!( TIM2.egr[UG;1], 1);
@@ -45,47 +48,18 @@ pub fn init1() {
     cpu::write!(NVIC.iser[IRQ_INDEX], 1 << IRQ_BIT);
 }
 
-static mut TICK_COUNTER: u32 = 0;
-
 #[inline(never)]
 pub fn handle_tim2_irq() {
     // clear update interrupt flag
     cpu::write!(TIM2.sr[UIF;1], 0);
-
-    unsafe {
-        // only the interrupt handler changes this and
-        // interrupts disabled when it is read
-        let mut v: u32 = core::ptr::read_volatile( &TICK_COUNTER );
-        v+= 1;
-        core::ptr::write_volatile( &mut TICK_COUNTER, v);
-        //TICK_COUNTER += 1;
-    }
 }
 
 #[cfg(target_arch = "arm")]
 #[inline(never)]
 pub fn current_time() -> MicroSeconds {
-    let lower: u32;
-    let upper: u32;
-
-    #[allow(unused_unsafe)] // the cpu::read! macro uses unsafe
-    unsafe {
-        // Some Arm processors do not support th cpsid and cpsie instructions
-        // so we need to use the PRIMASK register to disable interrupts in that case - not done here
-
-        // Read the value of the TIM2 counter
-        asm!("cpsid i"); // disable interrupts
-        let mut v: u32 = core::ptr::read_volatile( &TICK_COUNTER );
-        upper = v;
-        lower = cpu::read!(TIM2.cnt);
-        //upper = TICK_COUNTER;
-        asm!("cpsie i"); // enable interrupts
-    }
-
-    // Return the combined value
-    MicroSeconds(((upper as u64) * 10_000) + (lower as u64))
+    let timeUs = cpu::read!(TIM2.cnt);
+    MicroSeconds(timeUs as u64)
 }
-
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct MicroSeconds(pub u64);
@@ -101,8 +75,8 @@ impl MicroSeconds {
 
     pub fn sub(self, other: Self) -> MicroSeconds {
         if other.0 > self.0 {
-            // wrap-around occurred ( happens about every 12 hours )
-            let max: u64 = (u32::MAX as u64) * 10_000;
+            // wrap-around occurred (every 1 hour)
+            let max: u64 = TIME_WRAP_AROUND as u64;
             return MicroSeconds(max - other.0 + self.0 + 1);
         }
         MicroSeconds(self.0 - other.0)
