@@ -116,7 +116,7 @@ impl<'a> TaskMgr<'a> {
                 b"Exceeded memory budget\r\n  usage==".print_console();
                 (stack_usage as u64).print_console();
                 b"\r\n".print_console();
-                // TODO panic!("Task {} overran memory budget", info.name);
+                panic!("Task {} overran memory budget", info.name);
             }
 
             // Update metrics
