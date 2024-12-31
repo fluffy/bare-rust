@@ -1,5 +1,6 @@
 pub mod buttons_task;
 mod no_task;
+mod fib_task;
 
 use dev::console::Print;
 use crate::msg::Msg;
