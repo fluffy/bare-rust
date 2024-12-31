@@ -23,4 +23,4 @@ jobs:
       - name: Build arm blinkA
         run: cargo build --verbose --features hal/board-blinkA --target=thumbv7em-none-eabihf --release
       - name: Run tests
-        run: cargo test --verbose --features hal/board-sim,dev/std,app/std
+        run: cargo test --verbose --workspace --features hal/board-sim,dev/std,app/std
