@@ -50,7 +50,7 @@ fn my_main() -> ! {
     //msg::test_msg();
 
     let mut bsp = dev::BSP::new();
-    
+
     bsp.init();
 
     #[cfg(debug_assertions)]
@@ -60,9 +60,9 @@ fn my_main() -> ! {
 
     let (mut sender, receiver) = v_mpsc::channel();
 
-    let button_task = tasks::ButtonTask { };
+    let button_task = tasks::ButtonTask {};
 
-    let mut task_mgr = tasks::TaskMgr::new( &mut sender, &mut bsp);
+    let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp);
     task_mgr.add_task(&button_task);
 
     loop {

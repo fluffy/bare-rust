@@ -7,11 +7,11 @@ pub mod console;
 pub mod debug;
 pub mod led;
 
-pub  struct BSP{
-    pub  button: buttons::Buttons,
-    pub  console: console::Console,
-    pub  debug: debug::Debug,
-    pub  led: led::Led,
+pub struct BSP {
+    pub button: buttons::Buttons,
+    pub console: console::Console,
+    pub debug: debug::Debug,
+    pub led: led::Led,
 }
 
 impl BSP {
@@ -36,7 +36,7 @@ impl BSP {
 
     pub fn validate(&self) {
         hal::validate();
-        
+
         self.button.validate();
     }
 }

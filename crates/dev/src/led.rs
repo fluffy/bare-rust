@@ -23,7 +23,6 @@ impl Led {
     }
 }
 
-
 pub enum Color {
     Black,
     White,

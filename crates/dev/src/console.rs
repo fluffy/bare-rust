@@ -18,8 +18,7 @@ impl Console {
     }
 
     #[inline(never)]
-    pub fn init(&self) {
-    }
+    pub fn init(&self) {}
 }
 
 pub trait Print {

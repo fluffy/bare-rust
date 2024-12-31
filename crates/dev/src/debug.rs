@@ -4,7 +4,6 @@ use hal::board;
 
 pub struct Debug {}
 
-
 impl Debug {
     #[inline(never)]
     pub fn new() -> Self {
@@ -17,7 +16,6 @@ impl Debug {
         board::info::DEBUG1_PIN.low();
     }
 }
-
 
 pub fn set(ch: u8, v: bool) {
     assert!(ch == 0);
