@@ -12,7 +12,6 @@ extern crate dev;
 pub struct TaskInfo {
     pub name: &'static str,
     pub run_every_ms: u32,
-    pub run_offset_ms: u32,
     pub time_budget_us: u32,
     pub mem_budget_bytes: u32,
 }
@@ -36,13 +35,13 @@ pub struct TaskMgr<'a> {
 const NO_TASK: no_task::NoTask = no_task::NoTask {};
 
 impl<'a> TaskMgr<'a> {
-    pub fn new(s: &'a mut crate::v_mpsc::Sender<Msg>, bsp_in: &'a mut dev::BSP) -> TaskMgr<'a> {
+    pub fn new(s: &'a mut crate::v_mpsc::Sender<Msg>, bsp: &'a mut dev::BSP) -> TaskMgr<'a> {
         TaskMgr {
             tasks: [&NO_TASK; MAX_TASKS],
             last_run: [hal::timer::MicroSeconds(0); MAX_TASKS],
             num_tasks: 0,
             sender: s,
-            bsp: bsp_in,
+            bsp: bsp,
         }
     }
 
@@ -53,30 +52,36 @@ impl<'a> TaskMgr<'a> {
         self.tasks[self.num_tasks] = task;
         self.num_tasks += 1;
     }
-
     pub fn run(&mut self) {
+        let base_stack_usage = stack::usage() as u32;
+
         for i in 0..self.num_tasks {
             let t = self.tasks[i];
             let info = t.info();
+
+            let now = hal::timer::current_time();
+
+            if now.sub(self.last_run[i]).as_u64() < info.run_every_ms as u64 {
+                continue;
+            }
 
             let start_time = hal::timer::current_time();
             let msg = Msg::None;
             t.run(&msg, self.sender, self.bsp);
             let end_time = hal::timer::current_time();
-            
+            let end_stack_usage = stack::usage() as u32;
+
             self.last_run[i] = start_time;
 
-            let duration = end_time.sub(start_time);
-            if duration.as_u64() > info.time_budget_us as u64 {
+            let duration = end_time.sub(start_time).as_u64();
+            if duration > info.time_budget_us as u64 {
                 panic!("Task {} overran time budget", info.name);
             }
 
-            let stack_usage = stack::usage() as u32;
+            let stack_usage = end_stack_usage - base_stack_usage;
             if stack_usage > info.mem_budget_bytes {
                 panic!("Task {} overran memory budget", info.name);
             }
-            
-            let duration = end_time.sub(start_time);
         }
     }
 }
