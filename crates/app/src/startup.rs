@@ -16,6 +16,7 @@ extern "C" {
 use core::panic::PanicInfo;
 
 #[cfg(not(feature = "std"))]
+#[inline(never)]
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
     led::set(Color::Red);
@@ -37,6 +38,7 @@ extern "C" {
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
+#[inline(never)]
 #[allow(static_mut_refs)]
 pub extern "C" fn Reset_Handler() -> ! {
     unsafe {
@@ -60,6 +62,7 @@ pub extern "C" fn Reset_Handler() -> ! {
 }
 
 #[cfg(not(feature = "std"))]
+#[inline(never)]
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
     led::set(Color::Red);
