@@ -1,13 +1,13 @@
-mod no_task;
+pub mod buttons_task;
 pub mod fib_task;
 pub mod metrics_task;
-pub mod buttons_task;
+mod no_task;
 
 use crate::metrics::Metrics;
 
-use dev::console::Print;
 use crate::msg::Msg;
 use crate::stack;
+use dev::console::Print;
 
 #[cfg(feature = "std")]
 extern crate std;
@@ -22,9 +22,13 @@ pub struct TaskInfo {
 }
 
 pub trait Task {
-    fn run(&self, msg: &Msg, sender: &mut crate::v_mpsc::Sender<Msg>,
-           bsp: &mut dev::BSP,
-           metrics: &mut Metrics);
+    fn run(
+        &self,
+        msg: &Msg,
+        sender: &mut crate::v_mpsc::Sender<Msg>,
+        bsp: &mut dev::BSP,
+        metrics: &mut Metrics,
+    );
 
     fn info(&self) -> &'static TaskInfo;
 }
@@ -43,8 +47,11 @@ pub struct TaskMgr<'a> {
 const NO_TASK: no_task::NoTask = no_task::NoTask {};
 
 impl<'a> TaskMgr<'a> {
-    
-    pub fn new(s: &'a mut crate::v_mpsc::Sender<Msg>, bsp: &'a mut dev::BSP, metrics: &'a mut Metrics) -> TaskMgr<'a> {
+    pub fn new(
+        s: &'a mut crate::v_mpsc::Sender<Msg>,
+        bsp: &'a mut dev::BSP,
+        metrics: &'a mut Metrics,
+    ) -> TaskMgr<'a> {
         TaskMgr {
             tasks: [&NO_TASK; MAX_TASKS],
             last_run: [hal::timer::MicroSeconds(0); MAX_TASKS],
@@ -62,7 +69,7 @@ impl<'a> TaskMgr<'a> {
         self.tasks[self.num_tasks] = task;
         self.num_tasks += 1;
     }
-    
+
     pub fn run(&mut self) {
         let base_stack_usage = stack::usage() as u32;
 
@@ -78,7 +85,7 @@ impl<'a> TaskMgr<'a> {
 
             let start_time = hal::timer::current_time();
             let msg = Msg::None;
-            t.run(&msg, self.sender, self.bsp,self.metrics);
+            t.run(&msg, self.sender, self.bsp, self.metrics);
             let end_time = hal::timer::current_time();
             let end_stack_usage = stack::usage() as u32;
 
@@ -99,16 +106,16 @@ impl<'a> TaskMgr<'a> {
                 b" duration=".print_console();
                 duration.print_console();
                 b" us\r\n".print_console();
-                
+
                 panic!("Task {} overran time budget", info.name);
-              }
+            }
 
             let stack_usage = end_stack_usage - base_stack_usage;
             if stack_usage > info.mem_budget_bytes {
                 b"Exceeded memorry budget\r\n".print_console();
                 panic!("Task {} overran memory budget", info.name);
             }
-            
+
             // Update metrics
             self.metrics.task_run_count[i] += 1;
             if stack_usage > self.metrics.task_max_stack[i] {

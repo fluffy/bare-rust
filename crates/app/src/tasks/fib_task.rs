@@ -1,7 +1,7 @@
 use super::Task;
+use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
-use crate::metrics::Metrics;
 
 pub struct FibTask {}
 
@@ -13,10 +13,14 @@ const FIB_TASK_INFO: TaskInfo = TaskInfo {
 };
 
 impl Task for FibTask {
-    fn run(&self, _msg: &Msg, _sender: &mut crate::v_mpsc::Sender<Msg>, 
-           _bsp: &mut dev::BSP,
-           _metrics: &mut Metrics) {
-       fib(34);
+    fn run(
+        &self,
+        _msg: &Msg,
+        _sender: &mut crate::v_mpsc::Sender<Msg>,
+        _bsp: &mut dev::BSP,
+        _metrics: &mut Metrics,
+    ) {
+        fib(34);
     }
 
     #[allow(dead_code)]

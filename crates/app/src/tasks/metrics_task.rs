@@ -25,12 +25,12 @@ impl Task for MetricsTask {
         metrics: &mut Metrics,
     ) {
         b"\r\n\r\n".print_console();
-        
+
         for i in 0..MAX_TASKS {
             if metrics.task_run_count[i] == 0 {
                 continue;
             }
-            
+
             b"Task ".print_console();
             (i as u64).print_console();
             //metrics.task_name.print_console();
