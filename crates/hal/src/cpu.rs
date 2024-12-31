@@ -1,4 +1,3 @@
-
 pub use super::svd;
 pub use super::svd::*;
 
@@ -162,50 +161,42 @@ pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
 #[cfg(not(feature = "board-sim"))]
 #[inline(always)]
 pub fn write_reg(addr: *mut u32, val: u32) {
-   
-        unsafe {
-            core::ptr::write_volatile(addr, val);
-        }
-    
+    unsafe {
+        core::ptr::write_volatile(addr, val);
+    }
 }
 #[cfg(feature = "board-sim")]
 #[inline(always)]
 pub fn write_reg(addr: *mut u32, val: u32) {
-   
-        unsafe {
-            if let Some(ref map_mutex) = SIM {
-                let mut map = map_mutex.lock().unwrap();
-                map.insert(addr, val);
-            }
+    unsafe {
+        if let Some(ref map_mutex) = SIM {
+            let mut map = map_mutex.lock().unwrap();
+            map.insert(addr, val);
         }
-   
+    }
 }
 
 #[cfg(not(feature = "board-sim"))]
 #[inline(always)]
 pub fn read_reg(addr: *mut u32) -> u32 {
-    
-        unsafe { core::ptr::read_volatile(addr) }
-    
+    unsafe { core::ptr::read_volatile(addr) }
 }
 #[cfg(feature = "board-sim")]
 #[inline(always)]
 pub fn read_reg(addr: *mut u32) -> u32 {
-
-        unsafe {
-            if let Some(ref map_mutex) = SIM {
-                let map = map_mutex.lock().unwrap();
-                if let Some(value) = map.get( &addr) {
-                    let my_value: u32 = *value;
-                    my_value
-                } else {
-                    0
-                }
+    unsafe {
+        if let Some(ref map_mutex) = SIM {
+            let map = map_mutex.lock().unwrap();
+            if let Some(value) = map.get(&addr) {
+                let my_value: u32 = *value;
+                my_value
             } else {
                 0
             }
+        } else {
+            0
         }
-    
+    }
 }
 
 #[macro_export]
@@ -295,7 +286,7 @@ macro_rules! read {
 pub(crate) use read;
 
 #[cfg(feature = "board-sim")]
-static mut SIM: Option<Mutex<&'static mut HashMap< *mut u32, u32>>> = None;
+static mut SIM: Option<Mutex<&'static mut HashMap<*mut u32, u32>>> = None;
 
 #[cfg(not(feature = "board-sim"))]
 fn init_sim() {}

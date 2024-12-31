@@ -1,8 +1,8 @@
 use core::ptr;
 
 use super::cpu;
-pub use super::svd::*;
 pub use super::cpu::*;
+pub use super::svd::*;
 
 pub fn init() {
     cpu::write!(RCC.ahb1enr[GPIOAEN;1], 1 );

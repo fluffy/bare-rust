@@ -1,6 +1,4 @@
-
 use core::ptr;
-
 
 //extern crate hal;
 
@@ -8,9 +6,7 @@ use hal::board;
 use hal::cpu;
 //use hal::svd;
 
-
 use hal::cpu::*;
-
 
 #[inline(never)]
 pub fn init() {

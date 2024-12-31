@@ -1,4 +1,3 @@
-
 extern crate hal;
 
 use hal::board;

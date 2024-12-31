@@ -1,5 +1,3 @@
-
-
 #[cfg(not(any(
     feature = "board-hactar12",
     feature = "board-blinkA",
@@ -43,7 +41,7 @@ pub mod info {
     pub const HAS_AI_BUTTON: bool = true;
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = true;
-    
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -69,7 +67,7 @@ pub mod info {
     pub const HAS_AI_BUTTON: bool = false;
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 13);
     pub const AI_BUTTON_PULL_UP: bool = false;
-    
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -94,7 +92,7 @@ pub mod info {
     pub const HAS_AI_BUTTON: bool = false;
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = true;
-    
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
@@ -119,7 +117,7 @@ pub mod info {
     pub const HAS_AI_BUTTON: bool = false;
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = false;
-    
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }

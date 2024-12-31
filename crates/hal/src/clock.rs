@@ -4,8 +4,8 @@ use core::ptr;
 use super::cpu;
 use super::cpu::*;
 
-use super::board::info::HAS_RCC;
 use super::board;
+use super::board::info::HAS_RCC;
 
 #[inline(never)]
 pub fn init() {
