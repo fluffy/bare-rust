@@ -1,8 +1,5 @@
 use core::ptr;
 
-#[cfg(not(feature = "std"))]
-use core::arch::asm;
-
 #[cfg(feature = "std")]
 extern crate std;
 
@@ -57,8 +54,8 @@ pub fn handle_tim2_irq() {
 #[cfg(target_arch = "arm")]
 #[inline(never)]
 pub fn current_time() -> MicroSeconds {
-    let timeUs = cpu::read!(TIM2.cnt);
-    MicroSeconds(timeUs as u64)
+    let time_us = cpu::read!(TIM2.cnt);
+    MicroSeconds(time_us as u64)
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
