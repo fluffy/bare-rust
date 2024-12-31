@@ -16,11 +16,11 @@ use dev::led::Color;
 
 //use crate::msg::Msg;
 
+mod channel;
 mod msg;
 mod stack;
 mod startup;
 mod tasks;
-mod channel;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]

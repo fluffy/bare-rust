@@ -1,6 +1,5 @@
 //use core::marker::PhantomData;
 
-
 use crate::msg::Msg;
 
 pub mod v_mpsc {
@@ -16,7 +15,7 @@ pub mod v_mpsc {
     #[derive(Debug, Copy, Clone, PartialEq, Eq)]
     pub struct Sender<T> {
         ch: usize,
-        _marker: *const T, 
+        _marker: *const T,
         //_marker: core::marker::PhantomData<T>,
     }
 
@@ -62,11 +61,13 @@ pub mod v_mpsc {
             panic!("Too many channels");
         }
 
-        let sender = Sender { ch:ch  ,
-            _marker: core::ptr::null(), 
-            //_marker: core::marker::PhantomData  
+        let sender = Sender {
+            ch: ch,
+            _marker: core::ptr::null(),
+            //_marker: core::marker::PhantomData
         } as Sender<T>;
-        let receiver = Receiver { ch:ch ,
+        let receiver = Receiver {
+            ch: ch,
             _marker: core::ptr::null(),
             //_marker: core::marker::PhantomData
         } as Receiver<T>;

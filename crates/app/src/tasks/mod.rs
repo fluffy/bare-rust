@@ -1,5 +1,5 @@
-mod no_task;
 pub mod buttons_task;
+mod no_task;
 
 use crate::msg::Msg;
 
@@ -17,7 +17,7 @@ pub struct TaskInfo {
 
 pub trait Task {
     fn run(&self, msg: &Msg, sender: &mut crate::v_mpsc::Sender<Msg>, bsp: &mut dev::BSP);
-    
+
     fn info(&self) -> &'static TaskInfo;
 }
 
@@ -29,7 +29,6 @@ pub struct TaskMgr<'a> {
     sender: &'a mut crate::v_mpsc::Sender<Msg>,
     bsp: &'a mut dev::BSP,
 }
-
 
 const NO_TASK: no_task::NoTask = no_task::NoTask {};
 
@@ -55,7 +54,7 @@ impl<'a> TaskMgr<'a> {
         for i in 0..self.num_tasks {
             let t = self.tasks[i];
             let msg = Msg::None;
-            t.run( &msg, self.sender, self.bsp);
+            t.run(&msg, self.sender, self.bsp);
         }
     }
 }

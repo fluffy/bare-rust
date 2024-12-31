@@ -1,4 +1,3 @@
-
 use super::Task;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
@@ -22,5 +21,3 @@ impl Task for NoTask {
         &NO_TASK_INFO
     }
 }
-
-
