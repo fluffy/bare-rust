@@ -61,7 +61,8 @@ fn my_main() -> ! {
 
     b"Starting\r\n".print_console();
 
-    let (mut sender, receiver) : (v_mpsc::Sender<msg::Msg>, v_mpsc::Receiver<msg::Msg>)= v_mpsc::channel();
+    let (mut sender, receiver): (v_mpsc::Sender<msg::Msg>, v_mpsc::Receiver<msg::Msg>) =
+        v_mpsc::channel();
 
     let button_task = tasks::buttons_task::ButtonTask {};
 
