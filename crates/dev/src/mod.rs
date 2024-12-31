@@ -2,26 +2,41 @@
 
 extern crate hal;
 
-pub mod button;
+pub mod buttons;
 pub mod console;
 pub mod debug;
 pub mod led;
 
-#[inline(never)]
-pub fn init() {
-    hal::init();
-
-    // do early so other modules can use it
-    console::init();
-
-    led::init();
-    debug::init();
-    button::init();
+pub struct BSP {
+    pub button: buttons::Buttons,
+    pub console: console::Console,
+    pub debug: debug::Debug,
+    pub led: led::Led,
 }
 
-#[inline(never)]
-pub fn validate() {
-    hal::validate();
+impl BSP {
+    pub fn new() -> Self {
+        BSP {
+            button: buttons::Buttons::new(),
+            console: console::Console::new(),
+            debug: debug::Debug::new(),
+            led: led::Led::new(),
+        }
+    }
 
-    button::validate();
+    pub fn init(&mut self) {
+        hal::init();
+
+        // do early so other modules can use it
+        self.console.init();
+        self.led.init();
+        self.debug.init();
+        self.button.init();
+    }
+
+    pub fn validate(&self) {
+        hal::validate();
+
+        self.button.validate();
+    }
 }

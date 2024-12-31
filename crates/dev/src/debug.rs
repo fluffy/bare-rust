@@ -2,11 +2,19 @@ extern crate hal;
 
 use hal::board;
 
-#[inline(never)]
-pub fn init() {
-    board::info::DEBUG1_PIN.output();
+pub struct Debug {}
 
-    board::info::DEBUG1_PIN.low();
+impl Debug {
+    #[inline(never)]
+    pub fn new() -> Self {
+        Debug {}
+    }
+
+    #[inline(never)]
+    pub fn init(&self) {
+        board::info::DEBUG1_PIN.output();
+        board::info::DEBUG1_PIN.low();
+    }
 }
 
 pub fn set(ch: u8, v: bool) {

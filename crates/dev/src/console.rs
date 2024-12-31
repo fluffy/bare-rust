@@ -9,8 +9,17 @@ use hal::uart;
 #[cfg(feature = "std")]
 extern crate std;
 
-#[inline(never)]
-pub fn init() {}
+pub struct Console {}
+
+impl Console {
+    #[inline(never)]
+    pub fn new() -> Self {
+        Console {}
+    }
+
+    #[inline(never)]
+    pub fn init(&self) {}
+}
 
 pub trait Print {
     fn print_console(&self);
