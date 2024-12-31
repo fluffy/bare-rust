@@ -1,4 +1,5 @@
 use super::Task;
+use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
 
@@ -8,7 +9,7 @@ pub struct ButtonTask {
 
 const BUTTON_TASK_INFO: TaskInfo = TaskInfo {
     name: "Button",
-    run_every_ms: 100,
+    run_every_us: 100_000,
     time_budget_us: 5000,
     mem_budget_bytes: 500,
 };
@@ -19,6 +20,7 @@ impl Task for ButtonTask {
         _incoming_msg: &Msg,
         sender: &mut crate::v_mpsc::Sender<Msg>,
         bsp: &mut dev::BSP,
+        _metrics: &mut Metrics,
     ) {
         // junk sender.send(crate::msg::Msg::None );
         let (state, changed) = bsp.button.read_ptt();
