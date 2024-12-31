@@ -1,6 +1,7 @@
 pub mod buttons_task;
 mod no_task;
 mod fib_task;
+use crate::metrics::Metrics;
 
 use dev::console::Print;
 use crate::msg::Msg;
@@ -19,12 +20,14 @@ pub struct TaskInfo {
 }
 
 pub trait Task {
-    fn run(&self, msg: &Msg, sender: &mut crate::v_mpsc::Sender<Msg>, bsp: &mut dev::BSP);
+    fn run(&self, msg: &Msg, sender: &mut crate::v_mpsc::Sender<Msg>,
+           bsp: &mut dev::BSP,
+           metrics: &mut Metrics);
 
     fn info(&self) -> &'static TaskInfo;
 }
 
-const MAX_TASKS: usize = 10;
+pub const MAX_TASKS: usize = 10;
 
 pub struct TaskMgr<'a> {
     tasks: [&'a dyn Task; MAX_TASKS],
@@ -32,19 +35,21 @@ pub struct TaskMgr<'a> {
     num_tasks: usize,
     sender: &'a mut crate::v_mpsc::Sender<Msg>,
     bsp: &'a mut dev::BSP,
+    metrics: &'a mut Metrics,
 }
 
 const NO_TASK: no_task::NoTask = no_task::NoTask {};
 
 impl<'a> TaskMgr<'a> {
     
-    pub fn new(s: &'a mut crate::v_mpsc::Sender<Msg>, bsp: &'a mut dev::BSP) -> TaskMgr<'a> {
+    pub fn new(s: &'a mut crate::v_mpsc::Sender<Msg>, bsp: &'a mut dev::BSP, metrics: &'a mut Metrics) -> TaskMgr<'a> {
         TaskMgr {
             tasks: [&NO_TASK; MAX_TASKS],
             last_run: [hal::timer::MicroSeconds(0); MAX_TASKS],
             num_tasks: 0,
             sender: s,
             bsp: bsp,
+            metrics: metrics,
         }
     }
 
@@ -71,7 +76,7 @@ impl<'a> TaskMgr<'a> {
 
             let start_time = hal::timer::current_time();
             let msg = Msg::None;
-            t.run(&msg, self.sender, self.bsp);
+            t.run(&msg, self.sender, self.bsp,self.metrics);
             let end_time = hal::timer::current_time();
             let end_stack_usage = stack::usage() as u32;
 

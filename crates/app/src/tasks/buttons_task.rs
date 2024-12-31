@@ -1,6 +1,8 @@
 use super::Task;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
+use crate::metrics::Metrics;
+
 
 pub struct ButtonTask {
     //pub prev_state: bool,
@@ -19,6 +21,7 @@ impl Task for ButtonTask {
         _incoming_msg: &Msg,
         sender: &mut crate::v_mpsc::Sender<Msg>,
         bsp: &mut dev::BSP,
+        _metrics: &mut Metrics
     ) {
         // junk sender.send(crate::msg::Msg::None );
         let (state, changed) = bsp.button.read_ptt();

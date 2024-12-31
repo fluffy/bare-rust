@@ -22,6 +22,7 @@ mod msg;
 mod stack;
 mod startup;
 mod tasks;
+mod metrics;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
@@ -54,13 +55,14 @@ fn my_main() -> ! {
 
     let button_task = tasks::buttons_task::ButtonTask {};
 
-    let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp);
+    let mut metrics = metrics::Metrics::new();
+    
+    let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut metrics);
     task_mgr.add_task(&button_task);
 
     led::set(Color::Green);
 
     let stack_usage = stack::usage() as u32;
-
     if cfg!(not(feature = "std")) {
         b"  Starting stack usage: ".print_console();
         stack_usage.print_console();
