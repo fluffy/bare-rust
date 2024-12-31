@@ -4,7 +4,7 @@
     feature = "board-qemu",
     feature = "board-sim"
 )))]
-compile_error!("Must specify a board as compile feature. Try --features=board-sim");
+compile_error!("Must specify a board as compile feature. Try --features=hal/board-sim,dev/std,app/std");
 
 #[cfg(all(feature = "board-hactar12", feature = "board-sim"))]
 compile_error!(
