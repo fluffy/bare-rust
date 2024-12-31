@@ -60,7 +60,7 @@ fn my_main() -> ! {
 
     let (mut sender, receiver) = v_mpsc::channel();
 
-    let button_task = tasks::ButtonTask {};
+    let button_task = tasks::buttons_task::ButtonTask {};
 
     let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp);
     task_mgr.add_task(&button_task);
