@@ -111,6 +111,36 @@ impl Buttons {
         }
     }
 
+    /// Reads the state of the PTT (Push-To-Talk) button.
+    ///
+    /// This function checks the current state of the PTT button and compares it with the state when it was previously called.
+    /// It returns a tuple containing the current state and a boolean indicating whether the state has changed.
+    ///
+    /// # Returns
+    ///
+    /// * `(bool, bool)` - A tuple where the first element is the current state of the PTT button
+    ///   (`true` if pressed, `false` otherwise), and the second element  if the state has changed
+    ///   since the last read.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use dev::BSP;
+    /// use dev::buttons;
+    ///
+    ///  let mut bsp = BSP::new();
+    ///  bsp.init();
+    ///
+    /// let (state, changed) = bsp.buttons.read_ptt();
+    /// if changed {
+    ///     if state {
+    ///         println!("PTT button pressed");
+    ///     } else {
+    ///         println!("PTT button released");
+    ///     }
+    /// }
+    /// ```
+    ///
     pub fn read_ptt(&mut self) -> (bool, bool) {
         if board::info::HAS_PTT_BUTTON {
             let state = board::info::PTT_BUTTON.read() != board::info::PTT_BUTTON_PULL_UP;
@@ -121,6 +151,36 @@ impl Buttons {
         (false, false)
     }
 
+    /// Reads the state of the AI  button.
+    ///
+    /// This function checks the current state of the AI button and compares it with the state when it was previously called.
+    /// It returns a tuple containing the current state and a boolean indicating whether the state has changed.
+    ///
+    /// # Returns
+    ///
+    /// * `(bool, bool)` - A tuple where the first element is the current state of the AI button
+    ///   (`true` if pressed, `false` otherwise), and the second element if the state has changed
+    ///   since the last read.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use dev::BSP;
+    /// use dev::buttons;
+    ///
+    /// let mut bsp = BSP::new();
+    /// bsp.init();
+    ///
+    /// let (state, changed) = bsp.buttons.read_ai();
+    /// if changed {
+    ///     if state {
+    ///         println!("AI button pressed");
+    ///     } else {
+    ///         println!("AI button released");
+    ///     }
+    /// }
+    /// ```
+    ///
     pub fn read_ai(&mut self) -> (bool, bool) {
         if board::info::HAS_AI_BUTTON {
             let state = board::info::AI_BUTTON.read() != board::info::AI_BUTTON_PULL_UP;
