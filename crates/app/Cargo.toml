@@ -7,12 +7,10 @@ version = "0.1.1"
 repository = "git@github.com:fluffy/bare-rust.git"
 license = "BSD-2-Clause"
 
-
 [dependencies]
 #std = {  optional = true }
 hal = { path = "../hal" }
 dev = { path = "../dev" }
-
 
 [[bin]]
 name = "app"
@@ -26,7 +24,4 @@ bench = false
 #default = [ "board-sim" ]
 std = []
 exit = []
-board-hactar12 = []
-board-blinkA = []
-board-qemu = [ ]
-board-sim = [ "std" ]
+

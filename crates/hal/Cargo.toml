@@ -8,7 +8,6 @@ repository = "git@github.com:fluffy/bare-rust.git"
 license = "BSD-2-Clause"
 
 [dependencies]
-#std = {  optional = true }
 
 [lib]
 name = "hal"
