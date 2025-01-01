@@ -23,7 +23,7 @@ impl Task for ButtonTask {
         _metrics: &mut Metrics,
     ) {
         // junk sender.send(crate::msg::Msg::None );
-        let (state, changed) = bsp.button.read_ptt();
+        let (state, changed) = bsp.buttons.read_ptt();
         if changed {
             sender.send(crate::msg::Msg::PttButton(state));
         }

@@ -1,3 +1,27 @@
+//! # Console Module
+//!
+//! This module provides functionality for printing debug information to the console.
+//!
+//! ## Traits
+//!
+//! - `Print`: A trait for printing data to the console.
+//! Implemented for various data types such as `[u8]`, and `u64`
+//!
+//! ## Example
+//!
+//! ```rust
+//!  use dev::BSP;
+//!  use dev::console::Print;
+//!  let mut bsp = BSP::new();
+//!  bsp.init();
+//!
+//!  let message: &[u8] = b"Hello, world!";
+//!  message.print_console();
+//!
+//!  let number: u64 = 42;
+//!  number.print_console();
+//! ```
+
 #[cfg(not(feature = "std"))]
 use core::arch::asm;
 
@@ -37,7 +61,7 @@ impl Print for [u8] {
             return;
         }
         #[cfg(not(feature = "std"))]
-        if cfg!(feature = "board-qemu") {
+        if false { //if cfg!(feature = "board-qemu") {
             // make data be null term version of s
             let mut data = [0u8; 80 + 1];
             for (i, c) in s.iter().enumerate() {

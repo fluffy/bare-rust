@@ -1,3 +1,29 @@
+//! # LED Module
+//!
+//! This module provides functionality for controlling the LED on the board.
+//! It includes methods for initializing the LED and setting its colors.
+//!
+//! ## Enums
+//!
+//! - `Color`: An enumeration of possible LED colors (Black, White, Red, Green, Blue).
+//!
+//! ## Functions
+//!
+//! - `set`: Sets the color of the LEDs based on the provided `Color` enum value.
+//!
+//! ## Example
+//!
+//! ```rust
+//!  use dev::BSP;
+//!  use dev::led;
+//!  let mut bsp = BSP::new();
+//!  bsp.init();
+//!
+//!  led::set(led::Color::Blue);
+//!  led::set(led::Color::Black); // turn off LED
+//! ```
+//!
+
 extern crate hal;
 
 use hal::board;
@@ -23,6 +49,7 @@ impl Led {
     }
 }
 
+/// Represents the possible colors for the LED.
 pub enum Color {
     Black,
     White,
@@ -30,6 +57,8 @@ pub enum Color {
     Green,
     Blue,
 }
+
+/// Sets the color of the LED based on the provided `Color` enum value.
 pub fn set(c: Color) {
     match c {
         Color::Red => {
