@@ -127,7 +127,6 @@ impl Buttons {
     /// ```rust
     /// use dev::BSP;
     /// use dev::buttons;
-    ///
     ///  let mut bsp = BSP::new();
     ///  bsp.init();
     ///
