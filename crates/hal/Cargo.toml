@@ -21,7 +21,6 @@ test = false
 #default = [ "board-hactar12" ]
 #default = [ "board-sim" ]
 std = []
-exit = []
 board-hactar12 = []
 board-blinkA = []
 board-qemu = [ ]
