@@ -1,4 +1,3 @@
-//use core::marker::PhantomData;
 
 use crate::msg::Msg;
 
@@ -16,7 +15,6 @@ pub mod v_mpsc {
     pub struct Sender<T> {
         ch: usize,
         _marker: *const T,
-        //_marker: core::marker::PhantomData<T>,
     }
 
     impl<T> Sender<T> {
@@ -35,7 +33,6 @@ pub mod v_mpsc {
     pub struct Receiver<T> {
         ch: usize,
         _marker: *const T,
-        //_marker: core::marker::PhantomData<T>,
     }
 
     impl<T> Receiver<T> {
