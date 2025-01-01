@@ -73,7 +73,7 @@ pub fn init() {
     // do after uart is up
 
     // Do last as this starts timer events
-    timer::init1();
+    timer::init2();
 }
 
 #[inline(never)]

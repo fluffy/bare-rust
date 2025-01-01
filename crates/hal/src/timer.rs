@@ -14,7 +14,7 @@ pub use super::cpu::TIM_GEN as TIM2;
 const TIME_WRAP_AROUND: u32 = 3600 * 1000_000; // 1 hour@1Mhz
 
 #[inline(never)]
-pub fn init1() {
+pub fn init2() {
     // enable TIM2 clock
     //cpu::write!( RCC.apb2enr[TIM2EN;1], 1);
     cpu::write!( RCC.apb1enr[TIM2EN;1], 1);
