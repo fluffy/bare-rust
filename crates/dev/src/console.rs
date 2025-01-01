@@ -37,7 +37,7 @@ impl Print for [u8] {
             return;
         }
         #[cfg(not(feature = "std"))]
-        if cfg!(feature = "board-qemu") {
+        if false { //if cfg!(feature = "board-qemu") {
             // make data be null term version of s
             let mut data = [0u8; 80 + 1];
             for (i, c) in s.iter().enumerate() {
