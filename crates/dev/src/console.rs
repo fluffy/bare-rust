@@ -12,7 +12,6 @@
 //! ```rust
 //!  use dev::BSP;
 //!  use dev::console::Print;
-//!
 //!  let mut bsp = BSP::new();
 //!  bsp.init();
 //!
