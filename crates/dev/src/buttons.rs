@@ -1,3 +1,13 @@
+//! # Buttons Module
+//!
+//! This module provides functionality for reading if the buttons on the board are pressed.
+//!
+//! ## Functions
+//!
+//! - `read_ptt`: Reads the state of the PTT (Push-To-Talk) button.
+//! - `read_ai`: Reads the state of the AI button.
+//!
+
 use core::ptr;
 
 extern crate hal;
