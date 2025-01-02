@@ -1,8 +1,8 @@
 //! # GPIO Module
 //!
-//! This module provides functionality for initializing and controlling 
+//! This module provides functionality for initializing and controlling
 //! General-Purpose Input/Output (GPIO) pins.
-//! It includes methods for setting pins as input or output, configuring 
+//! It includes methods for setting pins as input or output, configuring
 //! pull-up or pull-down resistors, and reading or writing pin states.
 //!
 //! ## Structures
@@ -27,7 +27,7 @@
 //! ## Usage
 //!
 //! This module is intended for low-level hardware interaction and should be used with caution.
-//! It provides direct access to hardware registers, 
+//! It provides direct access to hardware registers,
 //! which can lead to undefined behavior if used incorrectly.
 //!
 //! ## Example
@@ -36,7 +36,7 @@
 //! use crate::hal::gpio::{self, Pin};
 //! use crate::hal::cpu;
 //! use crate::hal::clock;
-//! 
+//!
 //! fn main() {
 //!     // Initialize things
 //!     cpu::init();

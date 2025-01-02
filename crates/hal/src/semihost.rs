@@ -1,6 +1,6 @@
 //! # Semihost Module
 //!
-//! This module provides functions for interacting with the semihosting interface, 
+//! This module provides functions for interacting with the semihosting interface,
 //! specifically for ARM targets.
 //! It includes functions for exiting the application with or without a status code.
 //!

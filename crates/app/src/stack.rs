@@ -6,7 +6,6 @@ use core::ptr;
 #[cfg(target_arch = "arm")]
 use core::arch::asm;
 
-
 extern "C" {
     static _estack: u8;
     static _heap_start: u8;
@@ -14,8 +13,10 @@ extern "C" {
     static _stack_reserve_end: u8;
 }
 
+#[allow(dead_code)]
 const STACK_PAINT: u32 = 0xc5c5c5c5;
-pub const STACK_PAINT_BYTE: u8 = 0xc5; // this is used by startup 
+#[allow(dead_code)]
+pub const STACK_PAINT_BYTE: u8 = 0xc5; // this is used by startup
 
 #[cfg(target_arch = "arm")]
 #[inline(never)]
@@ -30,7 +31,7 @@ fn get_stack_pointer() -> u32 {
 
 #[cfg(target_arch = "arm")]
 #[inline(never)]
-/// Calculates the maximum stack usage since the last repaint 
+/// Calculates the maximum stack usage since the last repaint
 /// and optionally repaints the stack.
 pub fn usage(repaint: bool) -> usize {
     let start: u32 = ptr::addr_of!(_heap_start) as u32;
@@ -100,6 +101,6 @@ pub fn usage(repaint: bool) -> usize {
 }
 
 #[cfg(not(target_arch = "arm"))]
-pub fn usage( _repaint: bool ) -> usize {
+pub fn usage(_repaint: bool) -> usize {
     0
 }

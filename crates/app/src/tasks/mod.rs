@@ -93,7 +93,7 @@ impl<'a> TaskMgr<'a> {
     }
 
     /// Runs all the tasks managed by the `TaskMgr`, ensuring
-    /// they adhere to their time and memory budgets. 
+    /// they adhere to their time and memory budgets.
     /// The method also updates the task metrics.
     pub fn run(&mut self) {
         stack::usage(true); // reset stack usage
