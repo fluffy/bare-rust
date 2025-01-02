@@ -1,6 +1,6 @@
-/// The `buttons_task` module contains the implementation of the button task.
-/// This task is responsible for reading the state of a button and sending a message
-/// if the button state changes.
+//! The `buttons_task` module contains the implementation of the button task.
+//! This task is responsible for reading the state of a button and sending a message
+//! if the button state changes.
 
 use super::Task;
 use crate::metrics::Metrics;

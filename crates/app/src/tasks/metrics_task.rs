@@ -1,6 +1,6 @@
-/// The `metrics_task` module contains the implementation of the metrics task.
-/// This task is responsible for periodically printing all metrics to the console
-/// and then resetting the metrics.
+//! The `metrics_task` module contains the implementation of the metrics task.
+//! This task is responsible for periodically printing all metrics to the console
+//! and then resetting the metrics.
 
 use super::Task;
 use crate::metrics::Metrics;

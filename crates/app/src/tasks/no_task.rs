@@ -1,5 +1,5 @@
-/// The `no_task` module contains the implementation of a placeholder task.
-/// This task is used when no task is assigned and should never be run.
+//! The `no_task` module contains the implementation of a placeholder task.
+//! This task is used when no task is assigned and should never be run.
 
 use super::Task;
 use crate::metrics::Metrics;

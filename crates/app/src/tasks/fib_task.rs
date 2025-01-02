@@ -1,8 +1,8 @@
-/// The `fib_task` module contains the implementation of task to compute
-/// a  Fibonacci number.
-/// This is a bogus task just to test the task manager can
-/// deal with memory and cpu usage budgets
-///
+//! The `fib_task` module contains the implementation of task to compute
+//! a  Fibonacci number.
+//! This is a bogus task just to test the task manager can
+//! deal with memory and cpu usage budgets
+
 use super::Task;
 use crate::metrics::Metrics;
 use crate::msg::Msg;

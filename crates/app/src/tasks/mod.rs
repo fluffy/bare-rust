@@ -1,6 +1,6 @@
-/// The `tasks` module is responsible for managing and running various tasks in the system.
-/// It provides the necessary structures and traits to define tasks, manage their execution,
-/// and track their metrics.
+//! The `tasks` module is responsible for managing and running various tasks in the system.
+//! It provides the necessary structures and traits to define tasks, manage their execution,
+//! and track their metrics.
 
 pub mod buttons_task;
 pub mod fib_task;
