@@ -4,6 +4,7 @@
 //! deal with memory and cpu usage budgets
 
 use super::Task;
+use crate::fib;
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
@@ -29,22 +30,12 @@ impl Task for FibTask {
         _bsp: &mut dev::BSP,
         _metrics: &mut Metrics,
     ) {
-        fib(34);
+        fib::fib(34);
     }
 
     /// Returns the information about the Fibonacci task.
     #[allow(dead_code)]
     fn info(&self) -> &'static TaskInfo {
         &FIB_TASK_INFO
-    }
-}
-
-/// Function to calculate the Fibonacci sequence.
-/// Returns the Fibonacci number at position `x`.
-fn fib(x: usize) -> u32 {
-    if x > 2 {
-        crate::fib(x - 1) + crate::fib(x - 2)
-    } else {
-        1
     }
 }
