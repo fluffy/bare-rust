@@ -8,8 +8,18 @@
 flowchart LR
     A[Keyboard] --> |Keypress| B[TextEdit]
     B --> |TextInput| C[Chat]
-    C --> |TxtMsg| D[Encrypt]
+    C --> |TxtMsg| D[Crypto]
     D --> |EncTxtMsg| F[NetLink]
+    C --> |print| J[Render]
+    J --> |bitmap| K[Display]
+```
+
+## Inbound Text Message Data Flow
+
+```mermaid
+flowchart LR
+    A[NetLink] --> |EncTxtMsgIn| B[Crypto]
+    B --> |TxtMsgIn| C[Chat]
     C --> |print| J[Render]
     J --> |bitmap| K[Display]
 ```
