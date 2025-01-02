@@ -1,3 +1,5 @@
+//! Metrics module that holds all the metrics for the system.
+
 use crate::tasks::MAX_TASKS;
 
 /// Structure to hold all the metrics for the system.

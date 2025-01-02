@@ -1,3 +1,5 @@
+//! Application main loop and entry point
+
 #![no_std]
 #![cfg_attr(not(feature = "std"), no_main)]
 

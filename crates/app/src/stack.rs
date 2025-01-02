@@ -1,3 +1,5 @@
+//! Stack usage tracking and painting.
+
 #[cfg(target_arch = "arm")]
 use core::ptr;
 

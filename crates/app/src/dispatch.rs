@@ -1,3 +1,8 @@
+//!
+//! This module is responsible for processing all the incoming messages 
+//! from tasks and dispatching them to the appropriate task for handling.
+//! 
+
 extern crate dev;
 
 #[cfg(feature = "std")]
