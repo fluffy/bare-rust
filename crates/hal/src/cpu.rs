@@ -1,3 +1,51 @@
+//! # CPU Module
+//!
+//! This module provides low-level access to various CPU registers and peripherals.
+//! It includes definitions and functions for interacting 
+//! with the Flash, RCC, NVIC, GPIO, USART, and TIM registers.
+//! Additionally, it provides macros for reading and writing to these registers.
+//!
+//! ## Structures
+//!
+//! - `FlashReg`: Represents the Flash memory interface registers.
+//! - `RccReg`: Represents the Reset and Clock Control registers.
+//! - `NVICReg`: Represents the Nested Vectored Interrupt Controller registers.
+//! - `GpioReg`: Represents the General-Purpose Input/Output registers.
+//! - `UsartReg`: Represents the Universal Synchronous/Asynchronous Receiver/Transmitter registers.
+//! - `TimAdvReg`: Represents the Advanced Control Timer registers.
+//! - `TimGenReg`: Represents the General Purpose Timer registers.
+//!
+//! ## Constants
+//!
+//! - `FLASH`: Base address for the Flash registers.
+//! - `RCC`: Base address for the RCC registers.
+//! - `NVIC`: Base address for the NVIC registers.
+//! - `GPIO_A`, `GPIO_B`, `GPIO_C`: Base addresses for the GPIO registers.
+//! - `USART1`: Base address for the USART1 registers.
+//! - `TIM1`, `TIM2`: Base addresses for the TIM1 and TIM2 registers.
+//!
+//! ## Macros
+//!
+//! - `write!`: Macro for writing to a register.
+//! - `read!`: Macro for reading from a register.
+//!
+//! ## Functions
+//!
+//! - `init`: Initializes the simulator memory (for `board-sim` feature).
+//! 
+//! The following functions should not be use and instead use the macros.
+//! 
+//! - `update_reg`: Updates a register with a masked value.
+//! - `write_reg`: Writes a value to a register.
+//! - `read_reg`: Reads a value from a register.
+//!
+//! ## Usage
+//!
+//! This module is intended for low-level hardware interaction and should be used with caution.
+//! It provides direct access to hardware registers, which can lead to undefined 
+//! behavior if used incorrectly.
+//!
+
 pub use super::svd;
 pub use super::svd::*;
 

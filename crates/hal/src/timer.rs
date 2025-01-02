@@ -1,3 +1,38 @@
+//! # Timer Module
+//!
+//! This module provides functionality for initializing and handling timers, specifically TIM2.
+//! It includes methods for setting up the timer, handling timer interrupts, and retrieving the current time.
+//!
+//! ## Constants
+//!
+//! - `TIME_WRAP_AROUND`: The time duration (in microseconds) after which the timer wraps around (1 hour at 1 MHz).
+//!
+//! ## Functions
+//!
+//! - `init2`: Initializes the TIM2 timer with a 1 MHz prescaler and sets it to wrap around every hour.
+//! - `handle_tim2_irq`: Handles the TIM2 interrupt by clearing the update interrupt flag.
+//! - `current_time`: Retrieves the current time in microseconds from the TIM2 timer.
+//!
+//! ## Structures
+//!
+//! - `MicroSeconds`: Represents a time duration in microseconds and provides methods for time manipulation.
+//!
+//! ## Example
+//!
+//! ```rust
+//! use crate::hal::timer::{self, MicroSeconds};
+//! use crate::hal::cpu;
+//!
+//! fn main() {
+//!     // Initialize the CPU and timer
+//!     cpu::init();
+//!     timer::init2();
+//!
+//!     // Get the current time
+//!     let current_time = timer::current_time();
+//! }
+//! ```
+
 use core::ptr;
 
 #[cfg(feature = "std")]

@@ -59,6 +59,7 @@ pub mod timer;
 pub mod uart;
 
 #[inline(never)]
+/// Initializes the hardware.
 pub fn init() {
     cpu::init();
 
@@ -77,6 +78,7 @@ pub fn init() {
 }
 
 #[inline(never)]
+/// Validates the hardware has been correctly initialized.
 pub fn validate() {
     clock::validate();
 }
