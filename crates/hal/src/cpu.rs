@@ -1,7 +1,7 @@
 //! # CPU Module
 //!
 //! This module provides low-level access to various CPU registers and peripherals.
-//! It includes definitions and functions for interacting 
+//! It includes definitions and functions for interacting
 //! with the Flash, RCC, NVIC, GPIO, USART, and TIM registers.
 //! Additionally, it provides macros for reading and writing to these registers.
 //!
@@ -32,9 +32,9 @@
 //! ## Functions
 //!
 //! - `init`: Initializes the simulator memory (for `board-sim` feature).
-//! 
+//!
 //! The following functions should not be use and instead use the macros.
-//! 
+//!
 //! - `update_reg`: Updates a register with a masked value.
 //! - `write_reg`: Writes a value to a register.
 //! - `read_reg`: Reads a value from a register.
@@ -42,7 +42,7 @@
 //! ## Usage
 //!
 //! This module is intended for low-level hardware interaction and should be used with caution.
-//! It provides direct access to hardware registers, which can lead to undefined 
+//! It provides direct access to hardware registers, which can lead to undefined
 //! behavior if used incorrectly.
 //!
 

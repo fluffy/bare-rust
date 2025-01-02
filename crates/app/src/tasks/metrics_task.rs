@@ -7,8 +7,8 @@ use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
 
-use dev::console::Print;
 use crate::tasks::MAX_TASKS;
+use dev::console::Print;
 
 /// Structure representing the metrics task.
 pub struct MetricsTask {}
@@ -24,7 +24,7 @@ const METRICS_TASK_INFO: TaskInfo = TaskInfo {
 impl Task for MetricsTask {
     /// Method to execute the metrics task.
     /// Prints and resets the metrics of all tasks.
-    /// 
+    ///
     /// Prints the number of runs, maximum stack usage, and maximum duration of each task.
     /// Then resets the metrics for all tasks.
     fn run(

@@ -8,8 +8,7 @@ use crate::msg::Msg;
 use crate::tasks::TaskInfo;
 
 /// Structure representing the button task.
-pub struct ButtonTask {
-}
+pub struct ButtonTask {}
 
 /// Information about the button task.
 const BUTTON_TASK_INFO: TaskInfo = TaskInfo {
@@ -32,7 +31,7 @@ impl Task for ButtonTask {
         // junk sender.send(crate::msg::Msg::None );
         let (state, changed) = bsp.buttons.read_ptt();
         if changed {
-            sender.send( Msg::PttButton(state));
+            sender.send(Msg::PttButton(state));
         }
     }
 

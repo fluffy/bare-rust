@@ -1,7 +1,7 @@
 //!
-//! This module is responsible for processing all the incoming messages 
+//! This module is responsible for processing all the incoming messages
 //! from tasks and dispatching them to the appropriate task for handling.
-//! 
+//!
 
 extern crate dev;
 
@@ -12,10 +12,10 @@ use crate::channel::v_mpsc;
 use crate::msg;
 use dev::console::Print;
 
-/// Processes all the incoming messages from tasks and dispatches them to the 
+/// Processes all the incoming messages from tasks and dispatches them to the
 /// appropriate task for handling.
 ///
-/// Consumes all the messages from the receiver and 
+/// Consumes all the messages from the receiver and
 /// processes them each time it is called.
 ///
 pub fn process(receiver: v_mpsc::Receiver<msg::Msg>) {
