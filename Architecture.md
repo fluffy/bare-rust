@@ -1,7 +1,5 @@
 # Arch
 
-
-
 ## Outbound Text Message Data Flow
 
 ```mermaid
@@ -24,7 +22,18 @@ flowchart LR
     J --> |bitmap| K[Display]
 ```
 
-## Device and Hardware Abstraction Layers
+## Outbound Audio Data Flow
+
+## Inbound Audio Data Flow
+
+
+## Group Selection Data Flow
+
+## Remote Storage Data Flows
+
+
+
+# Device and Hardware Abstraction Layers
 
 The following diagram shows how the applications uses 
 modules from the DEV layer which uses the HAL layer
