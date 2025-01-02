@@ -1,26 +1,49 @@
 # Arch
 
-start
 
 ```mermaid
-stateDiagram
-    [*] --> Still
-    Still --> [*]
-
-    Still --> Moving
-    Moving --> Still
-    Moving --> Crash
-    Crash --> [*]
+block-beta
+columns 1
+  App
+  block:DEV
+      Display
+      Storage
+      Audio
+      Console
+      NetLink
+      Keyboard
+      Buttons
+      Battery
+  end
+  space
+  block:HAL
+    SPI
+    I2C
+    I2S
+    UART
+    GPIO
+    ADC
+  end
+  Keyboard --> GPIO
+  Display --> SPI
+  Audio --> I2S
+  Audio --> I2C
+  Storage --> I2C
+  Battery --> ADC
+  Console --> UART
+  Buttons --> GPIO
+  NetLink --> UART
 ```
 
-two
+
+## Outbound Text Message DataFlow
 
 ```mermaid
-graph TD
-    A[Start] --> B[Process 1]
-    B --> C{Decision}
-    C -->|Yes| D[Process 2]
-    C -->|No| E[Process 3]
-    D --> F[End]
-    E --> F[End]
+flowchart LR
+    A[Keyboard] --> |Keypress| B[TextCompose]
+    B --> |TextInput| C[TxtMsgComposer]
+    C --> |TxtMsg| D[Encryptor]
+    D --> |EncTxtMsg| F[NetLink]
 ```
+
+## Arch 
