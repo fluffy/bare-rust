@@ -1,5 +1,21 @@
 # Arch
 
+
+
+## Outbound Text Message Data Flow
+
+```mermaid
+flowchart LR
+    A[Keyboard] --> |Keypress| B[TextEdit]
+    B --> |TextInput| C[Chat]
+    C --> |TxtMsg| D[Encrypt]
+    D --> |EncTxtMsg| F[NetLink]
+    C --> |print| J[Render]
+    J --> |bitmap| K[Display]
+```
+
+## Device and Hardware Abstraction Layers
+
 The following diagram shows how the applications uses 
 modules from the DEV layer which uses the HAL layer
 to interact with the hardware.
