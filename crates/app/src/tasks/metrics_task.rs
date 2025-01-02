@@ -1,14 +1,19 @@
+/// The `metrics_task` module contains the implementation of the metrics task.
+/// This task is responsible for periodically printing all metrics to the console
+/// and then resetting the metrics.
+
 use super::Task;
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
 
 use dev::console::Print;
-
 use crate::tasks::MAX_TASKS;
 
+/// Structure representing the metrics task.
 pub struct MetricsTask {}
 
+/// Information about the metrics task.
 const METRICS_TASK_INFO: TaskInfo = TaskInfo {
     name: "MetricsTask",
     run_every_us: 5_000_000,
@@ -17,6 +22,11 @@ const METRICS_TASK_INFO: TaskInfo = TaskInfo {
 };
 
 impl Task for MetricsTask {
+    /// Method to execute the metrics task.
+    /// Prints and resets the metrics of all tasks.
+    /// 
+    /// Prints the number of runs, maximum stack usage, and maximum duration of each task.
+    /// Then resets the metrics for all tasks.
     fn run(
         &self,
         _msg: &Msg,
@@ -50,6 +60,7 @@ impl Task for MetricsTask {
         }
     }
 
+    /// Returns the information about the metrics task.
     #[allow(dead_code)]
     fn info(&self) -> &'static TaskInfo {
         &METRICS_TASK_INFO
