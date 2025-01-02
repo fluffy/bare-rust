@@ -1,5 +1,28 @@
+//! Startup code for ARM Cortex-M microcontrollers
+//! 
+//! The `Reset_Handler` function is the entry point of the program
+//! and is called after the microcontroller is reset. It initializes
+//! the `.bss` and `.data` sections, and then calls the `main` function.
+//! 
+//! The `Default_Handler` function is an exception handler that is called
+//! when an exception with no specific handler is raised. It simply
+//! turns on the red LED and enters an infinite loop.
+//! 
+//! The `XXX_IRQHandler` functions are interrupt handlers that are called
+//! when a specific interrupt is raised. 
+//! 
+//! More information about the startup process can be found in 
+//! the [Cortex-M4 Technical Reference Manual](https://documentation-service.arm.com/static/5f19da2a20b7cf4bc524d99a). 
+//! 
+//! The code in this module is closely tied to the linker configuration 
+//! script in the `linker.ld` file.
+//! 
+
 #[cfg(not(feature = "std"))]
 use core::ptr;
+
+#[cfg(not(feature = "std"))]
+use super::stack::STACK_PAINT_BYTE;
 
 #[cfg(not(feature = "std"))]
 use dev::led;
@@ -55,7 +78,7 @@ pub extern "C" fn Reset_Handler() -> ! {
         // initialize the heap and stack to 0xC1
         // leave 100 bytes free for this function
         let count = &_estack as *const u8 as usize - &_heap_start as *const u8 as usize - 100;
-        ptr::write_bytes(&mut _heap_start as *mut u8, 0xC5, count);
+        ptr::write_bytes(&mut _heap_start as *mut u8, STACK_PAINT_BYTE, count);
     }
 
     unsafe { main() }

@@ -1,3 +1,41 @@
+//! # Board Module
+//!
+//! This module provides board-specific configurations and initializations for different supported boards.
+//! It ensures that only one board is specified as a feature during compilation and provides constants
+//! and configurations specific to each board.
+//!
+//! ## Supported Boards
+//!
+//! - `board-hactar12`: Configuration for the Hactar V12 board.
+//! - `board-blinkA`: Configuration for the Blink Rev A board.
+//! - `board-qemu`: Configuration for the QEMU emulator.
+//! - `board-sim`: Configuration for the simulation of the board.
+//!
+//! ## Usage
+//!
+//! To compile this module, you need to specify one of the supported boards as a feature. For example:
+//! ```sh
+//! cargo build --features=board-hactar12 -target=thumbv7em-none-eabihf
+//! ```
+//!
+//! ## Board Information
+//!
+//! Each board configuration provides the following information:
+//!
+//! - `HAS_RCC`: Indicates if the board has an RCC (Reset and Clock Control).
+//! - `IS_SIM`: Indicates if the board is a simulation.
+//! - `CLOCK_PLL_M`: The PLL (Phase-Locked Loop) multiplier for the clock.
+//! - `DEBUG1_PIN`: The pin used for debug signal output.
+//! - `LED_RED_PIN`, `LED_GREEN_PIN`, `LED_BLUE_PIN`: Pins for the red, green, and blue LEDs.
+//! - `HAS_PTT_BUTTON`: Indicates if the board has a PTT (Push-To-Talk) button.
+//! - `PTT_BUTTON`: The pin for the PTT button.
+//! - `PTT_BUTTON_PULL_UP`: Indicates if the PTT button has a pull-up resistor.
+//! - `HAS_AI_BUTTON`: Indicates if the board has an AI (Artificial Intelligence) button.
+//! - `AI_BUTTON`: The pin for the AI button.
+//! - `AI_BUTTON_PULL_UP`: Indicates if the AI button has a pull-up resistor.
+//! - `CONSOLE_TX`, `CONSOLE_RX`: Pins for the console serial TX and RX.
+//!
+
 #[cfg(not(any(
     feature = "board-hactar12",
     feature = "board-blinkA",

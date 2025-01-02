@@ -1,3 +1,5 @@
+//! Application main loop and entry point
+
 #![no_std]
 #![cfg_attr(not(feature = "std"), no_main)]
 
@@ -28,16 +30,19 @@ mod tasks;
 #[no_mangle]
 #[export_name = "main"]
 #[inline(never)]
+/// Entry point for the application when the `std` feature is not enabled.
 pub extern "C" fn main() -> ! {
     my_main();
 }
 
 #[cfg(feature = "std")]
+/// Entry point for the application when the `std` feature is enabled.
 fn main() -> () {
     my_main();
 }
 
 #[inline(never)]
+/// Main function that initializes the system and runs the task manager.
 fn my_main() -> ! {
     //msg::test_msg();
 
@@ -97,6 +102,8 @@ fn my_main() -> ! {
     }
 }
 
+/// Function to test performance using the Fibonacci calculation.
+#[inline(never)]
 fn fib_test() {
     // fib*34) getting 1.630 s on dev
     // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed
@@ -118,6 +125,8 @@ fn fib_test() {
     b" mS\r\n".print_console();
 }
 
+#[inline(never)]
+/// calculate the x'th Fibonacci number
 fn fib(x: usize) -> u32 {
     if x > 2 {
         fib(x - 1) + fib(x - 2)

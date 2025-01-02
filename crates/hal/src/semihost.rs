@@ -1,3 +1,20 @@
+//! # Semihost Module
+//!
+//! This module provides functions for interacting with the semihosting interface, 
+//! specifically for ARM targets.
+//! It includes functions for exiting the application with or without a status code.
+//!
+//! ## Functions
+//!
+//! - `exit_no_status`: Exits the application without a status code.
+//! - `exit`: Exits the application with a specified status code.
+//!
+//! ## Usage
+//!
+//! This module is intended for low-level hardware interaction and should be used with caution.
+//! It provides direct access to hardware registers, which can lead to undefined behavior if used incorrectly.
+//!
+
 #[cfg(feature = "std")]
 extern crate std;
 

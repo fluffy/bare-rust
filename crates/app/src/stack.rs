@@ -1,3 +1,5 @@
+//! Stack usage tracking and painting.
+
 #[cfg(target_arch = "arm")]
 use core::ptr;
 
@@ -12,8 +14,12 @@ extern "C" {
     static _stack_reserve_end: u8;
 }
 
+const STACK_PAINT: u32 = 0xc5c5c5c5;
+pub const STACK_PAINT_BYTE: u8 = 0xc5; // this is used by startup 
+
 #[cfg(target_arch = "arm")]
 #[inline(never)]
+/// Retrieves the current address of the stack pointer.
 fn get_stack_pointer() -> u32 {
     let sp: u32;
     unsafe {
@@ -24,6 +30,8 @@ fn get_stack_pointer() -> u32 {
 
 #[cfg(target_arch = "arm")]
 #[inline(never)]
+/// Calculates the maximum stack usage since the last repaint 
+/// and optionally repaints the stack.
 pub fn usage(repaint: bool) -> usize {
     let start: u32 = ptr::addr_of!(_heap_start) as u32;
     let end: u32 = ptr::addr_of!(_estack) as u32;
@@ -42,7 +50,7 @@ pub fn usage(repaint: bool) -> usize {
             val2 = ptr::read_volatile(addr2);
         }
 
-        if (val1 == 0xc5c5c5c5) && (val2 == 0xc5c5c5c5) {
+        if (val1 == STACK_PAINT) && (val2 == STACK_PAINT) {
             lower_bound = mid;
         } else {
             upper_bound = mid;

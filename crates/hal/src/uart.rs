@@ -1,3 +1,35 @@
+//! # UART Module
+//!
+//! This module provides functionality for initializing and using the USART1 peripheral for serial communication.
+//! It includes methods for setting up the USART1 with a specified baud rate and sending data through the USART1 interface.
+//!
+//! ## Functions
+//!
+//! - `init1`: Initializes the USART1 peripheral with the specified baud rate.
+//! - `write1`: Sends a byte of data through the USART1 interface.
+//!
+//! ## Usage
+//!
+//! The `init1` function should be called during system startup to configure the USART1 peripheral. The `write1` function
+//! can be used to send data through the USART1 interface.
+//!
+//! ## Example
+//!
+//! ```rust
+//! use crate::hal::uart;
+//! use crate::hal::clock;
+//!
+//! fn main() {
+//!     clock::init();
+//!     // Initialize USART1 with a baud rate of 9600
+//!     uart::init1(115200);
+//!
+//!     // Send a byte of data
+//!     uart::write1(b'H');
+//!     uart::write1(b'i');
+//! }
+//! ```
+
 use core::ptr;
 
 #[cfg(feature = "std")]

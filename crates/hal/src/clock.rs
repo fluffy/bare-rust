@@ -1,3 +1,19 @@
+//! # Clock Module
+//!
+//! This module provides functions to initialize and validate the clock configuration for the system.
+//! It handles setting up the PLL (Phase-Locked Loop), external clock, and various clock dividers.
+//!
+//! ## Functions
+//!
+//! - `init`: Initializes the clock configuration based on the board-specific settings.
+//! - `validate`: Validates the clock configuration to ensure it is set up correctly.
+//!
+//! ## Usage
+//!
+//! The `init` function should be called during system startup to configure the clock. The `validate` function
+//! can be used to check if the clock configuration is correct.
+//!
+
 use core::ptr;
 
 //use super::board;
@@ -7,6 +23,7 @@ use super::cpu::*;
 use super::board;
 
 #[inline(never)]
+/// Initializes the clock configuration based on the board-specific settings.
 pub fn init() {
     if board::info::IS_SIM {
         cpu::write!(RCC.cfgr[SWS0;2], 0b10);
@@ -86,6 +103,7 @@ pub fn init() {
 }
 
 #[inline(never)]
+/// Validates the clock configuration to ensure it is set up correctly.
 pub fn validate() {
     // Check if HSE is ready
     if board::info::HAS_RCC {
