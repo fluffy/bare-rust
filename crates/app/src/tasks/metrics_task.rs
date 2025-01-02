@@ -18,7 +18,7 @@ const METRICS_TASK_INFO: TaskInfo = TaskInfo {
     name: "MetricsTask",
     run_every_us: 5_000_000,
     time_budget_us: 2_000_000,
-    mem_budget_bytes: 100,
+    mem_budget_bytes: 500,
 };
 
 impl Task for MetricsTask {
