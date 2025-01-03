@@ -24,6 +24,8 @@ mod stack;
 mod startup;
 mod tasks;
 
+pub use msg::Msg;
+
 #[cfg(not(feature = "std"))]
 #[no_mangle]
 #[export_name = "main"]
@@ -99,3 +101,33 @@ fn my_main() -> ! {
         }
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+
+    #[test]
+    fn test_tasks() {
+
+        let mut bsp = dev::BSP::new();
+        bsp.init();
+        bsp.validate();
+
+        let (mut sender, _receiver): (v_mpsc::Sender<msg::Msg>, v_mpsc::Receiver<msg::Msg>) =
+            v_mpsc::channel();
+
+        let mut metrics = metrics::Metrics::new();
+
+        let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut metrics);
+
+        let button_task = tasks::buttons_task::ButtonTask {};
+        task_mgr.add_task(&button_task);
+
+        let metrics_task = tasks::metrics_task::MetricsTask {};
+        task_mgr.add_task(&metrics_task);
+
+
+    }
+}
+
