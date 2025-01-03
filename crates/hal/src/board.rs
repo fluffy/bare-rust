@@ -169,3 +169,16 @@ pub mod info {
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+
+    #[test]
+    fn test_board() {
+        // make sure this file shows up in test coverage
+        let is_sim = board::info::IS_SIM;
+        assert_eq!(is_sim, true);
+    }
+}

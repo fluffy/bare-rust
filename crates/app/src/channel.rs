@@ -140,6 +140,7 @@ pub mod v_mpsc {
 #[cfg(feature = "std")]
 #[test]
 pub fn test_channel() {
+    #[allow(unused_mut)]
     let (mut tx, rx): (v_mpsc::Sender<Msg>, v_mpsc::Receiver<Msg>) = v_mpsc::channel();
 
     //tx.send(Msg::AiButton(true));

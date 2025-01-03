@@ -42,3 +42,15 @@ pub fn fib(x: usize) -> u32 {
         1
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn fib_sanity_check() {
+        let result = fib(6);
+        assert_eq!(result, 8);
+    }
+
+}

@@ -21,3 +21,15 @@ pub enum Msg {
     //Keyboard { key: char },
     //MoqObject { name: u128, group: u64, id: u64 },
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_msg() {
+        // make sure this file shows up in test coverage
+        let _msg = Msg::PttButton(true);
+    }
+}

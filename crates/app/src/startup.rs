@@ -25,9 +25,11 @@ use core::ptr;
 use super::stack::STACK_PAINT_BYTE;
 
 #[cfg(not(feature = "std"))]
+#[allow(unused_imports)]
 use dev::led;
 
 #[cfg(not(feature = "std"))]
+#[allow(unused_imports)]
 use dev::led::Color;
 
 #[cfg(not(feature = "std"))]
@@ -36,8 +38,10 @@ extern "C" {
 }
 
 #[cfg(not(feature = "std"))]
+#[allow(unused_imports)]
 use core::panic::PanicInfo;
 
+#[cfg(target_arch = "arm")]
 #[cfg(not(feature = "std"))]
 #[inline(never)]
 #[panic_handler]
@@ -84,6 +88,7 @@ pub extern "C" fn Reset_Handler() -> ! {
     unsafe { main() }
 }
 
+#[cfg(target_arch = "arm")]
 #[cfg(not(feature = "std"))]
 #[inline(never)]
 #[no_mangle]
@@ -96,6 +101,13 @@ pub extern "C" fn Default_Handler() {
         hal::semihost::exit(0);
     }
 }
+
+#[cfg(feature = "std")]
+#[no_mangle]
+pub extern "C" fn Default_Handler() {
+   assert!(false, "Default_Handler should never be called in simulation");
+}
+
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
