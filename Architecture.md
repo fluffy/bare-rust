@@ -36,6 +36,8 @@ block-beta
         NetLinkTask
         DisplayTask
         MetricsTask
+      PttTask
+      CodecTask
     end
     block: base:1
         columns 4
@@ -45,12 +47,13 @@ block-beta
     end
 ```
 
-## Outbound Text Message Data Flow
+## Data Flows
 
 The following diagrams show the data flow between tasks for various
-operation. The labels on the arrows show the message type used in 
+operation. The labels on the arrows show the message type used in
 the channel for communication.
 
+### Outbound Text Message Data Flow
 
 ```mermaid
 flowchart LR
@@ -62,7 +65,7 @@ flowchart LR
     J -->|bitmap| K[Display]
 ```
 
-## Inbound Text Message Data Flow
+### Inbound Text Message Data Flow
 
 ```mermaid
 flowchart LR
@@ -72,18 +75,38 @@ flowchart LR
     J -->|bitmap| K[Display]
 ```
 
-## Outbound Audio Data Flow
+### Outbound Audio Data Flow
 
-## Inbound Audio Data Flow
+```mermaid
+flowchart LR
+    A[Audio] -->|AudOut| B[Codec]
+    B -->|EncAudOut| C[PTT]
+    C -->|AudMsgOut| D[Crypto]
+    D -->|EncAudMsgOut| F[NetLink]
+```
 
-## Group Selection Data Flow
+### Inbound Audio Data Flow
 
-## Remote Storage Data Flows
+```mermaid
+flowchart LR
+    A[NetLink] -->|EncAudMsgIn| B[Crypto]
+    B -->|AudMsgIn| C[PTT]
+    C -->|EncAudIn| J[Codec]
+    J -->|AudIn| K[Audio]
+```
+
+### Group Selection Data Flow
+
+TODO - describe how the group selection works
+
+### Remote Storage Data Flows
+
+TODO - describe flows for remote storage
 
 # Device and Hardware Abstraction Layers
 
 The following diagram shows how the applications uses modules from the
-DEV layer which in turn use the HAL layer to interact with the 
+DEV layer which in turn use the HAL layer to interact with the
 hardware.
 
 ```mermaid
