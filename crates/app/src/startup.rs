@@ -102,7 +102,7 @@ pub extern "C" fn Default_Handler() {
     }
 }
 
-#[cfg(not(feature = "std"))]
+#[cfg(feature = "std")]
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
    assert!(false, "Default_Handler should never be called in simulation");
