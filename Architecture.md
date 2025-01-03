@@ -64,7 +64,7 @@ columns 1
   end
   block:Hardware
         LCD
-        EEPROM
+        M24C02
         WM8960
         USB
         NetCPU
@@ -83,7 +83,7 @@ columns 1
   UART --> NetCPU
   I2C --> WM8960
   I2S --> WM8960
-  I2C --> EEPROM
+  I2C --> M24C02
   GPIO --> Switches
  UART --> USB
 ```
