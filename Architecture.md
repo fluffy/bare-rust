@@ -1,4 +1,4 @@
-# Arch
+# Architecture
 
 The design follows a dataflow architecture where multiple tasks
 communicate by sending messages to each other. This system is built on
