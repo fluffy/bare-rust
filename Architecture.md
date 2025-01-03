@@ -1,5 +1,27 @@
 # Arch
 
+```mermaid
+block-beta
+    columns 1
+    block:DEV:1
+        columns 4 
+        KeyboardTask
+        TextEditTask
+        ChatTask
+        CryptoTask
+        RenderTask
+        NetLinkTask
+        DisplayTask
+    end
+    block:base:1
+        columns 4
+        TaskMgr
+        Channel
+        Metrics
+    end
+```
+
+
 ## Outbound Text Message Data Flow
 
 ```mermaid
