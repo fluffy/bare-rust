@@ -65,3 +65,40 @@ pub fn exit(ret: i32) -> ! {
 //pub fn exit(ret: i32) -> ! {
 //    std::process::exit(ret);
 //}
+
+#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
+#[allow(dead_code)]
+fn broken_print(s: &[u8]) {
+    // THIS DOES NOT WORK ON QEMU
+    if false {
+        //if cfg!(feature = "board-qemu") {
+        // make data be null term version of s
+        let mut data = [0u8; 80 + 1];
+        for (i, c) in s.iter().enumerate() {
+            if i > 80 {
+                break;
+            }
+            data[i] = *c;
+        }
+        if s.len() > 80 {
+            data[80] = b'\0';
+        } else {
+            data[s.len()] = 0;
+        }
+
+        let ptr = data.as_ptr();
+
+        unsafe {
+            // semihost WRITE0
+            asm!(
+            "mov r0, #0x04", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#sys-write0-0x04
+            "mov r1, {0}",
+            "bkpt #0xAB", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#4the-semihosting-interface
+            in(reg) ptr,
+            );
+        }
+
+        return;
+    }
+}

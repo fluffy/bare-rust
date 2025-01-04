@@ -43,7 +43,7 @@
     feature = "board-sim"
 )))]
 compile_error!(
-    "Must specify a board as compile feature. Try --features=hal/board-sim,dev/std,app/std"
+    "Must specify a board as compile feature. Try --features=hal/board-sim,bsp/std,app/std"
 );
 
 #[cfg(all(feature = "board-hactar12", feature = "board-sim"))]
@@ -63,13 +63,11 @@ compile_error!(
 
 #[cfg(feature = "board-hactar12")]
 pub mod info {
-    use crate::cpu;
-    use crate::gpio;
+    use hal::cpu;
+    use hal::gpio;
 
-    pub const HAS_RCC: bool = true;
-    pub const IS_SIM: bool = false;
+    pub const CLOCK_HSE_FREQ: u32 = 24_000_000; // set to 0 for simulation
 
-    pub const CLOCK_PLL_M: u32 = 12;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -90,13 +88,10 @@ pub mod info {
 
 #[cfg(feature = "board-blinkA")]
 pub mod info {
-    use crate::cpu;
-    use crate::gpio;
+    use hal::cpu;
+    use hal::gpio;
 
-    pub const HAS_RCC: bool = true;
-    pub const IS_SIM: bool = false;
-
-    pub const CLOCK_PLL_M: u32 = 8;
+    pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
 
@@ -118,13 +113,11 @@ pub mod info {
 
 #[cfg(feature = "board-qemu")]
 pub mod info {
-    use crate::cpu;
-    use crate::gpio;
+    use hal::cpu;
+    use hal::gpio;
 
-    pub const HAS_RCC: bool = false;
-    pub const IS_SIM: bool = false;
+    pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
-    pub const CLOCK_PLL_M: u32 = 12;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -145,13 +138,11 @@ pub mod info {
 
 #[cfg(feature = "board-sim")]
 pub mod info {
-    use crate::cpu;
-    use crate::gpio;
+    use hal::cpu;
+    use hal::gpio;
 
-    pub const HAS_RCC: bool = false;
-    pub const IS_SIM: bool = true;
+    pub const CLOCK_HSE_FREQ: u32 = 0_000_000; // set to 0 for simulation
 
-    pub const CLOCK_PLL_M: u32 = 12;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -170,7 +161,6 @@ pub mod info {
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::*;
@@ -178,7 +168,7 @@ mod tests {
     #[test]
     fn test_board() {
         // make sure this file shows up in test coverage
-        let is_sim = board::info::IS_SIM;
-        assert_eq!(is_sim, true);
+        let freq = board::info::CLOCK_HSE_FREQ;
+        assert_ne!(freq, 1);
     }
 }

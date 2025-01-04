@@ -10,19 +10,19 @@
 //! ## Example
 //!
 //! ```rust
-//!  use dev::BSP;
-//!  use dev::debug;
+//!  use bsp::BSP;
+//!  use bsp::debug;
 //!  let mut bsp = BSP::new();
 //!  bsp.init();
 //!
 //! // Set the debug pin 0 to high
-//! dev::debug::set(0, true);
+//! bsp::debug::set(0, true);
 //! ```
 //!
 
 extern crate hal;
 
-use hal::board;
+use crate::board;
 
 pub struct Debug {}
 
@@ -56,8 +56,8 @@ impl Debug {
 /// # Example
 ///
 /// ```rust
-/// use dev::BSP;
-/// use dev::debug;
+/// use bsp::BSP;
+/// use bsp::debug;
 /// let mut bsp = BSP::new();
 /// bsp.init();
 ///
@@ -77,4 +77,3 @@ pub fn set(channel: u8, state: bool) {
         board::info::DEBUG1_PIN.low();
     }
 }
-

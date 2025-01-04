@@ -3,14 +3,14 @@
 //! from tasks and dispatching them to the appropriate task for handling.
 //!
 
-extern crate dev;
+extern crate bsp;
 
 #[cfg(feature = "std")]
 extern crate std;
 
 use crate::channel::mpsc;
 use crate::msg;
-use dev::console::Print;
+use bsp::console::Print;
 
 /// Processes all the incoming messages from tasks and dispatches them to the
 /// appropriate task for handling.
@@ -19,7 +19,7 @@ use dev::console::Print;
 /// processes them each time it is called.
 ///
 pub fn process(receiver: mpsc::Receiver<msg::Msg>) {
-    let mut loop_count =0;
+    let mut loop_count = 0;
     loop {
         let msg = receiver.recv();
         if msg == msg::Msg::None {
@@ -35,9 +35,9 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>) {
             }
             _ => {}
         }
-        
+
         loop_count += 1;
-        if  loop_count > 10 {
+        if loop_count > 10 {
             break;
         }
     }

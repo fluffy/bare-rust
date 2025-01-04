@@ -26,11 +26,11 @@ use super::stack::STACK_PAINT_BYTE;
 
 #[cfg(not(feature = "std"))]
 #[allow(unused_imports)]
-use dev::led;
+use bsp::led;
 
 #[cfg(not(feature = "std"))]
 #[allow(unused_imports)]
-use dev::led::Color;
+use bsp::led::Color;
 
 #[cfg(not(feature = "std"))]
 extern "C" {
@@ -491,14 +491,13 @@ pub static Exceptions: [IrqVector; 14 + 82] = [
     }, // FPU
 ];
 
-
 #[cfg(test)]
 mod tests {
-   
-   #[cfg(feature = "std")]
-   #[test]
+
+    #[cfg(feature = "std")]
+    #[test]
     fn test_default_handler() {
         use super::Default_Handler;
         Default_Handler();
-     }
+    }
 }

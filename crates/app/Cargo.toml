@@ -10,7 +10,7 @@ license = "BSD-2-Clause"
 [dependencies]
 #std = {  optional = true }
 hal = { path = "../hal" }
-dev = { path = "../dev" }
+bsp = { path = "../bsp" }
 
 [[bin]]
 name = "app"

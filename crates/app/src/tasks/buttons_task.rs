@@ -25,7 +25,7 @@ impl Task for ButtonTask {
         &self,
         _incoming_msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
-        bsp: &mut dev::BSP,
+        bsp: &mut bsp::BSP,
         _metrics: &mut Metrics,
     ) {
         // junk sender.send(crate::msg::Msg::None );

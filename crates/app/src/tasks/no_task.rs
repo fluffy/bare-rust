@@ -24,7 +24,7 @@ impl Task for NoTask {
         &self,
         _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
-        _bsp: &mut dev::BSP,
+        _bsp: &mut bsp::BSP,
         _metrics: &mut Metrics,
     ) {
         panic!("NoTask should never run");
@@ -37,15 +37,13 @@ impl Task for NoTask {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
-    use crate::*;
     use super::*;
+    use crate::*;
 
     #[test]
     fn test_no_task() {
-      
         let no_task = tasks::no_task::NoTask {};
         let info = no_task.info();
         assert_eq!(info.mem_budget_bytes, 0);

@@ -6,14 +6,14 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-extern crate dev;
+extern crate bsp;
 extern crate hal;
 
 use crate::channel::mpsc;
-use dev::console::Print;
+use bsp::console::Print;
 
-use dev::led;
-use dev::led::Color;
+use bsp::led;
+use bsp::led::Color;
 
 mod channel;
 mod dispatch;
@@ -33,23 +33,23 @@ pub use msg::Msg;
 /// Entry point for the application when the `std` feature is not enabled.
 pub extern "C" fn main() -> ! {
     my_main();
-    
+
     loop {}
 }
 
 #[cfg(feature = "std")]
 /// Entry point for the application when the `std` feature is enabled.
-fn main()  {
+fn main() {
     led::set(Color::Red);
     my_main();
 }
 
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
-fn my_main()  {
+fn my_main() {
     //msg::test_msg();
 
-    let mut bsp = dev::BSP::new();
+    let mut bsp = bsp::BSP::new();
 
     bsp.init();
 
@@ -89,7 +89,7 @@ fn my_main()  {
     loop {
         task_mgr.run();
         dispatch::process(receiver);
-        
+
         #[cfg(feature = "exit")]
         {
             b"Stopping\r\n".print_console();
@@ -99,18 +99,18 @@ fn my_main()  {
             break;
         }
         #[cfg(test)]
+        #[allow(unreachable_code)]
         {
             break;
         }
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::*;
     //use super::*;
-    
+
     //#[test]
     //fn test_main() {
     //    main();
@@ -118,15 +118,15 @@ mod tests {
 
     #[test]
     fn test_tasks() {
-        let mut bsp = dev::BSP::new();
+        let mut bsp = bsp::BSP::new();
         bsp.init();
-        
+
         //bsp.validate();
 
         led::set(Color::Blue);
 
         //v_mpsc::init(); // clean up before test
-        
+
         let (mut sender, receiver): (mpsc::Sender<msg::Msg>, mpsc::Receiver<msg::Msg>) =
             mpsc::channel();
 
@@ -144,7 +144,7 @@ mod tests {
         task_mgr.add_task(&fib_task);
 
         crate::fib::fib_test();
-        
+
         for _ in 0..10 {
             task_mgr.run();
             dispatch::process(receiver);
@@ -162,4 +162,3 @@ mod tests {
         led::set(Color::Green);
     }
 }
-

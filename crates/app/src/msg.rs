@@ -22,7 +22,6 @@ pub enum Msg {
     //MoqObject { name: u128, group: u64, id: u64 },
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -12,7 +12,7 @@ use core::ptr;
 
 extern crate hal;
 
-use hal::board;
+use crate::board;
 use hal::cpu;
 
 use hal::cpu::*;
@@ -135,8 +135,8 @@ impl Buttons {
     /// # Example
     ///
     /// ```rust
-    /// use dev::BSP;
-    /// use dev::buttons;
+    /// use bsp::BSP;
+    /// use bsp::buttons;
     ///  let mut bsp = BSP::new();
     ///  bsp.init();
     ///
@@ -174,8 +174,8 @@ impl Buttons {
     /// # Example
     ///
     /// ```rust
-    /// use dev::BSP;
-    /// use dev::buttons;
+    /// use bsp::BSP;
+    /// use bsp::buttons;
     ///
     /// let mut bsp = BSP::new();
     /// bsp.init();

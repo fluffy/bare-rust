@@ -10,8 +10,8 @@
 //! ## Example
 //!
 //! ```rust
-//!  use dev::BSP;
-//!  use dev::console::Print;
+//!  use bsp::BSP;
+//!  use bsp::console::Print;
 //!  let mut bsp = BSP::new();
 //!  bsp.init();
 //!
@@ -22,12 +22,12 @@
 //!  number.print_console();
 //! ```
 
-#[cfg(not(feature = "std"))]
-use core::arch::asm;
+//#[cfg(not(feature = "std"))]
+//use core::arch::asm;
 
 extern crate hal;
 
-use hal::board;
+//use crate::board;
 use hal::uart;
 
 #[cfg(feature = "std")]
@@ -53,42 +53,11 @@ impl Print for [u8] {
     fn print_console(&self) {
         let s = self;
 
-        if board::info::IS_SIM {
+        if cfg!(feature = "std") {
             #[cfg(feature = "std")]
             for c in s {
                 std::print!("{}", *c as char);
             }
-            return;
-        }
-        #[cfg(not(feature = "std"))]
-        if false {
-            //if cfg!(feature = "board-qemu") {
-            // make data be null term version of s
-            let mut data = [0u8; 80 + 1];
-            for (i, c) in s.iter().enumerate() {
-                if i > 80 {
-                    break;
-                }
-                data[i] = *c;
-            }
-            if s.len() > 80 {
-                data[80] = b'\0';
-            } else {
-                data[s.len()] = 0;
-            }
-
-            let ptr = data.as_ptr();
-
-            unsafe {
-                // semihost WRITE0
-                asm!(
-                "mov r0, #0x04", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#sys-write0-0x04
-                "mov r1, {0}",
-                "bkpt #0xAB", // from https://github.com/ARM-software/abi-aa/blob/main/semihosting/semihosting.rst#4the-semihosting-interface
-                in(reg) ptr,
-                );
-            }
-
             return;
         }
         for c in s {
@@ -138,7 +107,6 @@ impl Print for u32 {
         v.print_console();
     }
 }
-
 
 #[cfg(test)]
 mod tests {

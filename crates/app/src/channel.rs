@@ -48,7 +48,7 @@ pub mod mpsc {
     use super::Msg;
 
     const Q_SIZE: usize = 10;
-    
+
     #[cfg(feature = "std")]
     const NUM_QUEUES: usize = 20;
     #[cfg(not(feature = "std"))]
@@ -122,7 +122,7 @@ pub mod mpsc {
             NUM_Q = 0;
         }
     }
-    
+
     /// Creates a new message channel.
     ///
     /// # Returns

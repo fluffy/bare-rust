@@ -27,7 +27,7 @@ impl Task for FibTask {
         &self,
         _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
-        _bsp: &mut dev::BSP,
+        _bsp: &mut bsp::BSP,
         _metrics: &mut Metrics,
     ) {
         fib::fib(34);

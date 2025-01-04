@@ -2,8 +2,8 @@
 //! # HAL Crate
 //!
 //! This crate provides an HAL (Hardware Abstraction Layer) for the STM32F405RG
-//! This crate is primary meant to be used by the dev crate.
-//! Most applications should use the dev crate.
+//! This crate is primary meant to be used by the bsp crate.
+//! Most applications should use the bsp crate.
 //!
 //! Most of the information comes from the
 //! [RM0090 Reference manual](https://www.st.com/resource/en/reference_manual/dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf)
@@ -20,7 +20,7 @@
 //! For boards other than the simulation board, the target must be specified as well.
 //! For example:
 //! ```sh
-//! cargo build --features=board-hactar12,dev/std,app/std -target=thumbv7em-none-eabihf
+//! cargo build --features=board-hactar12,bsp/std,app/std -target=thumbv7em-none-eabihf
 //! ```
 //!
 //! ## Modules
@@ -39,8 +39,11 @@
 //! ```rust
 //!  use hal::cpu;
 //!  use hal::gpio;
-//!
-//!  hal::init(); //
+//!  
+//!  let tx = gpio::Pin(cpu::GPIO_A, 9);
+//!  let rx = gpio::Pin(cpu::GPIO_A, 10);
+//!  let clock_freq = 16_000_000;
+//!  hal::init(clock_freq, tx, rx);
 //!
 //!  let pin = gpio::Pin(cpu::GPIO_A, 6);
 //!  pin.output(); // set pin as output
@@ -49,7 +52,7 @@
 //! ```
 //!
 
-pub mod board;
+//pub mod board;
 pub mod clock;
 pub mod cpu;
 pub mod gpio;
@@ -60,17 +63,17 @@ pub mod uart;
 
 #[inline(never)]
 /// Initializes the hardware.
-pub fn init() {
+pub fn init(hse_clk_freq: u32, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::init();
 
     // always set up clocks first
-    clock::init();
+    clock::init(hse_clk_freq);
 
     // Do after clock and memory is set up
     gpio::init();
 
     // do soon after clock is up so we  can use console
-    uart::init1(115_200);
+    uart::init1(115_200, tx_pin, rx_pin);
     // do after uart is up
 
     // Do last as this starts timer events
@@ -80,5 +83,6 @@ pub fn init() {
 #[inline(never)]
 /// Validates the hardware has been correctly initialized.
 pub fn validate() {
+    #[cfg(not(feature = "std"))]
     clock::validate();
 }

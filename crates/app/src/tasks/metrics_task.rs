@@ -8,7 +8,7 @@ use crate::msg::Msg;
 use crate::tasks::TaskInfo;
 
 use crate::tasks::MAX_TASKS;
-use dev::console::Print;
+use bsp::console::Print;
 
 /// Structure representing the metrics task.
 pub struct MetricsTask {}
@@ -31,7 +31,7 @@ impl Task for MetricsTask {
         &self,
         _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
-        _bsp: &mut dev::BSP,
+        _bsp: &mut bsp::BSP,
         metrics: &mut Metrics,
     ) {
         b"\r\n\r\n".print_console();
