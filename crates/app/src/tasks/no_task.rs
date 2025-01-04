@@ -36,3 +36,18 @@ impl Task for NoTask {
         &NO_TASK_INFO
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+    use super::*;
+
+    #[test]
+    fn test_no_task() {
+      
+        let no_task = tasks::no_task::NoTask {};
+        let info = no_task.info();
+        assert_eq!(info.mem_budget_bytes, 0);
+    }
+}
