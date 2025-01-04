@@ -6,14 +6,14 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-extern crate dev;
+extern crate bsp;
 extern crate hal;
 
 use crate::channel::mpsc;
-use dev::console::Print;
+use bsp::console::Print;
 
-use dev::led;
-use dev::led::Color;
+use bsp::led;
+use bsp::led::Color;
 
 mod channel;
 mod dispatch;
@@ -49,7 +49,7 @@ fn main()  {
 fn my_main()  {
     //msg::test_msg();
 
-    let mut bsp = dev::BSP::new();
+    let mut bsp = bsp::BSP::new();
 
     bsp.init();
 
@@ -118,7 +118,7 @@ mod tests {
 
     #[test]
     fn test_tasks() {
-        let mut bsp = dev::BSP::new();
+        let mut bsp = bsp::BSP::new();
         bsp.init();
         
         //bsp.validate();

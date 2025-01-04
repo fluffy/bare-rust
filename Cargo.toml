@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/app","crates/hal","crates/dev",]
+members = ["crates/app","crates/hal","crates/bsp",]
 default-members = ["crates/app"]
 resolver = "2"
 
@@ -12,9 +12,8 @@ license = "BSD-2-Clause"
 
 [workspace.dependencies]
 # local crates
-sstd = { path = "./crates/sstd", version = "0.0.0" }
 hal = { path = "./crates/hal", version = "0.0.0" }
-dev = { path = "./crates/dev", version = "0.0.0" }
+bsp = { path = "./crates/bsp", version = "0.0.0" }
 
 
 [profile.release]

@@ -17,10 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build x86
-        run: cargo build --verbose --features hal/board-sim,dev/std,app/std,app/exit
+        run: cargo build --verbose --features hal/board-sim,bsp/std,app/std,app/exit
       - name: Build arm hactar12
         run: cargo build --verbose --features hal/board-hactar12 --target=thumbv7em-none-eabihf --release
       - name: Build arm blinkA
         run: cargo build --verbose --features hal/board-blinkA --target=thumbv7em-none-eabihf --release
       - name: Run tests
-        run: cargo test --verbose --workspace --features hal/board-sim,dev/std,app/std
+        run: cargo test --verbose --workspace --features hal/board-sim,bsp/std,app/std

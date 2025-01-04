@@ -3,20 +3,20 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-extern crate dev;
+extern crate bsp;
 
-use dev::console::Print;
-use dev::debug;
-use dev::led;
-use dev::led::Color;
+use bsp::console::Print;
+use bsp::debug;
+use bsp::led;
+use bsp::led::Color;
 
 #[inline(never)]
 /// Function to test performance using the Fibonacci calculation.
 pub fn fib_test() {
-    // fib*34) getting 1.630 s on dev
+    // fib*34) getting 1.630 s on bsp
     // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed
 
-    dev::led::set(Color::Blue);
+    bsp::led::set(Color::Blue);
 
     debug::set(0, true);
     let start_time = hal::timer::current_time();

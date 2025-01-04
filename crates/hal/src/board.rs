@@ -43,7 +43,7 @@
     feature = "board-sim"
 )))]
 compile_error!(
-    "Must specify a board as compile feature. Try --features=hal/board-sim,dev/std,app/std"
+    "Must specify a board as compile feature. Try --features=hal/board-sim,bsp/std,app/std"
 );
 
 #[cfg(all(feature = "board-hactar12", feature = "board-sim"))]

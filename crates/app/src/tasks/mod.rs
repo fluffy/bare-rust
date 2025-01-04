@@ -10,12 +10,12 @@ mod no_task;
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::stack;
-use dev::console::Print;
+use bsp::console::Print;
 
 #[cfg(feature = "std")]
 extern crate std;
 
-extern crate dev;
+extern crate bsp;
 
 /// Structure containing information about a task.
 pub struct TaskInfo {
@@ -36,7 +36,7 @@ pub trait Task {
         &self,
         msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
-        bsp: &mut dev::BSP,
+        bsp: &mut bsp::BSP,
         metrics: &mut Metrics,
     );
 
@@ -58,7 +58,7 @@ pub struct TaskMgr<'a> {
     /// A message sender for inter-task communication.
     sender: &'a mut crate::mpsc::Sender<Msg>,
     /// A reference to the Board Support Package (BSP).
-    bsp: &'a mut dev::BSP,
+    bsp: &'a mut bsp::BSP,
     /// A reference to the metrics structure for tracking task performance.
     metrics: &'a mut Metrics,
 }
@@ -70,7 +70,7 @@ impl<'a> TaskMgr<'a> {
     /// Creates a new `TaskMgr` instance.
     pub fn new(
         s: &'a mut crate::mpsc::Sender<Msg>,
-        bsp: &'a mut dev::BSP,
+        bsp: &'a mut bsp::BSP,
         metrics: &'a mut Metrics,
     ) -> TaskMgr<'a> {
         TaskMgr {

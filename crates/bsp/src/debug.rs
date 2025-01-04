@@ -10,13 +10,13 @@
 //! ## Example
 //!
 //! ```rust
-//!  use dev::BSP;
-//!  use dev::debug;
+//!  use bsp::BSP;
+//!  use bsp::debug;
 //!  let mut bsp = BSP::new();
 //!  bsp.init();
 //!
 //! // Set the debug pin 0 to high
-//! dev::debug::set(0, true);
+//! bsp::debug::set(0, true);
 //! ```
 //!
 
@@ -56,8 +56,8 @@ impl Debug {
 /// # Example
 ///
 /// ```rust
-/// use dev::BSP;
-/// use dev::debug;
+/// use bsp::BSP;
+/// use bsp::debug;
 /// let mut bsp = BSP::new();
 /// bsp.init();
 ///

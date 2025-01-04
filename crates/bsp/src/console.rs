@@ -10,8 +10,8 @@
 //! ## Example
 //!
 //! ```rust
-//!  use dev::BSP;
-//!  use dev::console::Print;
+//!  use bsp::BSP;
+//!  use bsp::console::Print;
 //!  let mut bsp = BSP::new();
 //!  bsp.init();
 //!

@@ -3,14 +3,14 @@
 //! from tasks and dispatching them to the appropriate task for handling.
 //!
 
-extern crate dev;
+extern crate bsp;
 
 #[cfg(feature = "std")]
 extern crate std;
 
 use crate::channel::mpsc;
 use crate::msg;
-use dev::console::Print;
+use bsp::console::Print;
 
 /// Processes all the incoming messages from tasks and dispatches them to the
 /// appropriate task for handling.

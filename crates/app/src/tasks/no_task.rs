@@ -24,7 +24,7 @@ impl Task for NoTask {
         &self,
         _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
-        _bsp: &mut dev::BSP,
+        _bsp: &mut bsp::BSP,
         _metrics: &mut Metrics,
     ) {
         panic!("NoTask should never run");

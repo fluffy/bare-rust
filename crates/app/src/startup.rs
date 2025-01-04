@@ -26,11 +26,11 @@ use super::stack::STACK_PAINT_BYTE;
 
 #[cfg(not(feature = "std"))]
 #[allow(unused_imports)]
-use dev::led;
+use bsp::led;
 
 #[cfg(not(feature = "std"))]
 #[allow(unused_imports)]
-use dev::led::Color;
+use bsp::led::Color;
 
 #[cfg(not(feature = "std"))]
 extern "C" {

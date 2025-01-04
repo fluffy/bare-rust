@@ -2,8 +2,8 @@
 //! # HAL Crate
 //!
 //! This crate provides an HAL (Hardware Abstraction Layer) for the STM32F405RG
-//! This crate is primary meant to be used by the dev crate.
-//! Most applications should use the dev crate.
+//! This crate is primary meant to be used by the bsp crate.
+//! Most applications should use the bsp crate.
 //!
 //! Most of the information comes from the
 //! [RM0090 Reference manual](https://www.st.com/resource/en/reference_manual/dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf)
@@ -20,7 +20,7 @@
 //! For boards other than the simulation board, the target must be specified as well.
 //! For example:
 //! ```sh
-//! cargo build --features=board-hactar12,dev/std,app/std -target=thumbv7em-none-eabihf
+//! cargo build --features=board-hactar12,bsp/std,app/std -target=thumbv7em-none-eabihf
 //! ```
 //!
 //! ## Modules

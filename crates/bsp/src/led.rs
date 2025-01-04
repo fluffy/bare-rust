@@ -14,8 +14,8 @@
 //! ## Example
 //!
 //! ```rust
-//!  use dev::BSP;
-//!  use dev::led;
+//!  use bsp::BSP;
+//!  use bsp::led;
 //!  let mut bsp = BSP::new();
 //!  bsp.init();
 //!

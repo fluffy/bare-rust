@@ -5,8 +5,8 @@ extern crate std;
 
 #[cfg(test)]
 mod tests {
-    use dev::*;
-    use dev::console::Print;
+    use bsp::*;
+    use bsp::console::Print;
     
     #[test]
     fn test_init() {
@@ -30,8 +30,8 @@ mod tests {
         let number: u64 = 123;
         number.print_console();
 
-        dev::debug::set(0, true);
-        dev::debug::set(0, false);
+        bsp::debug::set(0, true);
+        bsp::debug::set(0, false);
         
         led::set(led::Color::Green);
     }

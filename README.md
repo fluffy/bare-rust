@@ -53,9 +53,9 @@ The -S cause it to wait for the debugger to connect.
 # Running on the Simulator
 
 ```aiignore
-cargo run --features hal/board-sim,dev/std,app/std,app/exit
-cargo test --workspace --features hal/board-sim,dev/std,app/std
-cargo doc --workspace --features hal/board-sim,dev/std,app/std --open
+cargo run --features hal/board-sim,bsp/std,app/std,app/exit
+cargo test --workspace --features hal/board-sim,bsp/std,app/std
+cargo doc --workspace --features hal/board-sim,bsp/std,app/std --open
 ```
 
 # Notes
