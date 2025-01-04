@@ -68,10 +68,6 @@ pub mod info {
 
     pub const CLOCK_HSE_FREQ: u32 = 24_000_000; // set to 0 for simulation
     
-    //pub const HAS_RCC: bool = true;
-    //pub const IS_SIM: bool = false;
-
-    //pub const CLOCK_PLL_M: u32 = 12;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -96,11 +92,6 @@ pub mod info {
     use hal::gpio;
 
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
-    
-    //pub const HAS_RCC: bool = true;
-    //pub const IS_SIM: bool = false;
-
-    //pub const CLOCK_PLL_M: u32 = 8;
 
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
 
@@ -125,10 +116,8 @@ pub mod info {
     use hal::cpu;
     use hal::gpio;
 
-    pub const HAS_RCC: bool = false;
-    pub const IS_SIM: bool = false;
-
-    pub const CLOCK_PLL_M: u32 = 12;
+    pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
+    
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -154,10 +143,6 @@ pub mod info {
 
     pub const CLOCK_HSE_FREQ: u32 = 0_000_000; // set to 0 for simulation
     
-    //pub const HAS_RCC: bool = false;
-    //pub const IS_SIM: bool = true;
-
-    //pub const CLOCK_PLL_M: u32 = 12;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
