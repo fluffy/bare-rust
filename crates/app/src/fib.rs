@@ -52,5 +52,4 @@ mod tests {
         let result = fib(6);
         assert_eq!(result, 8);
     }
-
 }

@@ -67,7 +67,7 @@ pub mod info {
     use hal::gpio;
 
     pub const CLOCK_HSE_FREQ: u32 = 24_000_000; // set to 0 for simulation
-    
+
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -117,7 +117,7 @@ pub mod info {
     use hal::gpio;
 
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
-    
+
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -142,7 +142,7 @@ pub mod info {
     use hal::gpio;
 
     pub const CLOCK_HSE_FREQ: u32 = 0_000_000; // set to 0 for simulation
-    
+
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -161,7 +161,6 @@ pub mod info {
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::*;
@@ -170,6 +169,6 @@ mod tests {
     fn test_board() {
         // make sure this file shows up in test coverage
         let freq = board::info::CLOCK_HSE_FREQ;
-        assert_ne!( freq , 1 );
+        assert_ne!(freq, 1);
     }
 }

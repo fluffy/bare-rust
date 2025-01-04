@@ -379,7 +379,6 @@ pub fn init() {
     init_sim();
 }
 
-
 #[cfg(test)]
 mod tests {
     //use core::ptr;

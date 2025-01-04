@@ -491,14 +491,13 @@ pub static Exceptions: [IrqVector; 14 + 82] = [
     }, // FPU
 ];
 
-
 #[cfg(test)]
 mod tests {
-   
-   #[cfg(feature = "std")]
-   #[test]
+
+    #[cfg(feature = "std")]
+    #[test]
     fn test_default_handler() {
         use super::Default_Handler;
         Default_Handler();
-     }
+    }
 }

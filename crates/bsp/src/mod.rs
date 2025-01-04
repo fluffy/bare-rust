@@ -64,11 +64,11 @@ impl BSP {
     pub fn init(&mut self) {
         let tx_pin = board::info::CONSOLE_TX;
         let rx_pin = board::info::CONSOLE_RX;
-        hal::init( board::info::CLOCK_HSE_FREQ, tx_pin, rx_pin);
+        hal::init(board::info::CLOCK_HSE_FREQ, tx_pin, rx_pin);
 
-        // setup console early so other modules can use it  
+        // setup console early so other modules can use it
         self.console.init();
-        
+
         self.led.init();
         self.debug.init();
         self.buttons.init();

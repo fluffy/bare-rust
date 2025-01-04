@@ -14,9 +14,9 @@ mod tests {
         let tx = gpio::Pin(cpu::GPIO_A, 9);
         let rx = gpio::Pin(cpu::GPIO_A, 10);
         let freq = 16_000_000;
-        
+
         hal::init(freq, tx, rx);
-        
+
         hal::validate();
         //assert!(false);
     }

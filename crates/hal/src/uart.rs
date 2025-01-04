@@ -21,7 +21,7 @@
 //!
 //! fn main() {
 //!     clock::init( 16_000_000 );
-//! 
+//!
 //!     let tx = gpio::Pin(cpu::GPIO_A, 9);
 //!     let rx = gpio::Pin(cpu::GPIO_A, 10);
 //!     let baud_rate: u32 = 115200;
@@ -46,7 +46,7 @@ use super::gpio;
 pub use super::cpu::USART as USART1;
 
 #[inline(never)]
-pub fn init1(baud_rate: u64, tx_pin: gpio::Pin , rx_pin: gpio::Pin ) {
+pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // enable USART1 & GPIO clock
     cpu::write!( RCC.apb2enr[USART1EN;1], 1);
     cpu::write!( RCC.ahb1enr[GPIOAEN;1], 1);
@@ -58,7 +58,7 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin , rx_pin: gpio::Pin ) {
 
     let tx_pin = tx_pin.1;
     let rx_pin = rx_pin.1;
-    
+
     cpu::write!( GPIO_A.moder[rx_pin*2;2], 0b10); // AF mode
     cpu::write!( GPIO_A.moder[tx_pin*2;2], 0b10); // AF mode
 
@@ -106,13 +106,13 @@ mod tests {
 
     #[test]
     fn test_uart() {
-        clock::init( 16_000_000 );
-        
+        clock::init(16_000_000);
+
         let tx = gpio::Pin(cpu::GPIO_A, 9);
         let rx = gpio::Pin(cpu::GPIO_A, 10);
         let baud_rate: u64 = 115200;
-        
-        init1(baud_rate,tx,rx);
+
+        init1(baud_rate, tx, rx);
         write1(b'O');
         write1(b'K');
     }

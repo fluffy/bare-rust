@@ -19,7 +19,7 @@ use bsp::console::Print;
 /// processes them each time it is called.
 ///
 pub fn process(receiver: mpsc::Receiver<msg::Msg>) {
-    let mut loop_count =0;
+    let mut loop_count = 0;
     loop {
         let msg = receiver.recv();
         if msg == msg::Msg::None {
@@ -35,9 +35,9 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>) {
             }
             _ => {}
         }
-        
+
         loop_count += 1;
-        if  loop_count > 10 {
+        if loop_count > 10 {
             break;
         }
     }

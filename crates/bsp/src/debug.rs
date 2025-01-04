@@ -77,4 +77,3 @@ pub fn set(channel: u8, state: bool) {
         board::info::DEBUG1_PIN.low();
     }
 }
-

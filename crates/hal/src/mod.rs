@@ -43,7 +43,7 @@
 //!  let tx = gpio::Pin(cpu::GPIO_A, 9);
 //!  let rx = gpio::Pin(cpu::GPIO_A, 10);
 //!  let clock_freq = 16_000_000;
-//!  hal::init(clock_freq, tx, rx); 
+//!  hal::init(clock_freq, tx, rx);
 //!
 //!  let pin = gpio::Pin(cpu::GPIO_A, 6);
 //!  pin.output(); // set pin as output
@@ -63,7 +63,7 @@ pub mod uart;
 
 #[inline(never)]
 /// Initializes the hardware.
-pub fn init( hse_clk_freq: u32 ,  tx_pin: gpio::Pin , rx_pin: gpio::Pin ) {
+pub fn init(hse_clk_freq: u32, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::init();
 
     // always set up clocks first

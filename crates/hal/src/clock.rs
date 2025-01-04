@@ -24,12 +24,12 @@ use super::cpu::*;
 
 #[inline(never)]
 /// Initializes the clock configuration based on the board-specific settings.
-pub fn init( _hse_clk_freq: u32 ) {
+pub fn init(_hse_clk_freq: u32) {
     #[cfg(feature = "std")]
-    let  clk_freq: u32 = 0;
+    let clk_freq: u32 = 0;
     #[cfg(not(feature = "std"))]
-    let  clk_freq: u32 = _hse_clk_freq;
-    
+    let clk_freq: u32 = _hse_clk_freq;
+
     let pll_m: u32;
     match clk_freq {
         0 => {
@@ -48,8 +48,7 @@ pub fn init( _hse_clk_freq: u32 ) {
             panic!("HSE Clk Freq not supported");
         }
     }
-        
-        
+
     if clk_freq != 0 {
         cpu::write!(RCC.cfgr[SWS0;2], 0b10);
         cpu::write!(RCC.cr[PLLRDY;1], 1);
@@ -130,8 +129,6 @@ pub fn init( _hse_clk_freq: u32 ) {
 #[inline(never)]
 /// Validates the clock configuration to ensure it is set up correctly.
 pub fn validate() {
-    
-    
     // Check if HSE is ready
     //if board::info::HAS_RCC {
     //    if cpu::read!(RCC.cr[HSERDY;1]) != 1 {
