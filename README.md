@@ -18,7 +18,7 @@ openocd --file openocd.cfg
 and leave running. Then in another window do
 
 ```sh
-cargo run --features hal/board-blinkA --target=thumbv7em-none-eabihf
+cargo run --features bsp/board-hactar12 --target=thumbv7em-none-eabihf
 ```
 
 this will bring you to gdb prompt where you can type "c" to continue.
@@ -53,9 +53,9 @@ The -S cause it to wait for the debugger to connect.
 # Running on the Simulator
 
 ```aiignore
-cargo run --features hal/board-sim,bsp/std,app/std,app/exit
-cargo test --workspace --features hal/board-sim,bsp/std,app/std
-cargo doc --workspace --features hal/board-sim,bsp/std,app/std --open
+cargo run --features bsp/board-sim,hal/std,app/std,app/exit 
+cargo test --workspace --features bsp/board-sim,hal/std,app/std,app/exit  -- --test-threads=1 
+cargo doc --workspace --features bsp/board-sim,hal/std,app/std,app/exit  -- --test-threads=1 
 ```
 
 # Notes

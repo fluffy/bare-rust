@@ -16,13 +16,16 @@
 //! ## Example
 //!
 //! ```rust
-//! use crate::hal::uart;
+//! use crate::hal::*;
 //! use crate::hal::clock;
 //!
 //! fn main() {
-//!     clock::init();
-//!     // Initialize USART1 with a baud rate of 9600
-//!     uart::init1(115200);
+//!     clock::init( 16_000_000 );
+//! 
+//!     let tx = gpio::Pin(cpu::GPIO_A, 9);
+//!     let rx = gpio::Pin(cpu::GPIO_A, 10);
+//!     let baud_rate: u32 = 115200;
+//!     uart::init1(115200,rx,tx);
 //!
 //!     // Send a byte of data
 //!     uart::write1(b'H');
@@ -35,26 +38,27 @@ use core::ptr;
 #[cfg(feature = "std")]
 extern crate std;
 
-use super::board;
+//use super::board;
 use super::cpu;
 use super::cpu::*;
+use super::gpio;
 
 pub use super::cpu::USART as USART1;
 
 #[inline(never)]
-pub fn init1(baud_rate: u64) {
+pub fn init1(baud_rate: u64, tx_pin: gpio::Pin , rx_pin: gpio::Pin ) {
     // enable USART1 & GPIO clock
     cpu::write!( RCC.apb2enr[USART1EN;1], 1);
     cpu::write!( RCC.ahb1enr[GPIOAEN;1], 1);
 
     // configure pins for USART1
     // AF7 work for USART1 to 3. afrh work pin 8 to 15
-    assert!(board::info::CONSOLE_TX.0 == GPIO_A as *mut cpu::GpioReg);
-    assert!(board::info::CONSOLE_RX.0 == GPIO_A as *mut cpu::GpioReg);
+    assert!(tx_pin.0 == GPIO_A as *mut cpu::GpioReg);
+    assert!(rx_pin.0 == GPIO_A as *mut cpu::GpioReg);
 
-    let tx_pin = board::info::CONSOLE_TX.1;
-    let rx_pin = board::info::CONSOLE_RX.1;
-
+    let tx_pin = tx_pin.1;
+    let rx_pin = rx_pin.1;
+    
     cpu::write!( GPIO_A.moder[rx_pin*2;2], 0b10); // AF mode
     cpu::write!( GPIO_A.moder[tx_pin*2;2], 0b10); // AF mode
 
@@ -90,9 +94,7 @@ pub fn init1(baud_rate: u64) {
 }
 
 pub fn write1(c: u8) {
-    if board::info::IS_SIM {
-        return;
-    }
+    #[cfg(not(feature = "std"))]
     while (cpu::read!(USART1.sr[TXE;1]) == 0) {}
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
@@ -100,11 +102,17 @@ pub fn write1(c: u8) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::clock;
 
     #[test]
     fn test_uart() {
+        clock::init( 16_000_000 );
+        
+        let tx = gpio::Pin(cpu::GPIO_A, 9);
+        let rx = gpio::Pin(cpu::GPIO_A, 10);
         let baud_rate: u64 = 115200;
-        init1(baud_rate);
+        
+        init1(baud_rate,tx,rx);
         write1(b'O');
         write1(b'K');
     }

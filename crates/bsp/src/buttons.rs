@@ -12,7 +12,7 @@ use core::ptr;
 
 extern crate hal;
 
-use hal::board;
+use crate::board;
 use hal::cpu;
 
 use hal::cpu::*;

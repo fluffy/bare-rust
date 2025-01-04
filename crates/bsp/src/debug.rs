@@ -22,7 +22,7 @@
 
 extern crate hal;
 
-use hal::board;
+use crate::board;
 
 pub struct Debug {}
 

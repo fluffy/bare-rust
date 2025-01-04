@@ -99,6 +99,7 @@ fn my_main()  {
             break;
         }
         #[cfg(test)]
+        #[allow(unreachable_code)]
         {
             break;
         }

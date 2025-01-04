@@ -38,6 +38,7 @@
 
 extern crate hal;
 
+pub mod board;
 pub mod buttons;
 pub mod console;
 pub mod debug;
@@ -61,10 +62,13 @@ impl BSP {
     }
 
     pub fn init(&mut self) {
-        hal::init();
+        let tx_pin = board::info::CONSOLE_TX;
+        let rx_pin = board::info::CONSOLE_RX;
+        hal::init( board::info::CLOCK_HSE_FREQ, tx_pin, rx_pin);
 
-        // do early so other modules can use it
+        // setup console early so other modules can use it  
         self.console.init();
+        
         self.led.init();
         self.debug.init();
         self.buttons.init();

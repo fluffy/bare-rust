@@ -40,7 +40,7 @@
 //! fn main() {
 //!     // Initialize things
 //!     cpu::init();
-//!     clock::init();
+//!     clock::init( 16_000_000 );
 //!     gpio::init();
 //!
 //!     // Create a new pin instance

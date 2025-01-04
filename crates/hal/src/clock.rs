@@ -20,17 +20,42 @@ use core::ptr;
 use super::cpu;
 use super::cpu::*;
 
-use super::board;
+//use super::board;
 
 #[inline(never)]
 /// Initializes the clock configuration based on the board-specific settings.
-pub fn init() {
-    if board::info::IS_SIM {
+pub fn init( _hse_clk_freq: u32 ) {
+    #[cfg(feature = "std")]
+    let  clk_freq: u32 = 0;
+    #[cfg(not(feature = "std"))]
+    let  clk_freq: u32 = _hse_clk_freq;
+    
+    let pll_m: u32;
+    match clk_freq {
+        0 => {
+            pll_m = 8;
+        }
+
+        16_000_000 => {
+            pll_m = 8;
+        }
+
+        24_000_000 => {
+            pll_m = 12;
+        }
+
+        _ => {
+            panic!("HSE Clk Freq not supported");
+        }
+    }
+        
+        
+    if clk_freq != 0 {
         cpu::write!(RCC.cfgr[SWS0;2], 0b10);
         cpu::write!(RCC.cr[PLLRDY;1], 1);
         cpu::write!(RCC.cr[HSERDY;1], 1);
         cpu::write!(RCC.pllcfgr[PLLSRC;1], 1);
-        cpu::write!(RCC.pllcfgr[PLLM0;6], board::info::CLOCK_PLL_M as u32);
+        cpu::write!(RCC.pllcfgr[PLLM0;6], pll_m);
     }
 
     // setup flash wait states and cache
@@ -50,12 +75,12 @@ pub fn init() {
         cpu::write!(RCC.cr[HSEON;1], 1);
 
         // wait for HSE to be ready
-        if board::info::HAS_RCC {
+        if clk_freq != 0 {
             while (cpu::read!(RCC.cr[HSERDY;1]) != 1) {}
         }
 
         // setup main PLL timing for external HSE
-        let pll_m: u32 = board::info::CLOCK_PLL_M;
+        let pll_m: u32 = pll_m;
 
         let pll_n: u32 = 168;
         let pll_q: u32 = 4;
@@ -80,7 +105,7 @@ pub fn init() {
         // enable PLL
         cpu::write!(RCC.cr[PLLON;1], 0b1);
         // wait for PLL to be ready
-        if board::info::HAS_RCC {
+        if clk_freq != 0 {
             while (cpu::read!(RCC.cr[PLLRDY;1]) != 1) {}
         }
 
@@ -96,7 +121,7 @@ pub fn init() {
         cpu::write!(RCC.cfgr[SW0;2], 0b10 );
 
         // wait for clock to switch to PLL
-        if board::info::HAS_RCC {
+        if clk_freq != 0 {
             while (cpu::read!(RCC.cfgr[SWS0;2]) != 0b10) {}
         }
     }
@@ -105,19 +130,21 @@ pub fn init() {
 #[inline(never)]
 /// Validates the clock configuration to ensure it is set up correctly.
 pub fn validate() {
+    
+    
     // Check if HSE is ready
-    if board::info::HAS_RCC {
-        if cpu::read!(RCC.cr[HSERDY;1]) != 1 {
-            panic!("HSE not ready");
-        }
-    }
+    //if board::info::HAS_RCC {
+    //    if cpu::read!(RCC.cr[HSERDY;1]) != 1 {
+    //        panic!("HSE not ready");
+    //    }
+    //}
 
     // Check if PLL is ready
-    if board::info::HAS_RCC {
-        if cpu::read!(RCC.cr[PLLRDY;1]) != 1 {
-            panic!("PLL not ready");
-        }
-    }
+    //if board::info::HAS_RCC {
+    //    if cpu::read!(RCC.cr[PLLRDY;1]) != 1 {
+    //        panic!("PLL not ready");
+    //    }
+    //}
 
     // Check if PLL source is HSE
     // seems like this can not be read after it is enabled

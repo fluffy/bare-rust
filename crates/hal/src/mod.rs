@@ -39,8 +39,11 @@
 //! ```rust
 //!  use hal::cpu;
 //!  use hal::gpio;
-//!
-//!  hal::init(); //
+//!  
+//!  let tx = gpio::Pin(cpu::GPIO_A, 9);
+//!  let rx = gpio::Pin(cpu::GPIO_A, 10);
+//!  let clock_freq = 16_000_000;
+//!  hal::init(clock_freq, tx, rx); 
 //!
 //!  let pin = gpio::Pin(cpu::GPIO_A, 6);
 //!  pin.output(); // set pin as output
@@ -49,7 +52,7 @@
 //! ```
 //!
 
-pub mod board;
+//pub mod board;
 pub mod clock;
 pub mod cpu;
 pub mod gpio;
@@ -60,17 +63,17 @@ pub mod uart;
 
 #[inline(never)]
 /// Initializes the hardware.
-pub fn init() {
+pub fn init( hse_clk_freq: u32 ,  tx_pin: gpio::Pin , rx_pin: gpio::Pin ) {
     cpu::init();
 
     // always set up clocks first
-    clock::init();
+    clock::init(hse_clk_freq);
 
     // Do after clock and memory is set up
     gpio::init();
 
     // do soon after clock is up so we  can use console
-    uart::init1(115_200);
+    uart::init1(115_200, tx_pin, rx_pin);
     // do after uart is up
 
     // Do last as this starts timer events
@@ -80,5 +83,6 @@ pub fn init() {
 #[inline(never)]
 /// Validates the hardware has been correctly initialized.
 pub fn validate() {
+    #[cfg(not(feature = "std"))]
     clock::validate();
 }
