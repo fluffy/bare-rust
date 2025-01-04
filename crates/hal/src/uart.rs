@@ -96,3 +96,17 @@ pub fn write1(c: u8) {
     while (cpu::read!(USART1.sr[TXE;1]) == 0) {}
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+    use super::*;
+
+    #[test]
+    fn test_uart() {
+        let baud_rate: u64 = 115200;
+        init1(baud_rate);
+        write1(b'O');
+        write1(b'K');
+    }
+}
