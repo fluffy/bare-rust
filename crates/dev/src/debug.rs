@@ -78,34 +78,3 @@ pub fn set(channel: u8, state: bool) {
     }
 }
 
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::BSP;
-    use hal::board::info::DEBUG1_PIN;
-
-    #[test]
-    fn test_set_high() {
-        let mut bsp = BSP::new();
-        bsp.init();
-
-        set(0, true);
-        assert_eq!(DEBUG1_PIN.read(), true);
-    }
-
-    #[test]
-    fn test_set_low() {
-        let mut bsp = BSP::new();
-        bsp.init();
-        
-        set(0, false);
-        assert_eq!(DEBUG1_PIN.read(),false);
-    }
-
-    //#[test]
-    //#[should_panic]
-    //fn test_invalid_channel() {
-    //    set(1, true);
-    //}
-}

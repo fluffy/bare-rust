@@ -378,3 +378,16 @@ fn init_sim() {
 pub fn init() {
     init_sim();
 }
+
+
+#[cfg(test)]
+mod tests {
+    //use core::ptr;
+
+    //use crate::board;
+    //use crate::cpu;
+    // crate::cpu::*;
+   
+
+   
+}

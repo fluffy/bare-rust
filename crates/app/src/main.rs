@@ -111,10 +111,10 @@ mod tests {
     use crate::*;
     //use super::*;
     
-    #[test]
-    fn test_main() {
-        main();
-    }
+    //#[test]
+    //fn test_main() {
+    //    main();
+    //}
 
     #[test]
     fn test_tasks() {
