@@ -48,6 +48,10 @@ pub mod mpsc {
     use super::Msg;
 
     const Q_SIZE: usize = 10;
+    
+    #[cfg(feature = "std")]
+    const NUM_QUEUES: usize = 20;
+    #[cfg(not(feature = "std"))]
     const NUM_QUEUES: usize = 2;
 
     static mut Q: [[Msg; Q_SIZE]; NUM_QUEUES] = [[Msg::None; Q_SIZE]; NUM_QUEUES];
