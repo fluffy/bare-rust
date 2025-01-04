@@ -105,9 +105,9 @@ pub extern "C" fn Default_Handler() {
 #[cfg(feature = "std")]
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
-   assert!(false, "Default_Handler should never be called in simulation");
+    #[cfg(not(test))]
+    panic!("Default_Handler should never be called in simulation");
 }
-
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
@@ -490,3 +490,15 @@ pub static Exceptions: [IrqVector; 14 + 82] = [
         handler: Default_Handler,
     }, // FPU
 ];
+
+
+#[cfg(test)]
+mod tests {
+   
+   #[cfg(feature = "std")]
+   #[test]
+    fn test_default_handler() {
+        use super::Default_Handler;
+        Default_Handler();
+     }
+}
