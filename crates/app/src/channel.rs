@@ -109,6 +109,16 @@ pub mod v_mpsc {
         }
     }
 
+    #[allow(dead_code)]
+    pub fn init() {
+        unsafe {
+            for i in 0..NUM_QUEUES {
+                Q_LEN[i] = 0;
+            }
+            NUM_Q = 0;
+        }
+    }
+    
     /// Creates a new message channel.
     ///
     /// # Returns
@@ -169,4 +179,6 @@ pub fn test_channel() {
             //}
         }
     }
+
+    v_mpsc::init(); // clean up after test
 }
