@@ -1,12 +1,13 @@
 
-.PHONY: run-sim test-sim doc clean run-cov 
+.PHONY: run test doc clean cov
 
-run-sim:
+run:
 	cargo run --features hal/board-sim,dev/std,app/std,app/exit
 
 
-test-sim:
-	cargo test --workspace --features hal/board-sim,dev/std,app/std
+test:
+	cargo test --workspace --lib --tests --bin app  --features hal/board-sim,dev/std,app/std
+	cargo test --workspace --doc  --features hal/board-sim,dev/std,app/std
 
 
 doc:
