@@ -35,7 +35,7 @@ pub trait Task {
     fn run(
         &self,
         msg: &Msg,
-        sender: &mut crate::v_mpsc::Sender<Msg>,
+        sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut dev::BSP,
         metrics: &mut Metrics,
     );
@@ -56,7 +56,7 @@ pub struct TaskMgr<'a> {
     /// The number of tasks currently managed.
     num_tasks: usize,
     /// A message sender for inter-task communication.
-    sender: &'a mut crate::v_mpsc::Sender<Msg>,
+    sender: &'a mut crate::mpsc::Sender<Msg>,
     /// A reference to the Board Support Package (BSP).
     bsp: &'a mut dev::BSP,
     /// A reference to the metrics structure for tracking task performance.
@@ -69,7 +69,7 @@ const NO_TASK: no_task::NoTask = no_task::NoTask {};
 impl<'a> TaskMgr<'a> {
     /// Creates a new `TaskMgr` instance.
     pub fn new(
-        s: &'a mut crate::v_mpsc::Sender<Msg>,
+        s: &'a mut crate::mpsc::Sender<Msg>,
         bsp: &'a mut dev::BSP,
         metrics: &'a mut Metrics,
     ) -> TaskMgr<'a> {

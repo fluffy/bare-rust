@@ -8,7 +8,7 @@ extern crate dev;
 #[cfg(feature = "std")]
 extern crate std;
 
-use crate::channel::v_mpsc;
+use crate::channel::mpsc;
 use crate::msg;
 use dev::console::Print;
 
@@ -18,7 +18,7 @@ use dev::console::Print;
 /// Consumes all the messages from the receiver and
 /// processes them each time it is called.
 ///
-pub fn process(receiver: v_mpsc::Receiver<msg::Msg>) {
+pub fn process(receiver: mpsc::Receiver<msg::Msg>) {
     loop {
         let msg = receiver.recv();
         if msg == msg::Msg::None {

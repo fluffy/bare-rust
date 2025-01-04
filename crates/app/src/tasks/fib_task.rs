@@ -26,7 +26,7 @@ impl Task for FibTask {
     fn run(
         &self,
         _msg: &Msg,
-        _sender: &mut crate::v_mpsc::Sender<Msg>,
+        _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut dev::BSP,
         _metrics: &mut Metrics,
     ) {

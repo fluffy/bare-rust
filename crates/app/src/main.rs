@@ -9,7 +9,7 @@ extern crate std;
 extern crate dev;
 extern crate hal;
 
-use crate::channel::v_mpsc;
+use crate::channel::mpsc;
 use dev::console::Print;
 
 use dev::led;
@@ -58,8 +58,8 @@ fn my_main()  {
 
     b"Starting\r\n".print_console();
 
-    let (mut sender, receiver): (v_mpsc::Sender<msg::Msg>, v_mpsc::Receiver<msg::Msg>) =
-        v_mpsc::channel();
+    let (mut sender, receiver): (mpsc::Sender<msg::Msg>, mpsc::Receiver<msg::Msg>) =
+        mpsc::channel();
 
     let mut metrics = metrics::Metrics::new();
 
@@ -124,8 +124,8 @@ mod tests {
 
         //v_mpsc::init(); // clean up before test
         
-        let (mut sender, receiver): (v_mpsc::Sender<msg::Msg>, v_mpsc::Receiver<msg::Msg>) =
-            v_mpsc::channel();
+        let (mut sender, receiver): (mpsc::Sender<msg::Msg>, mpsc::Receiver<msg::Msg>) =
+            mpsc::channel();
 
         let mut metrics = metrics::Metrics::new();
 

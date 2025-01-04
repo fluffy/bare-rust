@@ -24,10 +24,10 @@
 //! ## Example
 //!
 //! ```rust
-//! use crate::channel::v_mpsc;
+//! use crate::channel::mpsc;
 //! use crate::msg::Msg;
 //!
-//! let (mut sender, receiver): (v_mpsc::Sender<Msg>, v_mpsc::Receiver<Msg>) = v_mpsc::channel();
+//! let (mut sender, receiver): (mpsc::Sender<Msg>, mpsc::Receiver<Msg>) = mpsc::channel();
 //!
 //! sender.send(Msg::PttButton(true));
 //!
@@ -44,7 +44,7 @@
 //! ```
 use crate::msg::Msg;
 
-pub mod v_mpsc {
+pub mod mpsc {
     use super::Msg;
 
     const Q_SIZE: usize = 10;
@@ -151,7 +151,7 @@ pub mod v_mpsc {
 #[test]
 pub fn test_channel() {
     #[allow(unused_mut)]
-    let (mut tx, rx): (v_mpsc::Sender<Msg>, v_mpsc::Receiver<Msg>) = v_mpsc::channel();
+    let (mut tx, rx): (mpsc::Sender<Msg>, mpsc::Receiver<Msg>) = mpsc::channel();
 
     //tx.send(Msg::AiButton(true));
     tx.send(Msg::PttButton(false));
@@ -180,5 +180,5 @@ pub fn test_channel() {
         }
     }
 
-    v_mpsc::init(); // clean up after test
+    mpsc::init(); // clean up after test
 }
