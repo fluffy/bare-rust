@@ -2,7 +2,8 @@
 
 The design follows a dataflow architecture where multiple tasks
 communicate by sending messages to each other. This system is built on
-top of device drivers that interface with the HAL (Hardware
+top of BSP (Board Support Package) that interface with the HAL 
+(Hardware
 Abstraction Layer), which in turn interacts with the hardware.
 
 * Tasks:
@@ -26,7 +27,7 @@ components.
 ```mermaid
 block-beta
     columns 1
-    block: DEV:1
+    block: BSP:1
         columns 4
         KeyboardTask
         TextEditTask
@@ -103,17 +104,17 @@ TODO - describe how the group selection works
 
 TODO - describe flows for remote storage
 
-# Device and Hardware Abstraction Layers
+# Board Support and Hardware Abstraction Layers
 
 The following diagram shows how the applications uses modules from the
-DEV layer which in turn use the HAL layer to interact with the
+BSP layer which in turn use the HAL layer to interact with the
 hardware.
 
 ```mermaid
 block-beta
     columns 1
     Application
-    block: DEV
+    block: BSP
         Display
         Storage
         Audio
