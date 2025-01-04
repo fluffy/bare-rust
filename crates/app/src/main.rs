@@ -140,6 +140,8 @@ mod tests {
         let fib_task = tasks::fib_task::FibTask {};
         task_mgr.add_task(&fib_task);
 
+        crate::fib::fib_test();
+        
         for _ in 0..10 {
             task_mgr.run();
             dispatch::process(receiver);

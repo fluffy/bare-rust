@@ -99,7 +99,6 @@ pub fn write1(c: u8) {
 
 #[cfg(test)]
 mod tests {
-    use crate::*;
     use super::*;
 
     #[test]
