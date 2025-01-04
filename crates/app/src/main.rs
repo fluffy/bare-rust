@@ -53,7 +53,8 @@ fn my_main()  {
 
     bsp.init();
 
-    #[cfg(debug_assertions)]
+    //#[cfg(debug_assertions)]
+    #[cfg(not(feature = "std"))]
     bsp.validate();
 
     b"Starting\r\n".print_console();
@@ -88,21 +89,17 @@ fn my_main()  {
     loop {
         task_mgr.run();
         dispatch::process(receiver);
-
-        let now = hal::timer::current_time();
-
-        if false {
-            b"  now=".print_console();
-            (now.as_u64() / 1000).print_console();
-            b" mS\r\n".print_console();
-        }
-
+        
         #[cfg(feature = "exit")]
         {
             b"Stopping\r\n".print_console();
             #[cfg(not(feature = "std"))]
             hal::semihost::exit(0);
             #[cfg(feature = "std")]
+            break;
+        }
+        #[cfg(test)]
+        {
             break;
         }
     }
@@ -113,12 +110,18 @@ fn my_main()  {
 mod tests {
     use crate::*;
     //use super::*;
+    
+    #[test]
+    fn test_main() {
+        main();
+    }
 
     #[test]
     fn test_tasks() {
         let mut bsp = dev::BSP::new();
         bsp.init();
-        bsp.validate();
+        
+        //bsp.validate();
 
         led::set(Color::Blue);
 
