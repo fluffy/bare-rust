@@ -149,3 +149,47 @@ impl Pin {
         val != 0
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_pin_output() {
+        let gpio = 0x40020000 as *mut cpu::GpioReg; // Example GPIO base address
+        let pin = Pin::new(gpio, 5);
+        pin.output();
+
+        // Verify that the pin is set to output mode
+        assert_eq!(cpu::read!(gpio.moder[5 * 2; 2]), 0b00);
+        
+        // Verify that the pin is set to low
+        assert_eq!(cpu::read!(gpio.odr[5 * 1; 1]), 0b0);
+    }
+
+    #[test]
+    fn test_pin_input() {
+        let gpio = 0x40020000 as *mut cpu::GpioReg; // Example GPIO base address
+        let pin = Pin::new(gpio, 5);
+        pin.input();
+
+        // Verify that the pin is set to input mode
+        assert_eq!(cpu::read!(gpio.moder[5 * 2; 2]), 0b00);
+    }
+
+  
+
+    #[test]
+    fn test_pin_read() {
+        let gpio = 0x40020000 as *mut cpu::GpioReg; // Example GPIO base address
+        let pin = Pin::new(gpio, 5);
+
+        // Simulate pin state
+        cpu::write!(gpio.idr[5 * 1; 1], 1);
+        assert_eq!(pin.read() , false );
+
+        cpu::write!(gpio.idr[5 * 1; 1], 0);
+        assert_eq!(!pin.read() , true );
+    }
+}
