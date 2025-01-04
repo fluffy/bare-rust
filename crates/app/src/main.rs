@@ -33,17 +33,20 @@ pub use msg::Msg;
 /// Entry point for the application when the `std` feature is not enabled.
 pub extern "C" fn main() -> ! {
     my_main();
+    
+    loop {}
 }
 
 #[cfg(feature = "std")]
 /// Entry point for the application when the `std` feature is enabled.
-fn main() -> () {
+fn main()  {
+    led::set(Color::Red);
     my_main();
 }
 
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
-fn my_main() -> ! {
+fn my_main()  {
     //msg::test_msg();
 
     let mut bsp = dev::BSP::new();
@@ -97,7 +100,10 @@ fn my_main() -> ! {
         #[cfg(feature = "exit")]
         {
             b"Stopping\r\n".print_console();
+            #[cfg(not(feature = "std"))]
             hal::semihost::exit(0);
+            #[cfg(feature = "std")]
+            break;
         }
     }
 }
@@ -106,15 +112,19 @@ fn my_main() -> ! {
 #[cfg(test)]
 mod tests {
     use crate::*;
+    //use super::*;
 
     #[test]
     fn test_tasks() {
-
         let mut bsp = dev::BSP::new();
         bsp.init();
         bsp.validate();
 
-        let (mut sender, _receiver): (v_mpsc::Sender<msg::Msg>, v_mpsc::Receiver<msg::Msg>) =
+        led::set(Color::Blue);
+
+        //v_mpsc::init(); // clean up before test
+        
+        let (mut sender, receiver): (v_mpsc::Sender<msg::Msg>, v_mpsc::Receiver<msg::Msg>) =
             v_mpsc::channel();
 
         let mut metrics = metrics::Metrics::new();
@@ -127,7 +137,24 @@ mod tests {
         let metrics_task = tasks::metrics_task::MetricsTask {};
         task_mgr.add_task(&metrics_task);
 
+        let fib_task = tasks::fib_task::FibTask {};
+        task_mgr.add_task(&fib_task);
 
+        for _ in 0..10 {
+            task_mgr.run();
+            dispatch::process(receiver);
+        }
+
+        let stack_usage = stack::usage(false) as u32;
+        if true {
+            b"  test stack usage: ".print_console();
+            stack_usage.print_console();
+            b" bytes\r\n".print_console();
+        }
+
+        //v_mpsc::init(); // clean up after test
+
+        led::set(Color::Green);
     }
 }
 
