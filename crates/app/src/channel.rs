@@ -24,10 +24,10 @@
 //! ## Example
 //!
 //! ```rust
-//! use crate::channel::v_mpsc;
+//! use crate::channel::mpsc;
 //! use crate::msg::Msg;
 //!
-//! let (mut sender, receiver): (v_mpsc::Sender<Msg>, v_mpsc::Receiver<Msg>) = v_mpsc::channel();
+//! let (mut sender, receiver): (mpsc::Sender<Msg>, mpsc::Receiver<Msg>) = mpsc::channel();
 //!
 //! sender.send(Msg::PttButton(true));
 //!
@@ -44,10 +44,14 @@
 //! ```
 use crate::msg::Msg;
 
-pub mod v_mpsc {
+pub mod mpsc {
     use super::Msg;
 
     const Q_SIZE: usize = 10;
+    
+    #[cfg(feature = "std")]
+    const NUM_QUEUES: usize = 20;
+    #[cfg(not(feature = "std"))]
     const NUM_QUEUES: usize = 2;
 
     static mut Q: [[Msg; Q_SIZE]; NUM_QUEUES] = [[Msg::None; Q_SIZE]; NUM_QUEUES];
@@ -109,6 +113,16 @@ pub mod v_mpsc {
         }
     }
 
+    #[allow(dead_code)]
+    pub fn init() {
+        unsafe {
+            for i in 0..NUM_QUEUES {
+                Q_LEN[i] = 0;
+            }
+            NUM_Q = 0;
+        }
+    }
+    
     /// Creates a new message channel.
     ///
     /// # Returns
@@ -141,7 +155,7 @@ pub mod v_mpsc {
 #[test]
 pub fn test_channel() {
     #[allow(unused_mut)]
-    let (mut tx, rx): (v_mpsc::Sender<Msg>, v_mpsc::Receiver<Msg>) = v_mpsc::channel();
+    let (mut tx, rx): (mpsc::Sender<Msg>, mpsc::Receiver<Msg>) = mpsc::channel();
 
     //tx.send(Msg::AiButton(true));
     tx.send(Msg::PttButton(false));
@@ -169,4 +183,6 @@ pub fn test_channel() {
             //}
         }
     }
+
+    mpsc::init(); // clean up after test
 }

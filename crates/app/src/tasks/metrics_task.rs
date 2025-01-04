@@ -30,7 +30,7 @@ impl Task for MetricsTask {
     fn run(
         &self,
         _msg: &Msg,
-        _sender: &mut crate::v_mpsc::Sender<Msg>,
+        _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut dev::BSP,
         metrics: &mut Metrics,
     ) {

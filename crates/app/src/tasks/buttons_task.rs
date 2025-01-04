@@ -24,7 +24,7 @@ impl Task for ButtonTask {
     fn run(
         &self,
         _incoming_msg: &Msg,
-        sender: &mut crate::v_mpsc::Sender<Msg>,
+        sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut dev::BSP,
         _metrics: &mut Metrics,
     ) {

@@ -61,7 +61,7 @@ pub fn exit(ret: i32) -> ! {
     loop {}
 }
 
-#[cfg(feature = "std")]
-pub fn exit(ret: i32) -> ! {
-    std::process::exit(ret);
-}
+//#[cfg(feature = "std")]
+//pub fn exit(ret: i32) -> ! {
+//    std::process::exit(ret);
+//}

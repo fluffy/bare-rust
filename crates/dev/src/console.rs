@@ -138,3 +138,36 @@ impl Print for u32 {
         v.print_console();
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_print_console_u8_slice() {
+        let message: &[u8] = b"OK";
+        message.print_console();
+    }
+
+    #[test]
+    fn test_print_console_u64() {
+        let number: u64 = 42;
+        number.print_console();
+    }
+
+    #[test]
+    fn test_print_console_bool() {
+        let value_true: bool = true;
+        value_true.print_console();
+
+        let value_false: bool = false;
+        value_false.print_console();
+    }
+
+    #[test]
+    fn test_print_console_u32() {
+        let number: u32 = 123;
+        number.print_console();
+    }
+}
