@@ -20,6 +20,7 @@ use crate::msg::Msg;
 use crate::stack;
 use bsp::console::Print;
 
+
 #[cfg(feature = "std")]
 extern crate std;
 
@@ -37,6 +38,11 @@ pub struct TaskInfo {
     pub mem_budget_bytes: u32,
 }
 
+pub struct TaskData{
+    pub text_edit: text_edit_task::Data,
+}
+
+
 /// Trait that defines the behavior of a task.
 pub trait Task {
     /// Method to execute the task.
@@ -45,6 +51,7 @@ pub trait Task {
         msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
+        data: &mut TaskData,
         metrics: &mut Metrics,
     );
 
@@ -67,6 +74,8 @@ pub struct TaskMgr<'a> {
     sender: &'a mut crate::mpsc::Sender<Msg>,
     /// A reference to the Board Support Package (BSP).
     bsp: &'a mut bsp::BSP,
+    // hold all the data for the task to use
+    data: &'a mut TaskData,
     /// A reference to the metrics structure for tracking task performance.
     metrics: &'a mut Metrics,
 }
@@ -79,6 +88,7 @@ impl<'a> TaskMgr<'a> {
     pub fn new(
         s: &'a mut crate::mpsc::Sender<Msg>,
         bsp: &'a mut bsp::BSP,
+        data: &'a mut TaskData,
         metrics: &'a mut Metrics,
     ) -> TaskMgr<'a> {
         TaskMgr {
@@ -87,6 +97,7 @@ impl<'a> TaskMgr<'a> {
             num_tasks: 0,
             sender: s,
             bsp: bsp,
+            data: data,
             metrics: metrics,
         }
     }
@@ -119,7 +130,7 @@ impl<'a> TaskMgr<'a> {
 
             let start_time = hal::timer::current_time();
             let msg = Msg::None;
-            t.run(&msg, self.sender, self.bsp, self.metrics);
+            t.run(&msg, self.sender, self.bsp, self.data, self.metrics);
             let end_time = hal::timer::current_time();
             let end_stack_usage = stack::usage(false) as u32;
 

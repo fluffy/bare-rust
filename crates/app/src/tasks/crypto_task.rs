@@ -1,6 +1,6 @@
 
 
-use super::Task;
+use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
@@ -24,6 +24,7 @@ impl Task for CryptoTask {
         _incoming_msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
+        _task_data: &mut TaskData,
         _metrics: &mut Metrics,
     ) {
 

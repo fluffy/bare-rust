@@ -1,4 +1,4 @@
-use super::Task;
+use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
@@ -22,6 +22,7 @@ impl Task for KeyboardTask {
         _incoming_msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
+        _task_data: &mut TaskData,
         _metrics: &mut Metrics,
     ) {
         // this uses the PTT button to mock the keyboard

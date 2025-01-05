@@ -67,7 +67,12 @@ fn my_main() {
 
     let mut metrics = metrics::Metrics::new();
 
-    let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut metrics);
+    let mut data = tasks::TaskData {
+        text_edit: tasks::text_edit_task::Data::new(),
+    };
+    
+    
+    let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut data, &mut metrics);
 
     // this is removed for now as using button for mock keyboard
     //let button_task = tasks::buttons_task::ButtonTask {};
@@ -94,9 +99,7 @@ fn my_main() {
     let render_task = tasks::render_task::RenderTask {};
     task_mgr.add_task(&render_task);
 
-    let text_edit_task = tasks::text_edit_task::TextEditTask { 
-        buffer: heapless::Vec::new(),
-    };
+    let text_edit_task = tasks::text_edit_task::TextEditTask {};
     task_mgr.add_task(&text_edit_task);
 
     //let fib_task = tasks::fib_task::FibTask {};

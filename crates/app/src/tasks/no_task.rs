@@ -1,7 +1,7 @@
 //! The `no_task` module contains the implementation of a placeholder task.
 //! This task is used when no task is assigned and should never be run.
 
-use super::Task;
+use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
@@ -25,6 +25,7 @@ impl Task for NoTask {
         _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
+        _task_data: &mut TaskData,
         _metrics: &mut Metrics,
     ) {
         panic!("NoTask should never run");

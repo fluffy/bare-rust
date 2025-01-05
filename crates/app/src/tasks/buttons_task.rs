@@ -3,7 +3,7 @@
 //! This task is responsible for reading the state of a button and sending a message
 //! if the button state changes.
 
-use super::Task;
+use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
@@ -27,6 +27,7 @@ impl Task for ButtonTask {
         _incoming_msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
+        _task_data: &mut TaskData,
         _metrics: &mut Metrics,
     ) {
         // junk sender.send(crate::msg::Msg::None );
