@@ -115,35 +115,41 @@ block-beta
     columns 1
     Application
     block: BSP
-        Info
-        Audio
-        Console
-        NetLink
-        Battery
-        Display
-        Keyboard
-        Buttons
+      columns 7
+      Display
+      Keyboard
+      Buttons
+      Info
+      Audio
+      Console
+      NetLink
+      Led
+      Debug
+      Battery
     end
     space
     block: HAL
-        I2C
-        I2S
-        UART
-        ADC
-        SPI
-        GPIO
+      SPI
+      GPIO
+      ADC
+      I2C
+      I2S
+      UART
     end
     block: Hardware
-        M24C02
-        WM8960
-        USB
-        NetCPU
-        LCD
-        Switches
+      LCD
+      Switches
+      LED
+      M24C02
+      WM8960
+      USB
+      NetCPU
     end
     Keyboard --> GPIO
     Display --> SPI
     Display --> GPIO
+    Led --> GPIO
+    Debug --> GPIO
     Audio --> I2S
     Audio --> I2C
     Info --> I2C
@@ -157,6 +163,7 @@ block-beta
     I2S --> WM8960
     I2C --> M24C02
     GPIO --> Switches
+    GPIO --> LED
     UART --> USB
 ```
 
