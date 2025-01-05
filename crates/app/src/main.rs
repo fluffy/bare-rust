@@ -28,7 +28,7 @@ mod vec;
 //use tasks::*;
 
 pub use msg::Msg;
-use crate::tasks::text_edit_task;
+//use crate::tasks::text_edit_task;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
@@ -58,6 +58,8 @@ fn alloc_task_data() -> &'static mut tasks::TaskData {
 
 #[cfg(feature = "std")]
 fn print_memory_sizes() {
+    use crate::tasks::*;
+    
     std::println!("Size of Msg enum: {}", std::mem::size_of::<Msg>());
     std::println!("Size of tasks::TaskData: {}", std::mem::size_of::<tasks::TaskData>());
     std::println!("Size of text_edit_task::Data: {}", std::mem::size_of::<text_edit_task::Data>());
@@ -192,7 +194,13 @@ mod tests {
 
         let mut metrics = metrics::Metrics::new();
 
-        let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut metrics);
+        let mut data :&mut tasks::TaskData = alloc_task_data();
+
+        
+        let mut task_mgr = tasks::TaskMgr::new(&mut sender, 
+                                               &mut bsp,
+                                               &mut data,
+                                               &mut metrics);
 
         let button_task = tasks::buttons_task::ButtonTask {};
         task_mgr.add_task(&button_task);
@@ -207,10 +215,10 @@ mod tests {
 
         for _ in 0..10 {
             task_mgr.run();
-            dispatch::process(receiver);
+            dispatch::process(receiver, &mut task_mgr);
         }
 
-        let stack_usage = stack::usage(false) as u32;
+        let stack_usage = stack::usage(false).0 as u32;
         if true {
             b"  test stack usage: ".print_console();
             stack_usage.print_console();

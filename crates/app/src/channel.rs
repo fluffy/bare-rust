@@ -178,13 +178,12 @@ pub fn test_channel() {
         }
         match msg {
             Msg::None => std::println!("None"),
-            //Msg::Shutdown => std::println!("Shutdown"),
-            //Msg::AiButton(b) => std::println!("AiButton: {}", b),
+            
             Msg::PttButton(b) => std::println!("PttButton: {}", b),
-            //Msg::Keyboard { key } => std::println!("Keyboard: {}", key),
-            //Msg::MoqObject { name, group, id } => {
-            //    std::println!("MoqObject: {} {} {}", name, group, id)
-            //}
+            Msg::Keyboard { key } => std::println!("Keyboard: {}", key),
+            Msg::TextInput { .. } => std::println!("TextInput " ),
+            //_ => { std::println!("Unhandled message"); }
+            
         }
     }
 
