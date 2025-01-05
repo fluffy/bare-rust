@@ -9,7 +9,7 @@ extern crate bsp;
 extern crate std;
 
 use crate::channel::mpsc;
-use crate::msg;
+use crate::{msg, tasks};
 use bsp::console::Print;
 
 /// Processes all the incoming messages from tasks and dispatches them to the
@@ -18,7 +18,7 @@ use bsp::console::Print;
 /// Consumes all the messages from the receiver and
 /// processes them each time it is called.
 ///
-pub fn process(receiver: mpsc::Receiver<msg::Msg>) {
+pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr) {
     let mut loop_count = 0;
     loop {
         let msg = receiver.recv();
@@ -27,11 +27,25 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>) {
         }
         match msg {
             msg::Msg::PttButton(pressed) => {
-                if pressed {
-                    b"  PTT button pressed\r\n".print_console();
-                } else {
-                    b"  PTT button released\r\n".print_console();
-                }
+                let _ = pressed;
+                b"  PTT button dispatche\r\n".print_console();
+            }
+            msg::Msg::Keyboard { key } => {
+                b"  Keyboard key press: ".print_console();
+                (key as u32).print_console();
+                b" dispatched\r\n".print_console();
+
+                tasks::text_edit_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::TextInput { input_len, input } => {
+                let _ = (input_len, input);
+                b"  Text input dispatched\r\n".print_console();
             }
             _ => {}
         }

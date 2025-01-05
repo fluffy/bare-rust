@@ -2,10 +2,18 @@
 //! It provides the necessary structures and traits to define tasks, manage their execution,
 //! and track their metrics.
 
-pub mod buttons_task;
-pub mod fib_task;
-pub mod metrics_task;
 mod no_task;
+
+pub mod buttons_task;
+pub mod chat_task;
+pub mod crypto_task;
+pub mod display_task;
+pub mod fib_task;
+pub mod keyboard_task;
+pub mod metrics_task;
+pub mod net_link_task;
+pub mod render_task;
+pub mod text_edit_task;
 
 use crate::metrics::Metrics;
 use crate::msg::Msg;
@@ -29,6 +37,10 @@ pub struct TaskInfo {
     pub mem_budget_bytes: u32,
 }
 
+pub struct TaskData {
+    pub text_edit: text_edit_task::Data,
+}
+
 /// Trait that defines the behavior of a task.
 pub trait Task {
     /// Method to execute the task.
@@ -37,6 +49,7 @@ pub trait Task {
         msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
+        data: &mut TaskData,
         metrics: &mut Metrics,
     );
 
@@ -56,11 +69,13 @@ pub struct TaskMgr<'a> {
     /// The number of tasks currently managed.
     num_tasks: usize,
     /// A message sender for inter-task communication.
-    sender: &'a mut crate::mpsc::Sender<Msg>,
+    pub sender: &'a mut crate::mpsc::Sender<Msg>,
     /// A reference to the Board Support Package (BSP).
-    bsp: &'a mut bsp::BSP,
+    pub bsp: &'a mut bsp::BSP,
+    // hold all the data for the task to use
+    pub data: &'a mut TaskData,
     /// A reference to the metrics structure for tracking task performance.
-    metrics: &'a mut Metrics,
+    pub metrics: &'a mut Metrics,
 }
 
 /// A placeholder task used when no task is assigned.
@@ -71,6 +86,7 @@ impl<'a> TaskMgr<'a> {
     pub fn new(
         s: &'a mut crate::mpsc::Sender<Msg>,
         bsp: &'a mut bsp::BSP,
+        data: &'a mut TaskData,
         metrics: &'a mut Metrics,
     ) -> TaskMgr<'a> {
         TaskMgr {
@@ -79,6 +95,7 @@ impl<'a> TaskMgr<'a> {
             num_tasks: 0,
             sender: s,
             bsp: bsp,
+            data: data,
             metrics: metrics,
         }
     }
@@ -111,7 +128,7 @@ impl<'a> TaskMgr<'a> {
 
             let start_time = hal::timer::current_time();
             let msg = Msg::None;
-            t.run(&msg, self.sender, self.bsp, self.metrics);
+            t.run(&msg, self.sender, self.bsp, self.data, self.metrics);
             let end_time = hal::timer::current_time();
             let end_stack_usage = stack::usage(false) as u32;
 

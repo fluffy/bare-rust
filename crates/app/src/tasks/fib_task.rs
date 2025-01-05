@@ -3,7 +3,7 @@
 //! This is a bogus task just to test the task manager can
 //! deal with memory and cpu usage budgets
 
-use super::Task;
+use super::{Task, TaskData};
 use crate::fib;
 use crate::metrics::Metrics;
 use crate::msg::Msg;
@@ -28,6 +28,7 @@ impl Task for FibTask {
         _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
+        _task_data: &mut TaskData,
         _metrics: &mut Metrics,
     ) {
         fib::fib(34);

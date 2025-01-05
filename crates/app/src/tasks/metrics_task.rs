@@ -2,7 +2,7 @@
 //! This task is responsible for periodically printing all metrics to the console
 //! and then resetting the metrics.
 
-use super::Task;
+use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
@@ -32,6 +32,7 @@ impl Task for MetricsTask {
         _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
+        _task_data: &mut TaskData,
         metrics: &mut Metrics,
     ) {
         b"\r\n\r\n".print_console();

@@ -39,6 +39,7 @@
 //!     match msg {
 //!         Msg::None => println!("None"),
 //!         Msg::PttButton(state) => println!("PttButton: {}", state),
+//!         _ => {}
 //!     }
 //! }
 //! ```
@@ -50,7 +51,7 @@ pub mod mpsc {
     const Q_SIZE: usize = 10;
 
     #[cfg(feature = "std")]
-    const NUM_QUEUES: usize = 20;
+    const NUM_QUEUES: usize = 2;
     #[cfg(not(feature = "std"))]
     const NUM_QUEUES: usize = 2;
 

@@ -61,6 +61,7 @@ flowchart LR
     A[Keyboard] -->|Keypress| B[TextEdit]
     B -->|TextInput| C[Chat]
     C -->|TxtMsg| D[Crypto]
+    B -->|print_input| J[Render]
     D -->|EncTxtMsg| F[NetLink]
     C -->|print| J[Render]
     J -->|bitmap| K[Display]
@@ -115,37 +116,44 @@ block-beta
     columns 1
     Application
     block: BSP
-        Display
-        Storage
-        Audio
-        Console
-        NetLink
-        Keyboard
-        Buttons
-        Battery
+      columns 7
+      Display
+      Keyboard
+      Buttons
+      Info
+      Audio
+      Console
+      NetLink
+      Led
+      Debug
+      Battery
     end
     space
     block: HAL
-        SPI
-        I2C
-        I2S
-        UART
-        GPIO
-        ADC
+      SPI
+      GPIO
+      ADC
+      I2C
+      I2S
+      UART
     end
     block: Hardware
-        LCD
-        M24C02
-        WM8960
-        USB
-        NetCPU
-        Switches
+      LCD
+      Switches
+      LED
+      M24C02
+      WM8960
+      USB
+      NetCPU
     end
     Keyboard --> GPIO
     Display --> SPI
+    Display --> GPIO
+    Led --> GPIO
+    Debug --> GPIO
     Audio --> I2S
     Audio --> I2C
-    Storage --> I2C
+    Info --> I2C
     Battery --> ADC
     Console --> UART
     Buttons --> GPIO
@@ -156,6 +164,7 @@ block-beta
     I2S --> WM8960
     I2C --> M24C02
     GPIO --> Switches
+    GPIO --> LED
     UART --> USB
 ```
 

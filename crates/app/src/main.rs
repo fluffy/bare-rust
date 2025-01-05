@@ -8,6 +8,7 @@ extern crate std;
 
 extern crate bsp;
 extern crate hal;
+extern crate heapless;
 
 use crate::channel::mpsc;
 use bsp::console::Print;
@@ -23,6 +24,8 @@ mod msg;
 mod stack;
 mod startup;
 mod tasks;
+
+//use tasks::*;
 
 pub use msg::Msg;
 
@@ -64,13 +67,39 @@ fn my_main() {
 
     let mut metrics = metrics::Metrics::new();
 
-    let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut metrics);
+    let mut data = tasks::TaskData {
+        text_edit: tasks::text_edit_task::Data::new(),
+    };
 
-    let button_task = tasks::buttons_task::ButtonTask {};
-    task_mgr.add_task(&button_task);
+    let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut data, &mut metrics);
+
+    // this is removed for now as using button for mock keyboard
+    //let button_task = tasks::buttons_task::ButtonTask {};
+    //task_mgr.add_task(&button_task);
+
+    let chat_task = tasks::chat_task::ChatTask {};
+    task_mgr.add_task(&chat_task);
+
+    let crypto_task = tasks::crypto_task::CryptoTask {};
+    task_mgr.add_task(&crypto_task);
+
+    let display_task = tasks::display_task::DisplayTask {};
+    task_mgr.add_task(&display_task);
+
+    let keyboard_task = tasks::keyboard_task::KeyboardTask {};
+    task_mgr.add_task(&keyboard_task);
 
     let metrics_task = tasks::metrics_task::MetricsTask {};
     task_mgr.add_task(&metrics_task);
+
+    let net_link_task = tasks::net_link_task::NetLinkTask {};
+    task_mgr.add_task(&net_link_task);
+
+    let render_task = tasks::render_task::RenderTask {};
+    task_mgr.add_task(&render_task);
+
+    let text_edit_task = tasks::text_edit_task::TextEditTask {};
+    task_mgr.add_task(&text_edit_task);
 
     //let fib_task = tasks::fib_task::FibTask {};
     //task_mgr.add_task(&fib_task);
@@ -84,11 +113,11 @@ fn my_main() {
         b" bytes\r\n".print_console();
     }
 
-    fib::fib_test();
+    // fib::fib_test();
 
     loop {
         task_mgr.run();
-        dispatch::process(receiver);
+        dispatch::process(receiver, &mut task_mgr);
 
         #[cfg(feature = "exit")]
         {

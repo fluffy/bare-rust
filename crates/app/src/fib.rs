@@ -12,6 +12,7 @@ use bsp::led::Color;
 
 #[inline(never)]
 /// Function to test performance using the Fibonacci calculation.
+#[allow(dead_code)]
 pub fn fib_test() {
     // fib*34) getting 1.630 s on bsp
     // fib(34) getting 0.798 s on rel. Now getting 764 mS - no idea what changed

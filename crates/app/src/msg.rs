@@ -4,6 +4,8 @@
 #[cfg(feature = "std")]
 extern crate std;
 
+extern crate heapless;
+
 /// Enumeration representing different types of messages. Multiple task can
 /// send messages to the dispatcher, which will then dispatch them to other task.
 /// Each type of message is represented by a variant of this enumeration.
@@ -13,13 +15,18 @@ extern crate std;
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Msg {
     None,
-    //Shutdown,
-    //AiButton(bool),
     /// Represents a message indicating the state of the PTT (Push-To-Talk) button.
     /// The boolean value indicates whether the button is pressed (`true`) or released (`false`).
     PttButton(bool),
-    //Keyboard { key: char },
-    //MoqObject { name: u128, group: u64, id: u64 },
+    Keyboard {
+        key: char,
+    },
+    TextInput {
+        input_len: u32,
+        input: [u8; 40],
+    }, //Shutdown,
+       //AiButton(bool),
+       //MoqObject { name: u128, group: u64, id: u64 },
 }
 
 #[cfg(test)]

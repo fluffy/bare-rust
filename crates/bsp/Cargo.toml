@@ -9,6 +9,7 @@ license = "BSD-2-Clause"
 
 [dependencies]
 hal = { path = "../hal" }
+heapless = "0.8.0"
 
 [lib]
 name = "bsp"
