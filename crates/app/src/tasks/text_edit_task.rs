@@ -8,8 +8,7 @@ use crate::msg::Msg;
 use crate::tasks::TaskInfo;
 
 /// Structure representing the textEdit task.
-pub struct TextEditTask {
-}
+pub struct TextEditTask {}
 
 pub struct Data {
     pub buffer: heapless::Vec<u8, 160>,
@@ -32,24 +31,24 @@ const TEXTEDIT_TASK_INFO: TaskInfo = TaskInfo {
     mem_budget_bytes: 300,
 };
 
-pub fn recv(  msg: &Msg,
-                sender: &mut crate::mpsc::Sender<Msg>,
-              _bsp: &mut bsp::BSP,
-              task_data: &mut TaskData,
-              _metrics: &mut Metrics ) {
-
+pub fn recv(
+    msg: &Msg,
+    sender: &mut crate::mpsc::Sender<Msg>,
+    _bsp: &mut bsp::BSP,
+    task_data: &mut TaskData,
+    _metrics: &mut Metrics,
+) {
     let data = &mut task_data.text_edit;
 
     match msg {
         Msg::Keyboard { key } => {
             // Handle the keyboard message here
             if key == &'\r' {
-                
                 let mut len = data.buffer.len() as u32;
-                if  len > 40 {
+                if len > 40 {
                     len = 40;
                 }
-                
+
                 // Send the input message
                 let text_msg = Msg::TextInput {
                     input_len: len,
@@ -57,9 +56,8 @@ pub fn recv(  msg: &Msg,
                 };
 
                 match text_msg {
-                    Msg::TextInput { mut input,.. } => {
+                    Msg::TextInput { mut input, .. } => {
                         input[..data.buffer.len()].copy_from_slice(&data.buffer);
-
                     }
                     _ => {}
                 }
@@ -80,8 +78,6 @@ pub fn recv(  msg: &Msg,
     }
 }
 
-
-
 impl Task for TextEditTask {
     /// Method to execute the textEdit task.
     /// Reads the state of the textEdit and sends a message if the state has changed.
@@ -94,8 +90,6 @@ impl Task for TextEditTask {
         _metrics: &mut Metrics,
     ) {
         let _data = &mut task_data.text_edit;
-
-
     }
 
     /// Returns the information about the textEdit task.
