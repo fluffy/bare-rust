@@ -6,15 +6,15 @@ use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
-use crate::vec::MyVec;
+use crate::vec::VecByte;
 
 /// Structure representing the textEdit task.
 pub struct TextEditTask {}
 
-
+//#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct Data {
     //pub buffer: heapless::Vec<u8, 160>,
-    buffer: MyVec,
+    buffer: VecByte<160>,
 }
 
 impl Data {
@@ -22,7 +22,7 @@ impl Data {
     pub const fn new() -> Self {
         Data {
             //buffer: heapless::Vec::new(),
-            buffer: MyVec::new(),
+            buffer: VecByte::<160>::new(),
             }
         }
     
@@ -60,10 +60,10 @@ pub fn recv(
                 // Clear the buffer
                 data.buffer.clear();
             }
-            // For example, you can add the key to the buffer
-            if data.buffer.len() < data.buffer.capacity() {
-                data.buffer.push(*key as u8).unwrap();
-            }
+            
+            let k = *key as u8;
+            data.buffer.push(k);
+            
         }
         _ => {
             // Handle other messages if necessary

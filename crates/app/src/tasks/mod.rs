@@ -37,7 +37,7 @@ pub struct TaskInfo {
     pub mem_budget_bytes: u32,
 }
 
-const JUNK_DATA_SIZE: usize = 0x1000;
+const JUNK_DATA_SIZE: usize = 0x1; // must be at least 1 byte
 
 pub struct TaskData {
     pub junk_data: [u8;JUNK_DATA_SIZE],

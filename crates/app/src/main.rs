@@ -28,6 +28,7 @@ mod vec;
 //use tasks::*;
 
 pub use msg::Msg;
+use crate::tasks::text_edit_task;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
@@ -55,6 +56,12 @@ fn alloc_task_data() -> &'static mut tasks::TaskData {
     unsafe { &mut HEAP_TASK_DATA }
 }
 
+#[cfg(feature = "std")]
+fn print_memory_sizes() {
+    std::println!("Size of Msg enum: {}", std::mem::size_of::<Msg>());
+    std::println!("Size of tasks::TaskData: {}", std::mem::size_of::<tasks::TaskData>());
+    std::println!("Size of text_edit_task::Data: {}", std::mem::size_of::<text_edit_task::Data>());
+}
 
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
@@ -71,6 +78,9 @@ fn my_main() {
 
     b"Starting\r\n".print_console();
 
+    #[cfg(feature = "std")]
+    print_memory_sizes();
+    
     let (mut sender, receiver): (mpsc::Sender<msg::Msg>, mpsc::Receiver<msg::Msg>) =
         mpsc::channel();
 
