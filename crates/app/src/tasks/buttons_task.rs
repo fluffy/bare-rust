@@ -16,7 +16,7 @@ const BUTTON_TASK_INFO: TaskInfo = TaskInfo {
     name: "Button",
     run_every_us: 10_000,
     time_budget_us: 10_000,
-    mem_budget_bytes: 300,
+    mem_budget_bytes: 500,
 };
 
 impl Task for ButtonTask {
