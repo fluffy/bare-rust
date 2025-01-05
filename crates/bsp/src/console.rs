@@ -22,12 +22,8 @@
 //!  number.print_console();
 //! ```
 
-//#[cfg(not(feature = "std"))]
-//use core::arch::asm;
-
 extern crate hal;
 
-//use crate::board;
 use hal::uart;
 
 #[cfg(feature = "std")]
