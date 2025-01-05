@@ -46,6 +46,7 @@ pub trait Print {
 }
 
 impl Print for [u8] {
+    /// Prints a slice of `u8` to the console.
     fn print_console(&self) {
         let s = self;
 
@@ -63,6 +64,7 @@ impl Print for [u8] {
 }
 
 impl Print for u64 {
+    /// Prints a `u64` to the console.
     fn print_console(&self) {
         let v = *self;
         let mut num = v;
@@ -88,6 +90,7 @@ impl Print for u64 {
 }
 
 impl Print for bool {
+    /// Prints a `bool` to the console.
     fn print_console(&self) {
         if *self {
             b"true".print_console();
@@ -98,6 +101,7 @@ impl Print for bool {
 }
 
 impl Print for u32 {
+    /// Prints a `u32` to the console.
     fn print_console(&self) {
         let v = *self as u64;
         v.print_console();
