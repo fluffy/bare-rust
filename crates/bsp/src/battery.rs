@@ -1,6 +1,4 @@
-
 extern crate hal;
-
 
 #[cfg(feature = "std")]
 extern crate std;
@@ -15,9 +13,8 @@ impl crate::battery::Battery {
 
     #[inline(never)]
     pub fn init(&self) {}
-    
+
     pub fn get_battery_percentage(&self) -> u8 {
         99
     }
 }
-
