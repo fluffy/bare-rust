@@ -39,6 +39,7 @@
 //!     match msg {
 //!         Msg::None => println!("None"),
 //!         Msg::PttButton(state) => println!("PttButton: {}", state),
+//!         _ => {}
 //!     }
 //! }
 //! ```
