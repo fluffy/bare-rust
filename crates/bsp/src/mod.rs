@@ -46,6 +46,7 @@ pub mod led;
 pub mod battery;
 pub mod keyboard;
 pub mod display;
+pub mod storage;
 
 pub struct BSP {
     pub buttons: buttons::Buttons,
