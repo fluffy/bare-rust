@@ -29,20 +29,24 @@ impl crate::display::Display {
 
     pub fn draw_pixel(&self, x: u32, y: u32, color: u16 ) {
         // Draw a pixel at position (x, y)
+        let _unused = (x, y, color);
     }
 
     pub fn draw_bitmap(&self, x: u32, y: u32, bitmap: &[u16] ,
                        width: u32, height: u32, stride: u32) {
         // Draw a bitmap at position (x, y)
+        let _unused = (x, y, bitmap, width, height, stride);
     }
 
     pub fn draw_rect(&self, x: u32, y: u32,
                      width: u32, height: u32, color: u16) {
         // Draw a rectangle at position (x, y) with the specified width and height
+        let _unused = (x, y, width, height, color);
     }
 
     pub fn refresh(&self) {
         // Refresh the display
+        let _unused = ( &self.vram, &self.dirty );
     }
 
 }

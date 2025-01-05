@@ -27,7 +27,6 @@ impl crate::info::Info {
     }
     
     pub fn set_secret_key(&self, _key: u128) {
-        todo!();
         // Set the secret key
     }
     
