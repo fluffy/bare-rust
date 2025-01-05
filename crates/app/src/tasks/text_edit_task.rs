@@ -9,7 +9,6 @@ use crate::tasks::TaskInfo;
 
 /// Structure representing the textEdit task.
 pub struct TextEditTask {
-    //pub buffer: heapless::Vec<u8, 160>,
 }
 
 pub struct Data {
@@ -33,50 +32,70 @@ const TEXTEDIT_TASK_INFO: TaskInfo = TaskInfo {
     mem_budget_bytes: 300,
 };
 
+pub fn recv(  msg: &Msg,
+                sender: &mut crate::mpsc::Sender<Msg>,
+              _bsp: &mut bsp::BSP,
+              task_data: &mut TaskData,
+              _metrics: &mut Metrics ) {
+
+    let data = &mut task_data.text_edit;
+
+    match msg {
+        Msg::Keyboard { key } => {
+            // Handle the keyboard message here
+            if key == &'\r' {
+                
+                let mut len = data.buffer.len() as u32;
+                if  len > 40 {
+                    len = 40;
+                }
+                
+                // Send the input message
+                let text_msg = Msg::TextInput {
+                    input_len: len,
+                    input: [0; 40],
+                };
+
+                match text_msg {
+                    Msg::TextInput { mut input,.. } => {
+                        input[..data.buffer.len()].copy_from_slice(&data.buffer);
+
+                    }
+                    _ => {}
+                }
+
+                sender.send(text_msg);
+
+                // Clear the buffer
+                data.buffer.clear();
+            }
+            // For example, you can add the key to the buffer
+            if data.buffer.len() < data.buffer.capacity() {
+                data.buffer.push(*key as u8).unwrap();
+            }
+        }
+        _ => {
+            // Handle other messages if necessary
+        }
+    }
+}
+
+
+
 impl Task for TextEditTask {
     /// Method to execute the textEdit task.
     /// Reads the state of the textEdit and sends a message if the state has changed.
     fn run(
         &self,
-        incoming_msg: &Msg,
-        sender: &mut crate::mpsc::Sender<Msg>,
+        _incoming_msg: &Msg,
+        _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
         task_data: &mut TaskData,
         _metrics: &mut Metrics,
     ) {
-        let data = &mut task_data.text_edit;
+        let _data = &mut task_data.text_edit;
 
-        match incoming_msg {
-            Msg::Keyboard { key } => {
-                // Handle the keyboard message here
-                if key == &'\r' {
-                    // Send the input message
-                    let mut text_msg = Msg::TextInput {
-                        input_len: data.buffer.len() as u32,
-                        input: [0; 160],
-                    };
 
-                    match text_msg {
-                        Msg::TextInput { ref mut input, .. } => {
-                            input[..data.buffer.len()].copy_from_slice(&data.buffer);
-                        }
-                        _ => {}
-                    }
-
-                    sender.send(text_msg);
-
-                    // Clear the buffer
-                    data.buffer.clear();
-                }
-                // For example, you can add the key to the buffer
-                if data.buffer.len() < data.buffer.capacity() {
-                    data.buffer.push(*key as u8).unwrap();
-                }
-            }
-            _ => {
-                // Handle other messages if necessary
-            }
-        }
     }
 
     /// Returns the information about the textEdit task.
