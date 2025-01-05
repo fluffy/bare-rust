@@ -8,7 +8,7 @@ pub struct DisplayTask {}
 
 /// Information about the display task.
 const DISPLAY_TASK_INFO: TaskInfo = TaskInfo {
-    name: "Display",
+    name: b"Display_",
     run_every_us: 100_000,
     time_budget_us: 10_000,
     mem_budget_bytes: 500,

@@ -8,7 +8,7 @@ pub struct NetLinkTask {}
 
 /// Information about the netLink task.
 const NETLINK_TASK_INFO: TaskInfo = TaskInfo {
-    name: "NetLink",
+    name: b"NetLink_",
     run_every_us: 100_000,
     time_budget_us: 10_000,
     mem_budget_bytes: 500,

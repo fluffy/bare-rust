@@ -8,7 +8,7 @@ pub struct ChatTask {}
 
 /// Information about the chat task.
 const CHAT_TASK_INFO: TaskInfo = TaskInfo {
-    name: "Chat",
+    name: b"Chat____",
     run_every_us: 100_000,
     time_budget_us: 10_000,
     mem_budget_bytes: 500,

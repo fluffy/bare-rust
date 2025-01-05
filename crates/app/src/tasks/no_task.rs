@@ -11,7 +11,7 @@ pub struct NoTask {}
 
 /// Information about the NoTask.
 const NO_TASK_INFO: TaskInfo = TaskInfo {
-    name: "NoTask",
+    name: b"NoTask__",
     run_every_us: 0,
     time_budget_us: 0,
     mem_budget_bytes: 0,

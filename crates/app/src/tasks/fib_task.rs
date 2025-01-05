@@ -14,7 +14,7 @@ pub struct FibTask {}
 
 /// Information about the Fibonacci task.
 const FIB_TASK_INFO: TaskInfo = TaskInfo {
-    name: "fibTask",
+    name: b"fibTask_",
     run_every_us: 5_000_000,
     time_budget_us: 2_000_000,
     mem_budget_bytes: 1000,

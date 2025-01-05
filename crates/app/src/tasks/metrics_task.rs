@@ -15,7 +15,7 @@ pub struct MetricsTask {}
 
 /// Information about the metrics task.
 const METRICS_TASK_INFO: TaskInfo = TaskInfo {
-    name: "MetricsTask",
+    name: b"Metrics_",
     run_every_us: 5_000_000,
     time_budget_us: 2_000_000,
     mem_budget_bytes: 500,
@@ -43,13 +43,13 @@ impl Task for MetricsTask {
             }
 
             b"Task ".print_console();
-            (i as u64).print_console();
-            //metrics.task_name.print_console();
+            //(i as u64).print_console();
+            metrics.task_name[i].print_console();
             b": ".print_console();
             metrics.task_run_count[i].print_console();
-            b" runs, ".print_console();
+            b" runs, \t".print_console();
             metrics.task_max_stack[i].print_console();
-            b" bytes, ".print_console();
+            b" bytes, \t".print_console();
             metrics.task_max_duration_us[i].print_console();
             b" uS\r\n".print_console();
 

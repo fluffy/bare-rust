@@ -13,7 +13,7 @@ pub struct ButtonTask {}
 
 /// Information about the button task.
 const BUTTON_TASK_INFO: TaskInfo = TaskInfo {
-    name: "Button",
+    name: b"Button__",
     run_every_us: 10_000,
     time_budget_us: 10_000,
     mem_budget_bytes: 500,
