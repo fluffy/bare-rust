@@ -1,7 +1,7 @@
 /* Info for STM32F405RGTx */
 
-_Min_Heap_Size = 0x0;
-_Min_Stack_Size = 0x800;
+_Heap_Size = 0x0;
+_Stack_Size = 0x8000;
 
 MEMORY
 {
@@ -54,9 +54,9 @@ SECTIONS
    {
     _heap_start = .;
     . = ALIGN(4);
-    . = . + _Min_Heap_Size;
+    . = . + _Heap_Size;
     _stack_reserve_start = .;
-    . = . + _Min_Stack_Size;
+    . = . + _Stack_Size;
     _stack_reserve_end = .;
     . = ALIGN(4);
    } > RAM
