@@ -44,6 +44,7 @@ pub mod console;
 pub mod debug;
 pub mod led;
 pub mod battery;
+mod keyboard;
 
 pub struct BSP {
     pub buttons: buttons::Buttons,
