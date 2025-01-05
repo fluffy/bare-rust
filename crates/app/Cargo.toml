@@ -11,7 +11,7 @@ license = "BSD-2-Clause"
 #std = {  optional = true }
 hal = { path = "../hal" }
 bsp = { path = "../bsp" }
-heapless = "0.8.0"
+
 
 [[bin]]
 name = "app"

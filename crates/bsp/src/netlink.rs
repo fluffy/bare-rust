@@ -2,8 +2,6 @@
 //!
 //! This module provides functionality for sending and receiving messages to the NET CPU.
 
-extern crate heapless;
-
 extern crate hal;
 
 #[cfg(feature = "std")]
@@ -17,15 +15,18 @@ pub enum NetlinkMessage {
         group_id: u32,
         key_id: u32,
         track_alias: u128,
-        enc_data: heapless::Vec<u32, { 256 / 4 }>,
+
+        enc_data_len: u32,
+        enc_data: [u32; 64],
     },
     InMoqObject {
         object_id: u32,
         group_id: u32,
         key_id: u32,
         track_alias: u128,
+        
         enc_data_len: u32,
-        enc_data: heapless::Vec<u32, { 256 / 4 }>,
+        enc_data: [u32; 64],
     },
     FetchMoqObject {
         object_id: u32,

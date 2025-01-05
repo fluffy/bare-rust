@@ -8,7 +8,7 @@ extern crate std;
 
 extern crate bsp;
 extern crate hal;
-extern crate heapless;
+
 
 use crate::channel::mpsc;
 use bsp::console::Print;

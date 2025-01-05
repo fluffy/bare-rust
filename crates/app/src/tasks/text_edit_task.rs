@@ -1,6 +1,6 @@
 //! Task to key pess events and edit input text
 
-extern crate heapless;
+
 
 use super::{Task, TaskData};
 use crate::metrics::Metrics;

@@ -4,7 +4,7 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-extern crate heapless;
+
 
 use crate::vec::VecByte;
 
