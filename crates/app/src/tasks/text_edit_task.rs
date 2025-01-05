@@ -1,4 +1,6 @@
+//! Task to key pess events and edit input text
 
+extern crate heapless;
 
 use super::Task;
 use crate::metrics::Metrics;
@@ -6,7 +8,9 @@ use crate::msg::Msg;
 use crate::tasks::TaskInfo;
 
 /// Structure representing the textEdit task.
-pub struct TextEditTask {}
+pub struct TextEditTask {
+    pub buffer: heapless::Vec<u8, 160>,
+}
 
 /// Information about the textEdit task.
 const TEXTEDIT_TASK_INFO: TaskInfo = TaskInfo {
@@ -21,12 +25,42 @@ impl Task for TextEditTask {
     /// Reads the state of the textEdit and sends a message if the state has changed.
     fn run(
         &self,
-        _incoming_msg: &Msg,
-        _sender: &mut crate::mpsc::Sender<Msg>,
+        incoming_msg: &Msg,
+        sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
         _metrics: &mut Metrics,
     ) {
+        match incoming_msg {
+            Msg::Keyboard { key } => {
+                // Handle the keyboard message here
+                if key == &'\r' {
+                    // Send the input message
+                    let mut text_msg = Msg::TextInput {
+                        input_len: self.buffer.len() as u32,
+                        input: [0; 160],
+                    };
 
+                    match text_msg {
+                        Msg::TextInput { ref mut input, .. } => {
+                            input[..self.buffer.len()].copy_from_slice(&self.buffer);
+                        }
+                        _ => {}
+                    }
+
+                    sender.send(text_msg);
+
+                    // Clear the buffer
+                    self.buffer.clear();
+                }
+                // For example, you can add the key to the buffer
+                if self.buffer.len() < self.buffer.capacity() {
+                    self.buffer.push(*key as u8).unwrap();
+                }
+            }
+            _ => {
+                // Handle other messages if necessary
+            }
+        }
     }
 
     /// Returns the information about the textEdit task.

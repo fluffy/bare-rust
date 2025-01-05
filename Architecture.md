@@ -61,6 +61,7 @@ flowchart LR
     A[Keyboard] -->|Keypress| B[TextEdit]
     B -->|TextInput| C[Chat]
     C -->|TxtMsg| D[Crypto]
+    B -->|print_input| J[Render]
     D -->|EncTxtMsg| F[NetLink]
     C -->|print| J[Render]
     J -->|bitmap| K[Display]

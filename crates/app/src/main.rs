@@ -8,6 +8,7 @@ extern crate std;
 
 extern crate bsp;
 extern crate hal;
+extern crate heapless;
 
 use crate::channel::mpsc;
 use bsp::console::Print;
@@ -93,7 +94,9 @@ fn my_main() {
     let render_task = tasks::render_task::RenderTask {};
     task_mgr.add_task(&render_task);
 
-    let text_edit_task = tasks::text_edit_task::TextEditTask {};
+    let text_edit_task = tasks::text_edit_task::TextEditTask { 
+        buffer: heapless::Vec::new(),
+    };
     task_mgr.add_task(&text_edit_task);
 
     //let fib_task = tasks::fib_task::FibTask {};
