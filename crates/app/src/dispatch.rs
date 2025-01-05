@@ -43,8 +43,8 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
-            msg::Msg::TextInput { input_len, input } => {
-                let _ = (input_len, input);
+            msg::Msg::TextInput {  input } => {
+                let _ = input;
                 b"  Text input dispatched\r\n".print_console();
             }
             _ => {}

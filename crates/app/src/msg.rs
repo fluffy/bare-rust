@@ -6,6 +6,8 @@ extern crate std;
 
 extern crate heapless;
 
+use crate::vec::MyVec;
+
 /// Enumeration representing different types of messages. Multiple task can
 /// send messages to the dispatcher, which will then dispatch them to other task.
 /// Each type of message is represented by a variant of this enumeration.
@@ -22,8 +24,9 @@ pub enum Msg {
         key: char,
     },
     TextInput {
-        input_len: u32,
-        input: [u8; 40],
+        input: MyVec,
+        //input_len: u32,
+        //input: [u8; 40],
     }, //Shutdown,
        //AiButton(bool),
        //MoqObject { name: u128, group: u64, id: u64 },

@@ -24,7 +24,7 @@ mod msg;
 mod stack;
 mod startup;
 mod tasks;
-
+mod vec;
 //use tasks::*;
 
 pub use msg::Msg;
@@ -47,6 +47,15 @@ fn main() {
     my_main();
 }
 
+//#[link_section = ".data"]
+static mut HEAP_TASK_DATA: tasks::TaskData = tasks::TaskData::new();
+
+fn alloc_task_data() -> &'static mut tasks::TaskData {
+    #[allow(static_mut_refs)]
+    unsafe { &mut HEAP_TASK_DATA }
+}
+
+
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
 fn my_main() {
@@ -67,9 +76,13 @@ fn my_main() {
 
     let mut metrics = metrics::Metrics::new();
 
-    let mut data = tasks::TaskData {
-        text_edit: tasks::text_edit_task::Data::new(),
-    };
+    let mut data :&mut tasks::TaskData = alloc_task_data();
+
+    data.junk_data[0] = 1;
+
+    //let mut data2 = tasks::TaskData {
+    //    text_edit: tasks::text_edit_task::Data::new(),
+    //};
 
     let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut data, &mut metrics);
 
@@ -106,10 +119,18 @@ fn my_main() {
 
     led::set(Color::Green);
 
-    let stack_usage = stack::usage(false) as u32;
+    let (stack_usage, stack_current, stack_reserved ) = stack::usage(false);
     if cfg!(not(feature = "std")) {
         b"  Starting stack usage: ".print_console();
-        stack_usage.print_console();
+        (stack_usage as u32).print_console();
+        b" bytes\r\n".print_console();
+        
+        b"  Starting stack current: ".print_console();
+        (stack_current as u32).print_console();
+        b" bytes\r\n".print_console();
+        
+        b"  Starting stack reserved: ".print_console();
+        (stack_reserved as u32).print_console();
         b" bytes\r\n".print_console();
     }
 
