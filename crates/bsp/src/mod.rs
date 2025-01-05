@@ -43,6 +43,7 @@ pub mod buttons;
 pub mod console;
 pub mod debug;
 pub mod led;
+pub mod battery;
 
 pub struct BSP {
     pub buttons: buttons::Buttons,
