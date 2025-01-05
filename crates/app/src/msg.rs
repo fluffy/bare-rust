@@ -23,7 +23,7 @@ pub enum Msg {
     },
     TextInput {
         input_len: u32,
-        input: [u8; 160],
+        input: [u8; 40],
     }, //Shutdown,
        //AiButton(bool),
        //MoqObject { name: u128, group: u64, id: u64 },

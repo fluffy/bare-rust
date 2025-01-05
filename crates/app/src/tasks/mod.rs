@@ -69,13 +69,13 @@ pub struct TaskMgr<'a> {
     /// The number of tasks currently managed.
     num_tasks: usize,
     /// A message sender for inter-task communication.
-    sender: &'a mut crate::mpsc::Sender<Msg>,
+    pub sender: &'a mut crate::mpsc::Sender<Msg>,
     /// A reference to the Board Support Package (BSP).
-    bsp: &'a mut bsp::BSP,
+    pub bsp: &'a mut bsp::BSP,
     // hold all the data for the task to use
-    data: &'a mut TaskData,
+    pub data: &'a mut TaskData,
     /// A reference to the metrics structure for tracking task performance.
-    metrics: &'a mut Metrics,
+    pub metrics: &'a mut Metrics,
 }
 
 /// A placeholder task used when no task is assigned.

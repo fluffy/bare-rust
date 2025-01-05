@@ -113,11 +113,11 @@ fn my_main() {
         b" bytes\r\n".print_console();
     }
 
-    fib::fib_test();
+    // fib::fib_test();
 
     loop {
         task_mgr.run();
-        dispatch::process(receiver);
+        dispatch::process(receiver, &mut task_mgr);
 
         #[cfg(feature = "exit")]
         {
