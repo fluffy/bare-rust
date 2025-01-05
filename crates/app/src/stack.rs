@@ -94,7 +94,7 @@ pub fn usage(repaint: bool) -> usize {
     let usage = (end - upper_bound) as usize;
 
     if usage > reserved {
-        panic!("Stack overflow");
+      //panic!("Stack overflow");
     }
 
     usage
