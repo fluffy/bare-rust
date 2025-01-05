@@ -8,10 +8,10 @@ pub struct RenderTask {}
 
 /// Information about the render task.
 const RENDER_TASK_INFO: TaskInfo = TaskInfo {
-    name: "Render",
+    name: b"Render__",
     run_every_us: 100_000,
     time_budget_us: 10_000,
-    mem_budget_bytes: 300,
+    mem_budget_bytes: 500,
 };
 
 impl Task for RenderTask {

@@ -1,31 +1,36 @@
 //! Task to key pess events and edit input text
 
-extern crate heapless;
+
 
 use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
+use crate::vec::VecByte;
 
 /// Structure representing the textEdit task.
 pub struct TextEditTask {}
 
+//#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct Data {
-    pub buffer: heapless::Vec<u8, 160>,
+    //pub buffer: heapless::Vec<u8, 160>,
+    buffer: VecByte<160>,
 }
 
 impl Data {
     /// Creates a new `Data` instance with an empty buffer.
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Data {
-            buffer: heapless::Vec::new(),
+            //buffer: heapless::Vec::new(),
+            buffer: VecByte::<160>::new(),
+            }
         }
-    }
+    
 }
 
 /// Information about the textEdit task.
 const TEXTEDIT_TASK_INFO: TaskInfo = TaskInfo {
-    name: "TextEdit",
+    name: b"TextEdit",
     run_every_us: 100_000,
     time_budget_us: 10_000,
     mem_budget_bytes: 300,
@@ -44,33 +49,21 @@ pub fn recv(
         Msg::Keyboard { key } => {
             // Handle the keyboard message here
             if key == &'\r' {
-                let mut len = data.buffer.len() as u32;
-                if len > 40 {
-                    len = 40;
-                }
-
+              
                 // Send the input message
                 let text_msg = Msg::TextInput {
-                    input_len: len,
-                    input: [0; 40],
+                    input: data.buffer.clone(),
                 };
-
-                match text_msg {
-                    Msg::TextInput { mut input, .. } => {
-                        input[..data.buffer.len()].copy_from_slice(&data.buffer);
-                    }
-                    _ => {}
-                }
-
+                
                 sender.send(text_msg);
 
                 // Clear the buffer
                 data.buffer.clear();
             }
-            // For example, you can add the key to the buffer
-            if data.buffer.len() < data.buffer.capacity() {
-                data.buffer.push(*key as u8).unwrap();
-            }
+            
+            let k = *key as u8;
+            data.buffer.push(k);
+            
         }
         _ => {
             // Handle other messages if necessary

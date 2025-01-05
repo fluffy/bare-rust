@@ -4,7 +4,9 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-extern crate heapless;
+
+
+use crate::vec::VecByte;
 
 /// Enumeration representing different types of messages. Multiple task can
 /// send messages to the dispatcher, which will then dispatch them to other task.
@@ -12,7 +14,7 @@ extern crate heapless;
 /// For each type of message, only one task can consume it. However, multiple
 /// tasks can send the same type of message.
 ///
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq)]
 pub enum Msg {
     None,
     /// Represents a message indicating the state of the PTT (Push-To-Talk) button.
@@ -22,11 +24,18 @@ pub enum Msg {
         key: char,
     },
     TextInput {
-        input_len: u32,
-        input: [u8; 40],
+        input: VecByte<160>,
+        //input_len: u32,
+        //input: [u8; 40],
     }, //Shutdown,
        //AiButton(bool),
        //MoqObject { name: u128, group: u64, id: u64 },
+}
+
+impl Default for Msg {
+    fn default() -> Self {
+        Msg::None
+    }
 }
 
 #[cfg(test)]

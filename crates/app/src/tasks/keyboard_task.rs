@@ -8,10 +8,10 @@ pub struct KeyboardTask {}
 
 /// Information about the keyboard task.
 const KEYBOARD_TASK_INFO: TaskInfo = TaskInfo {
-    name: "Keyboard",
+    name: b"Keyboard",
     run_every_us: 10_000,
     time_budget_us: 10_000,
-    mem_budget_bytes: 300,
+    mem_budget_bytes: 500,
 };
 
 impl Task for KeyboardTask {

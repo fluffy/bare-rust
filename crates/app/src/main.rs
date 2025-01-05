@@ -8,7 +8,7 @@ extern crate std;
 
 extern crate bsp;
 extern crate hal;
-extern crate heapless;
+
 
 use crate::channel::mpsc;
 use bsp::console::Print;
@@ -24,10 +24,11 @@ mod msg;
 mod stack;
 mod startup;
 mod tasks;
-
+mod vec;
 //use tasks::*;
 
 pub use msg::Msg;
+//use crate::tasks::text_edit_task;
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
@@ -47,6 +48,23 @@ fn main() {
     my_main();
 }
 
+//#[link_section = ".data"]
+static mut HEAP_TASK_DATA: tasks::TaskData = tasks::TaskData::new();
+
+fn alloc_task_data() -> &'static mut tasks::TaskData {
+    #[allow(static_mut_refs)]
+    unsafe { &mut HEAP_TASK_DATA }
+}
+
+#[cfg(feature = "std")]
+fn print_memory_sizes() {
+    use crate::tasks::*;
+    
+    std::println!("Size of Msg enum: {}", std::mem::size_of::<Msg>());
+    std::println!("Size of tasks::TaskData: {}", std::mem::size_of::<tasks::TaskData>());
+    std::println!("Size of text_edit_task::Data: {}", std::mem::size_of::<text_edit_task::Data>());
+}
+
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
 fn my_main() {
@@ -62,14 +80,21 @@ fn my_main() {
 
     b"Starting\r\n".print_console();
 
+    #[cfg(feature = "std")]
+    print_memory_sizes();
+    
     let (mut sender, receiver): (mpsc::Sender<msg::Msg>, mpsc::Receiver<msg::Msg>) =
         mpsc::channel();
 
     let mut metrics = metrics::Metrics::new();
 
-    let mut data = tasks::TaskData {
-        text_edit: tasks::text_edit_task::Data::new(),
-    };
+    let mut data :&mut tasks::TaskData = alloc_task_data();
+
+    data.junk_data[0] = 1;
+
+    //let mut data2 = tasks::TaskData {
+    //    text_edit: tasks::text_edit_task::Data::new(),
+    //};
 
     let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut data, &mut metrics);
 
@@ -106,10 +131,18 @@ fn my_main() {
 
     led::set(Color::Green);
 
-    let stack_usage = stack::usage(false) as u32;
+    let (stack_usage, stack_current, stack_reserved ) = stack::usage(false);
     if cfg!(not(feature = "std")) {
         b"  Starting stack usage: ".print_console();
-        stack_usage.print_console();
+        (stack_usage as u32).print_console();
+        b" bytes\r\n".print_console();
+        
+        b"  Starting stack current: ".print_console();
+        (stack_current as u32).print_console();
+        b" bytes\r\n".print_console();
+        
+        b"  Starting stack reserved: ".print_console();
+        (stack_reserved as u32).print_console();
         b" bytes\r\n".print_console();
     }
 
@@ -161,7 +194,13 @@ mod tests {
 
         let mut metrics = metrics::Metrics::new();
 
-        let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut metrics);
+        let mut data :&mut tasks::TaskData = alloc_task_data();
+
+        
+        let mut task_mgr = tasks::TaskMgr::new(&mut sender, 
+                                               &mut bsp,
+                                               &mut data,
+                                               &mut metrics);
 
         let button_task = tasks::buttons_task::ButtonTask {};
         task_mgr.add_task(&button_task);
@@ -176,10 +215,10 @@ mod tests {
 
         for _ in 0..10 {
             task_mgr.run();
-            dispatch::process(receiver);
+            dispatch::process(receiver, &mut task_mgr);
         }
 
-        let stack_usage = stack::usage(false) as u32;
+        let stack_usage = stack::usage(false).0 as u32;
         if true {
             b"  test stack usage: ".print_console();
             stack_usage.print_console();

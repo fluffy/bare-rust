@@ -33,7 +33,7 @@ fn get_stack_pointer() -> u32 {
 #[inline(never)]
 /// Calculates the maximum stack usage since the last repaint
 /// and optionally repaints the stack.
-pub fn usage(repaint: bool) -> usize {
+pub fn usage(repaint: bool) -> (usize,usize,usize) {
     let start: u32 = ptr::addr_of!(_heap_start) as u32;
     let end: u32 = ptr::addr_of!(_estack) as u32;
 
@@ -60,7 +60,7 @@ pub fn usage(repaint: bool) -> usize {
 
     // fine tune the upper bound
     upper_bound = (upper_bound & !0x3) + 4;
-    if true {
+    if false {
         loop {
             let val: u32;
             unsafe {
@@ -92,15 +92,17 @@ pub fn usage(repaint: bool) -> usize {
     let reserved: usize = (reserve_end - reserve_start) as usize;
 
     let usage = (end - upper_bound) as usize;
-
+    let sp = get_stack_pointer() as usize;
+    let current = ( (end as usize) - sp) as usize;
+    
     if usage > reserved {
-        //panic!("Stack overflow");
+        panic!("Stack overflow");
     }
 
-    usage
+    (usage, current, reserved)
 }
 
 #[cfg(not(target_arch = "arm"))]
-pub fn usage(_repaint: bool) -> usize {
-    0
+pub fn usage(_repaint: bool) -> (usize,usize,usize) {
+    (0,0,0)
 }
