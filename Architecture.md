@@ -115,34 +115,35 @@ block-beta
     columns 1
     Application
     block: BSP
-        Display
         Storage
         Audio
         Console
         NetLink
+        Battery
+        Display
         Keyboard
         Buttons
-        Battery
     end
     space
     block: HAL
-        SPI
         I2C
         I2S
         UART
-        GPIO
         ADC
+        SPI
+        GPIO
     end
     block: Hardware
-        LCD
         M24C02
         WM8960
         USB
         NetCPU
+        LCD
         Switches
     end
     Keyboard --> GPIO
     Display --> SPI
+    Display --> GPIO
     Audio --> I2S
     Audio --> I2C
     Storage --> I2C
