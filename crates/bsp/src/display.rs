@@ -32,8 +32,8 @@ extern crate hal;
 #[cfg(feature = "std")]
 extern crate std;
 
-const WIDTH: usize = 128;
-const HEIGHT: usize = 64;
+const WIDTH: usize = 32;
+const HEIGHT: usize = 32;
 
 /// Struct keeping track of the display state
 pub struct Display {
