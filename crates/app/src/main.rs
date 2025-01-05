@@ -70,8 +70,7 @@ fn my_main() {
     let mut data = tasks::TaskData {
         text_edit: tasks::text_edit_task::Data::new(),
     };
-    
-    
+
     let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut data, &mut metrics);
 
     // this is removed for now as using button for mock keyboard

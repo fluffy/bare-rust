@@ -5,21 +5,20 @@
 mod no_task;
 
 pub mod buttons_task;
-pub mod fib_task;
-pub mod metrics_task;
-pub mod keyboard_task;
-pub mod text_edit_task;
 pub mod chat_task;
 pub mod crypto_task;
-pub mod render_task;
-pub mod net_link_task;
 pub mod display_task;
+pub mod fib_task;
+pub mod keyboard_task;
+pub mod metrics_task;
+pub mod net_link_task;
+pub mod render_task;
+pub mod text_edit_task;
 
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::stack;
 use bsp::console::Print;
-
 
 #[cfg(feature = "std")]
 extern crate std;
@@ -38,10 +37,9 @@ pub struct TaskInfo {
     pub mem_budget_bytes: u32,
 }
 
-pub struct TaskData{
+pub struct TaskData {
     pub text_edit: text_edit_task::Data,
 }
-
 
 /// Trait that defines the behavior of a task.
 pub trait Task {

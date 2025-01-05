@@ -3,12 +3,12 @@
 //! This module provides functionality for interacting with the battery on the board.
 //! It includes methods for initializing the battery interface and retrieving the battery percentage.
 //!
-//! 
+//!
 //! ## Functions
 //!
 //! - `get_battery_percentage`: Retrieves the battery percentage.
 //!
-//! 
+//!
 
 extern crate hal;
 
@@ -30,7 +30,7 @@ impl crate::battery::Battery {
     ///
     /// # Returns
     /// A `u8` representing the battery percentage as a number between 0 and 100.
-    /// 
+    ///
     pub fn get_battery_percentage(&self) -> u8 {
         99
     }

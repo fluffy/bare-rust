@@ -1,8 +1,8 @@
 //! # Display Module
 //!
 //! This module provides functionality for controlling the display on the board.
-//! It includes methods for initializing the display, drawing pixels, bitmaps, and rectangles 
-//! It also has function that needs to be periodically called for refreshing the display to the LCD. 
+//! It includes methods for initializing the display, drawing pixels, bitmaps, and rectangles
+//! It also has function that needs to be periodically called for refreshing the display to the LCD.
 //!
 //! ## Functions
 //!
@@ -23,7 +23,7 @@
 //! display.draw_pixel(10, 10, 0xFFFF);
 //! display.draw_bitmap(0, 0, &[0xFFFF; 128 * 64], 128, 64, 128);
 //! display.draw_rect(20, 20, 50, 50, 0xFFFF);
-//! 
+//!
 //! display.refresh();
 //! ```
 
@@ -40,7 +40,7 @@ pub struct Display {
     /// bitmap buffer for the display
     vram: [u16; WIDTH * HEIGHT],
     /// dirty flag indicating that row needs to be refreshed to LCD
-    dirty: [bool; HEIGHT], 
+    dirty: [bool; HEIGHT],
 }
 
 impl crate::display::Display {
@@ -61,34 +61,39 @@ impl crate::display::Display {
     }
 
     /// Draws a pixel at a specified position.
-    pub fn draw_pixel(&self, x: u32, y: u32, color: u16 ) {
+    pub fn draw_pixel(&self, x: u32, y: u32, color: u16) {
         // Draw a pixel at position (x, y)
         let _unused = (x, y, color);
     }
 
     /// Draws a bitmap at a specified position.
-    pub fn draw_bitmap(&self, x: u32, y: u32, bitmap: &[u16] ,
-                       width: u32, height: u32, stride: u32) {
+    pub fn draw_bitmap(
+        &self,
+        x: u32,
+        y: u32,
+        bitmap: &[u16],
+        width: u32,
+        height: u32,
+        stride: u32,
+    ) {
         // Draw a bitmap at position (x, y)
         let _unused = (x, y, bitmap, width, height, stride);
     }
 
     /// Draws a rectangle at a specified position with the specified width, height, and color.
-    pub fn draw_rect(&self, x: u32, y: u32,
-                     width: u32, height: u32, color: u16) {
+    pub fn draw_rect(&self, x: u32, y: u32, width: u32, height: u32, color: u16) {
         // Draw a rectangle at position (x, y) with the specified width and height
         let _unused = (x, y, width, height, color);
     }
 
     /// Partially refreshes the display.
-    /// 
-    /// This function needs to be called periodically to refresh the display 
+    ///
+    /// This function needs to be called periodically to refresh the display
     /// and only refreshes some of  the rows that are marked as dirty. It needs to be called
     /// multiple times to refresh the entire display.
-    /// 
+    ///
     pub fn refresh(&self) {
         // Refresh the display
-        let _unused = ( &self.vram, &self.dirty );
+        let _unused = (&self.vram, &self.dirty);
     }
-
 }

@@ -17,7 +17,7 @@ pub enum NetlinkMessage {
         group_id: u32,
         key_id: u32,
         track_alias: u128,
-        enc_data: heapless::Vec<u32, {256/4} >,
+        enc_data: heapless::Vec<u32, { 256 / 4 }>,
     },
     InMoqObject {
         object_id: u32,
@@ -25,7 +25,7 @@ pub enum NetlinkMessage {
         key_id: u32,
         track_alias: u128,
         enc_data_len: u32,
-        enc_data: heapless::Vec<u32, {256/4} >,
+        enc_data: heapless::Vec<u32, { 256 / 4 }>,
     },
     FetchMoqObject {
         object_id: u32,

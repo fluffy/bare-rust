@@ -1,5 +1,3 @@
-
-
 use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
@@ -27,7 +25,6 @@ impl Task for DisplayTask {
         _task_data: &mut TaskData,
         _metrics: &mut Metrics,
     ) {
-
     }
 
     /// Returns the information about the display task.

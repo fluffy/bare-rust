@@ -1,6 +1,6 @@
 //! # Info Module
 //!
-//! This module provides functionality for retrieving and setting various information 
+//! This module provides functionality for retrieving and setting various information
 //! about the device from the EEPROM.
 //!
 //! It includes methods for  getting device ID, secret key, extra random value,
