@@ -18,7 +18,7 @@ pub enum Msg {
     /// Represents a message indicating the state of the PTT (Push-To-Talk) button.
     /// The boolean value indicates whether the button is pressed (`true`) or released (`false`).
     PttButton(bool),
-    //Keyboard { key: char },
+    Keyboard { key: char },
     //MoqObject { name: u128, group: u64, id: u64 },
 }
 

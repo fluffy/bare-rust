@@ -33,6 +33,11 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>) {
                     b"  PTT button released\r\n".print_console();
                 }
             }
+            msg::Msg::Keyboard { key } => {
+                b"  Keyboard key pressed: ".print_console();
+                (key as u32).print_console();
+                b"\r\n".print_console();
+            }
             _ => {}
         }
 
