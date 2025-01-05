@@ -3,12 +3,12 @@ extern crate hal;
 #[cfg(feature = "std")]
 extern crate std;
 
-pub struct Storage {}
+pub struct Info {}
 
-impl crate::storage::Storage {
+impl crate::info::Info {
     #[inline(never)]
     pub fn new() -> Self {
-        crate::storage::Storage {}
+        crate::info::Info {}
     }
 
     #[inline(never)]

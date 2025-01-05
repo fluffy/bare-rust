@@ -115,7 +115,7 @@ block-beta
     columns 1
     Application
     block: BSP
-        Storage
+        Info
         Audio
         Console
         NetLink
@@ -146,7 +146,7 @@ block-beta
     Display --> GPIO
     Audio --> I2S
     Audio --> I2C
-    Storage --> I2C
+    Info --> I2C
     Battery --> ADC
     Console --> UART
     Buttons --> GPIO
