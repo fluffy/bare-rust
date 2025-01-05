@@ -103,6 +103,6 @@ pub fn usage(repaint: bool) -> (usize,usize,usize) {
 }
 
 #[cfg(not(target_arch = "arm"))]
-pub fn usage(_repaint: bool) -> usize {
-    0
+pub fn usage(_repaint: bool) -> (usize,usize,usize) {
+    (0,0,0)
 }
