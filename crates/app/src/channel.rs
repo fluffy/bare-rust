@@ -57,11 +57,8 @@ pub mod mpsc {
     #[cfg(not(feature = "std"))]
     const NUM_QUEUES: usize = 2;
 
-    static mut Q: [ VecMsg<Q_SIZE> ; NUM_QUEUES] = [
-        { VecMsg::new() },
-        { VecMsg::new() },
-    ];
-    
+    static mut Q: [VecMsg<Q_SIZE>; NUM_QUEUES] = [{ VecMsg::new() }, { VecMsg::new() }];
+
     //static mut Q: [[Msg; Q_SIZE]; NUM_QUEUES] = [[Msg::None; Q_SIZE]; NUM_QUEUES];
     //static mut Q_LEN: [usize; NUM_QUEUES] = [0; NUM_QUEUES];
     static mut NUM_Q: usize = 0;
@@ -83,10 +80,10 @@ pub mod mpsc {
         pub fn send(&self, msg: Msg) {
             let ch = self.ch;
             //let q_len = unsafe { Q_LEN[ch] };
-           // if q_len >= Q_SIZE {
+            // if q_len >= Q_SIZE {
             //    panic!("Queue full");
             //}
-           unsafe{ Q[ch].push(msg) };
+            unsafe { Q[ch].push(msg) };
         }
     }
 
@@ -107,12 +104,12 @@ pub mod mpsc {
         ///
         pub fn recv(&self) -> Msg {
             let ch = self.ch;
-            
-            if unsafe{ Q[ch].len() } == 0 {
+
+            if unsafe { Q[ch].len() } == 0 {
                 return Msg::None;
             }
-            let msg = unsafe{ Q[ch].pop() };
-            
+            let msg = unsafe { Q[ch].pop() };
+
             msg
         }
     }
@@ -178,12 +175,11 @@ pub fn test_channel() {
         }
         match msg {
             Msg::None => std::println!("None"),
-            
+
             Msg::PttButton(b) => std::println!("PttButton: {}", b),
             Msg::Keyboard { key } => std::println!("Keyboard: {}", key),
-            Msg::TextInput { .. } => std::println!("TextInput " ),
+            Msg::TextInput { .. } => std::println!("TextInput "),
             //_ => { std::println!("Unhandled message"); }
-            
         }
     }
 

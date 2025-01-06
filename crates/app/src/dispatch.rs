@@ -44,7 +44,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                 );
             }
             msg::Msg::TextInput { .. } => {
-                 b"  TextInput dispatched\r\n".print_console();
+                b"  TextInput dispatched\r\n".print_console();
 
                 tasks::chat_task::recv(
                     &msg,
@@ -54,7 +54,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
-            msg::Msg::TxtMsg {.. } => {
+            msg::Msg::TxtMsg { .. } => {
                 b"  TxtMsg dispatched\r\n".print_console();
 
                 tasks::crypto_task::recv(

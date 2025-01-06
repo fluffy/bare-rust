@@ -6,7 +6,6 @@ use crate::tasks::TaskInfo;
 /// Structure representing the chat task.
 pub struct ChatTask {}
 
-
 pub struct Data {
     group_id: u32,
     object_id: u32,
@@ -22,7 +21,6 @@ impl Data {
             object_id: 67,
         }
     }
-
 }
 
 /// Information about the chat task.
@@ -60,7 +58,7 @@ pub fn recv(
     _metrics: &mut Metrics,
 ) {
     let data = &mut task_data.chat;
-    
+
     match msg {
         Msg::TextInput { input } => {
             // Handle the text input message here
@@ -72,7 +70,7 @@ pub fn recv(
             };
 
             data.object_id += 1;
-            
+
             sender.send(msg);
         }
         _ => {}

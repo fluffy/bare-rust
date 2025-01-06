@@ -45,7 +45,6 @@ pub trait Print {
     fn print_console(&self);
 }
 
-
 impl Print for [u8] {
     /// Prints a slice of `u8` to the console.
     fn print_console(&self) {
@@ -141,15 +140,14 @@ mod tests {
     }
 }
 
-
 /// Prints spaces to the console to pad the given value to the specified width.
 ///
 /// # Arguments
 ///
 /// * `v` - The value to be printed.
 /// * `pad` - The total width to pad the value to.
-pub fn print_pad(v:u32, pad:u32) {
-    let mut digits =1;
+pub fn print_pad(v: u32, pad: u32) {
+    let mut digits = 1;
     let mut threshold = 10;
 
     // Calculate the number of digits in the value
@@ -159,7 +157,7 @@ pub fn print_pad(v:u32, pad:u32) {
     }
 
     // Calculate the number of spaces needed for padding
-    if pad  > digits {
+    if pad > digits {
         let mut spaces = pad - digits;
 
         // Print the padding to the console

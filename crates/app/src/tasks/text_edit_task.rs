@@ -1,7 +1,5 @@
 //! Task to key pess events and edit input text
 
-
-
 use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
@@ -20,9 +18,8 @@ impl Data {
     pub const fn new() -> Self {
         Data {
             buffer: VecByte::<160>::new(),
-            }
         }
-    
+    }
 }
 
 /// Information about the textEdit task.
@@ -46,21 +43,19 @@ pub fn recv(
         Msg::Keyboard { key } => {
             // Handle the keyboard message here
             if key == &'\r' {
-              
                 // Send the input message
                 let text_msg = Msg::TextInput {
                     input: data.buffer.clone(),
                 };
-                
+
                 sender.send(text_msg);
 
                 // Clear the buffer
                 data.buffer.clear();
             }
-            
+
             let k = *key as u8;
             data.buffer.push(k);
-            
         }
         _ => {
             // Handle other messages if necessary

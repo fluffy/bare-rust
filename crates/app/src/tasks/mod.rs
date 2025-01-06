@@ -29,7 +29,7 @@ extern crate bsp;
 pub struct TaskInfo {
     /// The name of the task.
     //pub name: &'static str,
-    pub name: &'static [u8;8],
+    pub name: &'static [u8; 8],
     /// The interval at which the task should run, in microseconds.
     pub run_every_us: u32,
     /// The maximum allowed execution time for the task, in microseconds.
@@ -41,7 +41,7 @@ pub struct TaskInfo {
 const JUNK_DATA_SIZE: usize = 0x1; // must be at least 1 byte
 
 pub struct TaskData {
-    pub junk_data: [u8;JUNK_DATA_SIZE],
+    pub junk_data: [u8; JUNK_DATA_SIZE],
     pub text_edit: text_edit_task::Data,
     pub chat: chat_task::Data,
 }
@@ -52,11 +52,10 @@ impl TaskData {
         TaskData {
             text_edit: text_edit_task::Data::new(),
             chat: chat_task::Data::new(),
-            junk_data: [0;JUNK_DATA_SIZE],
+            junk_data: [0; JUNK_DATA_SIZE],
         }
     }
 }
-
 
 /// Trait that defines the behavior of a task.
 pub trait Task {
@@ -131,7 +130,7 @@ impl<'a> TaskMgr<'a> {
     /// The method also updates the task metrics.
     pub fn run(&mut self) {
         stack::usage(true); // reset stack usage
-        let (base_stack_usage,..) = stack::usage(false) ;
+        let (base_stack_usage, ..) = stack::usage(false);
 
         for i in 0..self.num_tasks {
             let t = self.tasks[i];
@@ -147,12 +146,12 @@ impl<'a> TaskMgr<'a> {
             let msg = Msg::None;
             t.run(&msg, self.sender, self.bsp, self.data, self.metrics);
             let end_time = hal::timer::current_time();
-            let (end_stack_usage,..) = stack::usage(false) ;
+            let (end_stack_usage, ..) = stack::usage(false);
 
             self.last_run[i] = start_time;
 
             let duration = end_time.sub(start_time).as_u64();
-            if duration > info.time_budget_us  {
+            if duration > info.time_budget_us {
                 b"Exceeded time budget\r\n".print_console();
 
                 b" start=".print_console();
@@ -185,7 +184,7 @@ impl<'a> TaskMgr<'a> {
                 }
             }
             self.metrics.task_run_count[i] += 1;
-            if stack_usage > self.metrics.task_max_stack[i] as usize{
+            if stack_usage > self.metrics.task_max_stack[i] as usize {
                 self.metrics.task_max_stack[i] = stack_usage as u32;
             }
             if duration as u32 > self.metrics.task_max_duration_us[i] {

@@ -14,7 +14,6 @@ const CRYPTO_TASK_INFO: TaskInfo = TaskInfo {
     mem_budget_bytes: 500,
 };
 
-
 impl Task for CryptoTask {
     /// Method to execute the crypto task.
     /// Reads the state of the crypto and sends a message if the state has changed.
@@ -33,7 +32,6 @@ impl Task for CryptoTask {
         &CRYPTO_TASK_INFO
     }
 }
-
 
 pub fn recv(
     _msg: &Msg,

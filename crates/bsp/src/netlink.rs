@@ -24,7 +24,7 @@ pub enum NetlinkMessage {
         group_id: u32,
         key_id: u32,
         track_alias: u128,
-        
+
         enc_data_len: u32,
         enc_data: [u32; 64],
     },
