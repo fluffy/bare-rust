@@ -14,6 +14,7 @@ const CRYPTO_TASK_INFO: TaskInfo = TaskInfo {
     mem_budget_bytes: 500,
 };
 
+
 impl Task for CryptoTask {
     /// Method to execute the crypto task.
     /// Reads the state of the crypto and sends a message if the state has changed.
@@ -31,4 +32,15 @@ impl Task for CryptoTask {
     fn info(&self) -> &'static TaskInfo {
         &CRYPTO_TASK_INFO
     }
+}
+
+
+pub fn recv(
+    _msg: &Msg,
+    _sender: &mut crate::mpsc::Sender<Msg>,
+    _bsp: &mut bsp::BSP,
+    task_data: &mut TaskData,
+    _metrics: &mut Metrics,
+) {
+    let _data = &mut task_data.text_edit;
 }

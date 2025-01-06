@@ -11,9 +11,7 @@ use crate::vec::VecByte;
 /// Structure representing the textEdit task.
 pub struct TextEditTask {}
 
-//#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct Data {
-    //pub buffer: heapless::Vec<u8, 160>,
     buffer: VecByte<160>,
 }
 
@@ -21,7 +19,6 @@ impl Data {
     /// Creates a new `Data` instance with an empty buffer.
     pub const fn new() -> Self {
         Data {
-            //buffer: heapless::Vec::new(),
             buffer: VecByte::<160>::new(),
             }
         }

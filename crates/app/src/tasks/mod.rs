@@ -43,6 +43,7 @@ const JUNK_DATA_SIZE: usize = 0x1; // must be at least 1 byte
 pub struct TaskData {
     pub junk_data: [u8;JUNK_DATA_SIZE],
     pub text_edit: text_edit_task::Data,
+    pub chat: chat_task::Data,
 }
 
 impl TaskData {
@@ -50,6 +51,7 @@ impl TaskData {
     pub const fn new() -> Self {
         TaskData {
             text_edit: text_edit_task::Data::new(),
+            chat: chat_task::Data::new(),
             junk_data: [0;JUNK_DATA_SIZE],
         }
     }
