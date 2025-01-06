@@ -9,7 +9,6 @@ extern crate std;
 extern crate bsp;
 extern crate hal;
 
-
 use crate::channel::mpsc;
 use bsp::console::Print;
 
@@ -53,16 +52,24 @@ static mut HEAP_TASK_DATA: tasks::TaskData = tasks::TaskData::new();
 
 fn alloc_task_data() -> &'static mut tasks::TaskData {
     #[allow(static_mut_refs)]
-    unsafe { &mut HEAP_TASK_DATA }
+    unsafe {
+        &mut HEAP_TASK_DATA
+    }
 }
 
 #[cfg(feature = "std")]
 fn print_memory_sizes() {
     use crate::tasks::*;
-    
+
     std::println!("Size of Msg enum: {}", std::mem::size_of::<Msg>());
-    std::println!("Size of tasks::TaskData: {}", std::mem::size_of::<tasks::TaskData>());
-    std::println!("Size of text_edit_task::Data: {}", std::mem::size_of::<text_edit_task::Data>());
+    std::println!(
+        "Size of tasks::TaskData: {}",
+        std::mem::size_of::<tasks::TaskData>()
+    );
+    std::println!(
+        "Size of text_edit_task::Data: {}",
+        std::mem::size_of::<text_edit_task::Data>()
+    );
 }
 
 #[inline(never)]
@@ -82,13 +89,13 @@ fn my_main() {
 
     #[cfg(feature = "std")]
     print_memory_sizes();
-    
+
     let (mut sender, receiver): (mpsc::Sender<msg::Msg>, mpsc::Receiver<msg::Msg>) =
         mpsc::channel();
 
     let mut metrics = metrics::Metrics::new();
 
-    let mut data :&mut tasks::TaskData = alloc_task_data();
+    let mut data: &mut tasks::TaskData = alloc_task_data();
 
     data.junk_data[0] = 1;
 
@@ -131,16 +138,16 @@ fn my_main() {
 
     led::set(Color::Green);
 
-    let (stack_usage, stack_current, stack_reserved ) = stack::usage(false);
+    let (stack_usage, stack_current, stack_reserved) = stack::usage(false);
     if cfg!(not(feature = "std")) {
         b"  Starting stack usage: ".print_console();
         (stack_usage as u32).print_console();
         b" bytes\r\n".print_console();
-        
+
         b"  Starting stack current: ".print_console();
         (stack_current as u32).print_console();
         b" bytes\r\n".print_console();
-        
+
         b"  Starting stack reserved: ".print_console();
         (stack_reserved as u32).print_console();
         b" bytes\r\n".print_console();
@@ -194,13 +201,9 @@ mod tests {
 
         let mut metrics = metrics::Metrics::new();
 
-        let mut data :&mut tasks::TaskData = alloc_task_data();
+        let mut data: &mut tasks::TaskData = alloc_task_data();
 
-        
-        let mut task_mgr = tasks::TaskMgr::new(&mut sender, 
-                                               &mut bsp,
-                                               &mut data,
-                                               &mut metrics);
+        let mut task_mgr = tasks::TaskMgr::new(&mut sender, &mut bsp, &mut data, &mut metrics);
 
         let button_task = tasks::buttons_task::ButtonTask {};
         task_mgr.add_task(&button_task);

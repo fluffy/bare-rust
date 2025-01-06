@@ -139,3 +139,31 @@ mod tests {
         number.print_console();
     }
 }
+
+/// Prints spaces to the console to pad the given value to the specified width.
+///
+/// # Arguments
+///
+/// * `v` - The value to be printed.
+/// * `pad` - The total width to pad the value to.
+pub fn print_pad(v: u32, pad: u32) {
+    let mut digits = 1;
+    let mut threshold = 10;
+
+    // Calculate the number of digits in the value
+    while v > threshold {
+        digits += 1;
+        threshold *= 10;
+    }
+
+    // Calculate the number of spaces needed for padding
+    if pad > digits {
+        let mut spaces = pad - digits;
+
+        // Print the padding to the console
+        while spaces > 0 {
+            spaces -= 1;
+            b" ".print_console();
+        }
+    }
+}

@@ -8,6 +8,7 @@ use crate::msg::Msg;
 use crate::tasks::TaskInfo;
 
 use crate::tasks::MAX_TASKS;
+use bsp::console::print_pad;
 use bsp::console::Print;
 
 /// Structure representing the metrics task.
@@ -46,10 +47,13 @@ impl Task for MetricsTask {
             //(i as u64).print_console();
             metrics.task_name[i].print_console();
             b": ".print_console();
+            print_pad(metrics.task_run_count[i], 4);
             metrics.task_run_count[i].print_console();
-            b" runs, \t".print_console();
+            b" runs, ".print_console();
+            print_pad(metrics.task_max_stack[i], 5);
             metrics.task_max_stack[i].print_console();
-            b" bytes, \t".print_console();
+            b" bytes, ".print_console();
+            print_pad(metrics.task_max_duration_us[i], 7);
             metrics.task_max_duration_us[i].print_console();
             b" uS\r\n".print_console();
 

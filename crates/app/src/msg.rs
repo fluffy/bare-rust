@@ -4,8 +4,6 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-
-
 use crate::vec::VecByte;
 
 /// Enumeration representing different types of messages. Multiple task can
@@ -25,11 +23,16 @@ pub enum Msg {
     },
     TextInput {
         input: VecByte<160>,
-        //input_len: u32,
-        //input: [u8; 40],
-    }, //Shutdown,
-       //AiButton(bool),
-       //MoqObject { name: u128, group: u64, id: u64 },
+    },
+    TxtMsg {
+        object_id: u32,
+        group_id: u32,
+        track_alias: u128,
+        text: VecByte<160>,
+    },
+    //Shutdown,
+    //AiButton(bool),
+    //MoqObject { name: u128, group: u64, id: u64 },
 }
 
 impl Default for Msg {

@@ -32,3 +32,13 @@ impl Task for CryptoTask {
         &CRYPTO_TASK_INFO
     }
 }
+
+pub fn recv(
+    _msg: &Msg,
+    _sender: &mut crate::mpsc::Sender<Msg>,
+    _bsp: &mut bsp::BSP,
+    task_data: &mut TaskData,
+    _metrics: &mut Metrics,
+) {
+    let _data = &mut task_data.text_edit;
+}

@@ -1,7 +1,5 @@
 //! Task to key pess events and edit input text
 
-
-
 use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
@@ -11,9 +9,7 @@ use crate::vec::VecByte;
 /// Structure representing the textEdit task.
 pub struct TextEditTask {}
 
-//#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct Data {
-    //pub buffer: heapless::Vec<u8, 160>,
     buffer: VecByte<160>,
 }
 
@@ -21,11 +17,9 @@ impl Data {
     /// Creates a new `Data` instance with an empty buffer.
     pub const fn new() -> Self {
         Data {
-            //buffer: heapless::Vec::new(),
             buffer: VecByte::<160>::new(),
-            }
         }
-    
+    }
 }
 
 /// Information about the textEdit task.
@@ -49,21 +43,19 @@ pub fn recv(
         Msg::Keyboard { key } => {
             // Handle the keyboard message here
             if key == &'\r' {
-              
                 // Send the input message
                 let text_msg = Msg::TextInput {
                     input: data.buffer.clone(),
                 };
-                
+
                 sender.send(text_msg);
 
                 // Clear the buffer
                 data.buffer.clear();
             }
-            
+
             let k = *key as u8;
             data.buffer.push(k);
-            
         }
         _ => {
             // Handle other messages if necessary
