@@ -55,7 +55,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                 );
             }
             msg::Msg::TxtMsgOut { .. } => {
-                b"  TxtMsg dispatched\r\n".print_console();
+                b"  TxtMsgOut dispatched\r\n".print_console();
 
                 tasks::crypto_task::recv(
                     &msg,
@@ -66,7 +66,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                 );
             }
             msg::Msg::EncTxtMsgOut { .. } => {
-                b"  EncTxtMsg dispatched\r\n".print_console();
+                b"  EncTxtMsgOut dispatched\r\n".print_console();
 
                 tasks::net_link_task::recv(
                     &msg,
@@ -78,6 +78,17 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
             }
             msg::Msg::PrintMsg { .. } => {
                 b"  PrintMsg dispatched\r\n".print_console();
+
+                tasks::render_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::PrintClearInputMsg { .. } => {
+                b"  PrintClearInputMsg dispatched\r\n".print_console();
 
                 tasks::render_task::recv(
                     &msg,
@@ -102,6 +113,28 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                 b"  PrintClearMsg dispatched\r\n".print_console();
 
                 tasks::render_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::EncTxtMsgIn { .. } => {
+                b"  EncTxtMsgIn dispatched\r\n".print_console();
+
+                tasks::crypto_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::TxtMsgIn { .. } => {
+                b"  TxtMsgIn dispatched\r\n".print_console();
+
+                tasks::chat_task::recv(
                     &msg,
                     &mut task_mgr.sender,
                     &mut task_mgr.bsp,

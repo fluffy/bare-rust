@@ -99,6 +99,14 @@ pub fn recv(
                 data.dirty[r] = true;
             }
         }
+        Msg::PrintClearInputMsg {} => {
+            let r = TEXT_ROWS - 1;
+                for c in 0..TEXT_COLS {
+                    data.text[r][c] = b' ';
+                }
+                data.dirty[r] = true;
+            
+        }
         _ => {
             // Handle other messages if necessary
         }

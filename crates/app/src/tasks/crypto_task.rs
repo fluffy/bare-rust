@@ -71,6 +71,25 @@ pub fn recv(
 
             sender.send(msg);
         }
+        Msg::EncTxtMsgIn {
+            object_id,
+            group_id,
+            track_alias,
+            key_id,
+            enc_text,
+            auth_tag,
+        } => {
+            let _ = (key_id, auth_tag);
+            
+            let msg = Msg::TxtMsgIn {
+                object_id: *object_id,
+                group_id: *group_id,
+                track_alias: *track_alias,
+                text: enc_text.clone(),
+            };
+
+            sender.send(msg);
+        }
         _ => {}
     }
 }

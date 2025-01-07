@@ -53,6 +53,7 @@ pub enum Msg {
         auth_tag: u128,
     },
     PrintClearMsg,
+    PrintClearInputMsg,
     PrintMsg {
         text: VecByte<160>,
     },
