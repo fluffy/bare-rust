@@ -6,6 +6,17 @@ use crate::tasks::TaskInfo;
 /// Structure representing the crypto task.
 pub struct CryptoTask {}
 
+pub struct Data {
+    key_id: u32,
+}
+
+impl Data {
+    /// Creates a new `Data` instance with an empty buffer.
+    pub const fn new() -> Self {
+        Data { key_id: 321 }
+    }
+}
+
 /// Information about the crypto task.
 const CRYPTO_TASK_INFO: TaskInfo = TaskInfo {
     name: b"Crypto__",
@@ -34,11 +45,51 @@ impl Task for CryptoTask {
 }
 
 pub fn recv(
-    _msg: &Msg,
-    _sender: &mut crate::mpsc::Sender<Msg>,
+    msg: &Msg,
+    sender: &mut crate::mpsc::Sender<Msg>,
     _bsp: &mut bsp::BSP,
     task_data: &mut TaskData,
     _metrics: &mut Metrics,
 ) {
-    let _data = &mut task_data.text_edit;
+    let data = &mut task_data.crypto;
+
+    match msg {
+        Msg::TxtMsgOut {
+            object_id,
+            group_id,
+            track_alias,
+            text,
+        } => {
+            let msg = Msg::EncTxtMsgOut {
+                object_id: *object_id,
+                group_id: *group_id,
+                track_alias: *track_alias,
+                key_id: data.key_id,
+                enc_text: text.clone(),
+                auth_tag: 0x42,
+            };
+
+            sender.send(msg);
+        }
+        Msg::EncTxtMsgIn {
+            object_id,
+            group_id,
+            track_alias,
+            key_id,
+            enc_text,
+            auth_tag,
+        } => {
+            let _ = (key_id, auth_tag);
+
+            let msg = Msg::TxtMsgIn {
+                object_id: *object_id,
+                group_id: *group_id,
+                track_alias: *track_alias,
+                text: enc_text.clone(),
+            };
+
+            sender.send(msg);
+        }
+        _ => {}
+    }
 }

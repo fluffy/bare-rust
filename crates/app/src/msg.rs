@@ -24,10 +24,40 @@ pub enum Msg {
     TextInput {
         input: VecByte<160>,
     },
-    TxtMsg {
+    TxtMsgOut {
         object_id: u32,
         group_id: u32,
         track_alias: u128,
+        text: VecByte<160>,
+    },
+    TxtMsgIn {
+        object_id: u32,
+        group_id: u32,
+        track_alias: u128,
+        text: VecByte<160>,
+    },
+    EncTxtMsgOut {
+        object_id: u32,
+        group_id: u32,
+        track_alias: u128,
+        key_id: u32,
+        enc_text: VecByte<160>,
+        auth_tag: u128,
+    },
+    EncTxtMsgIn {
+        object_id: u32,
+        group_id: u32,
+        track_alias: u128,
+        key_id: u32,
+        enc_text: VecByte<160>,
+        auth_tag: u128,
+    },
+    PrintClearMsg,
+    PrintClearInputMsg,
+    PrintMsg {
+        text: VecByte<160>,
+    },
+    PrintInputMsg {
         text: VecByte<160>,
     },
     //Shutdown,

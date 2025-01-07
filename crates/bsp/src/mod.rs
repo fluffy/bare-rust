@@ -55,19 +55,29 @@ pub mod led;
 pub mod netlink;
 
 pub struct BSP {
+    pub battery: battery::Battery,
     pub buttons: buttons::Buttons,
     pub console: console::Console,
     pub debug: debug::Debug,
+    pub display: display::Display,
+    pub info: info::Info,
+    pub keyboard: keyboard::Keyboard,
     pub led: led::Led,
+    pub netlink: netlink::Netlink,
 }
 
 impl BSP {
     pub fn new() -> Self {
         BSP {
+            battery: battery::Battery::new(),
             buttons: buttons::Buttons::new(),
             console: console::Console::new(),
             debug: debug::Debug::new(),
+            display: display::Display::new(),
+            info: info::Info::new(),
+            keyboard: keyboard::Keyboard::new(),
             led: led::Led::new(),
+            netlink: netlink::Netlink::new(),
         }
     }
 

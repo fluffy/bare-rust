@@ -54,8 +54,8 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
-            msg::Msg::TxtMsg { .. } => {
-                b"  TxtMsg dispatched\r\n".print_console();
+            msg::Msg::TxtMsgOut { .. } => {
+                b"  TxtMsgOut dispatched\r\n".print_console();
 
                 tasks::crypto_task::recv(
                     &msg,
@@ -65,6 +65,84 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
+            msg::Msg::EncTxtMsgOut { .. } => {
+                b"  EncTxtMsgOut dispatched\r\n".print_console();
+
+                tasks::net_link_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::PrintMsg { .. } => {
+                b"  PrintMsg dispatched\r\n".print_console();
+
+                tasks::render_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::PrintClearInputMsg { .. } => {
+                b"  PrintClearInputMsg dispatched\r\n".print_console();
+
+                tasks::render_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::PrintInputMsg { .. } => {
+                b"  PrintInputMsg dispatched\r\n".print_console();
+
+                tasks::render_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::PrintClearMsg => {
+                b"  PrintClearMsg dispatched\r\n".print_console();
+
+                tasks::render_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::EncTxtMsgIn { .. } => {
+                b"  EncTxtMsgIn dispatched\r\n".print_console();
+
+                tasks::crypto_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+            msg::Msg::TxtMsgIn { .. } => {
+                b"  TxtMsgIn dispatched\r\n".print_console();
+
+                tasks::chat_task::recv(
+                    &msg,
+                    &mut task_mgr.sender,
+                    &mut task_mgr.bsp,
+                    &mut task_mgr.data,
+                    &mut task_mgr.metrics,
+                );
+            }
+
             _ => {}
         }
 

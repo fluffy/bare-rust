@@ -115,9 +115,6 @@ fn my_main() {
     let crypto_task = tasks::crypto_task::CryptoTask {};
     task_mgr.add_task(&crypto_task);
 
-    let display_task = tasks::display_task::DisplayTask {};
-    task_mgr.add_task(&display_task);
-
     let keyboard_task = tasks::keyboard_task::KeyboardTask {};
     task_mgr.add_task(&keyboard_task);
 
@@ -154,6 +151,8 @@ fn my_main() {
     }
 
     // fib::fib_test();
+    #[cfg(feature = "exit")]
+    task_mgr.sender.send(Msg::Keyboard { key: '\r' });
 
     loop {
         task_mgr.run();
@@ -190,11 +189,9 @@ mod tests {
         let mut bsp = bsp::BSP::new();
         bsp.init();
 
-        //bsp.validate();
-
         led::set(Color::Blue);
 
-        //v_mpsc::init(); // clean up before test
+        bsp.validate();
 
         let (mut sender, receiver): (mpsc::Sender<msg::Msg>, mpsc::Receiver<msg::Msg>) =
             mpsc::channel();
@@ -208,17 +205,42 @@ mod tests {
         let button_task = tasks::buttons_task::ButtonTask {};
         task_mgr.add_task(&button_task);
 
+        let chat_task = tasks::chat_task::ChatTask {};
+        task_mgr.add_task(&chat_task);
+
+        let crypto_task = tasks::crypto_task::CryptoTask {};
+        task_mgr.add_task(&crypto_task);
+
+        let keyboard_task = tasks::keyboard_task::KeyboardTask {};
+        task_mgr.add_task(&keyboard_task);
+
         let metrics_task = tasks::metrics_task::MetricsTask {};
         task_mgr.add_task(&metrics_task);
+
+        let net_link_task = tasks::net_link_task::NetLinkTask {};
+        task_mgr.add_task(&net_link_task);
+
+        let render_task = tasks::render_task::RenderTask {};
+        task_mgr.add_task(&render_task);
+
+        let text_edit_task = tasks::text_edit_task::TextEditTask {};
+        task_mgr.add_task(&text_edit_task);
 
         let fib_task = tasks::fib_task::FibTask {};
         task_mgr.add_task(&fib_task);
 
         crate::fib::fib_test();
 
-        for _ in 0..10 {
+        for i in 0..100 {
             task_mgr.run();
             dispatch::process(receiver, &mut task_mgr);
+
+            if i == 5 {
+                task_mgr.sender.send(Msg::Keyboard { key: 'A' });
+            }
+            if i == 10 {
+                task_mgr.sender.send(Msg::Keyboard { key: '\r' });
+            }
         }
 
         let stack_usage = stack::usage(false).0 as u32;
@@ -227,8 +249,6 @@ mod tests {
             stack_usage.print_console();
             b" bytes\r\n".print_console();
         }
-
-        //v_mpsc::init(); // clean up after test
 
         led::set(Color::Green);
     }

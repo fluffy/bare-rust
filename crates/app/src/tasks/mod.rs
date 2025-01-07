@@ -7,7 +7,6 @@ mod no_task;
 pub mod buttons_task;
 pub mod chat_task;
 pub mod crypto_task;
-pub mod display_task;
 pub mod fib_task;
 pub mod keyboard_task;
 pub mod metrics_task;
@@ -44,6 +43,9 @@ pub struct TaskData {
     pub junk_data: [u8; JUNK_DATA_SIZE],
     pub text_edit: text_edit_task::Data,
     pub chat: chat_task::Data,
+    pub render: render_task::Data,
+    pub crypto: crypto_task::Data,
+    pub net_link: net_link_task::Data,
 }
 
 impl TaskData {
@@ -52,6 +54,9 @@ impl TaskData {
         TaskData {
             text_edit: text_edit_task::Data::new(),
             chat: chat_task::Data::new(),
+            render: render_task::Data::new(),
+            crypto: crypto_task::Data::new(),
+            net_link: net_link_task::Data::new(),
             junk_data: [0; JUNK_DATA_SIZE],
         }
     }
