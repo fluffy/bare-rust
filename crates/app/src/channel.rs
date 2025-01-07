@@ -180,7 +180,8 @@ pub fn test_channel() {
             Msg::Keyboard { key } => std::println!("Keyboard: {}", key),
             Msg::TextInput { .. } => std::println!("TextInput "),
             Msg::TxtMsg { .. } => std::println!("TxtMsg"),
-            //_ => { std::println!("Unhandled message"); }
+                        
+            _ => { std::println!("Unhandled message"); }
         }
     }
 

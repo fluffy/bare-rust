@@ -60,11 +60,11 @@ impl Display {
     pub fn draw_bitmap(
         &self,
         bitmap: &[u16],
-        x: u32,
-        y: u32,
-        width: u32,
-        height: u32,
-        stride: u32,
+        x: usize,
+        y: usize,
+        width: usize,
+        height: usize,
+        stride: usize,
     ) {
         // Draw a bitmap at position (x, y)
         let _unused = ( bitmap, x,y, width, height, stride);

@@ -44,19 +44,34 @@ pub fn recv(
             // Handle the keyboard message here
             if key == &'\r' {
                 // Send the input message
+                
+                let text_msg = Msg::PrintInputMsg {
+                    text: data.buffer.clone(),
+                };
+                sender.send(text_msg);
+
                 let text_msg = Msg::TextInput {
                     input: data.buffer.clone(),
                 };
-
                 sender.send(text_msg);
 
                 // Clear the buffer
                 data.buffer.clear();
+
+                let text_msg = Msg::PrintInputMsg {
+                    text: data.buffer.clone(),
+                };
+                sender.send(text_msg);
             }
 
             if data.buffer.len() < data.buffer.capacity() {
                 let k = *key as u8;
                 data.buffer.push(k);
+
+                let text_msg = Msg::PrintInputMsg {
+                    text: data.buffer.clone(),
+                };
+                sender.send(text_msg);
             }
         }
         _ => {

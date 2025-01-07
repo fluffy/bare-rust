@@ -17,6 +17,16 @@ pub struct VecMsg<const N: usize> {
     pub len: usize,
 }
 
+use core::ops::Index;
+
+impl<const N: usize> Index<usize> for VecByte<N> {
+    type Output = u8;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.data[index]
+    }
+}
+
 impl<const N: usize> VecByte<N> {
     pub const fn new() -> Self {
         VecByte::<N> {

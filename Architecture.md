@@ -77,7 +77,7 @@ flowchart LR
     B -->|print_input| J[Render]
     D -->|EncTxtMsg| F[NetLink]
     C -->|print| J[Render]
-    C -->|clear| J[Render]
+    C -->|print_clear| J[Render]
 ```
 
 ### Inbound Text Message Data Flow
