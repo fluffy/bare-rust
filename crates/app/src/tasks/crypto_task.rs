@@ -66,6 +66,7 @@ pub fn recv(
                 track_alias: *track_alias,
                 key_id: data.key_id,
                 enc_text: text.clone(),
+                auth_tag: 0x42,
             };
 
             sender.send(msg);

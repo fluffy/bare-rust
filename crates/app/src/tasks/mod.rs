@@ -45,6 +45,7 @@ pub struct TaskData {
     pub chat: chat_task::Data,
     pub render: render_task::Data,
     pub crypto: crypto_task::Data,
+    pub net_link: net_link_task::Data,
 }
 
 impl TaskData {
@@ -55,6 +56,7 @@ impl TaskData {
             chat: chat_task::Data::new(),
             render: render_task::Data::new(),
             crypto: crypto_task::Data::new(),
+            net_link: net_link_task::Data::new(),
             junk_data: [0; JUNK_DATA_SIZE],
         }
     }

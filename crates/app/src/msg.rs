@@ -42,6 +42,7 @@ pub enum Msg {
         track_alias: u128,
         key_id: u32,
         enc_text: VecByte<160>,
+        auth_tag: u128,
     },
     EncTxtMsgIn {
         object_id: u32,
@@ -49,6 +50,7 @@ pub enum Msg {
         track_alias: u128,
         key_id: u32,
         enc_text: VecByte<160>,
+        auth_tag: u128,
     },
     PrintClearMsg,
     PrintMsg {

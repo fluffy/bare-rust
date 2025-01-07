@@ -124,7 +124,6 @@ impl Task for RenderTask {
             data.current_band -= 1;
         }
 
-        // TODO use font to render text data into the band bitmap
         for y in 0..DISPLAY_BAND_HEIGHT {
             for x in 0..DISPLAY_WIDTH {
                 data.bitmap[y * DISPLAY_WIDTH + x] = 0x0000;
