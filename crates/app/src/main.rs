@@ -151,6 +151,8 @@ fn my_main() {
     }
 
     // fib::fib_test();
+    #[cfg(feature = "exit")]
+    task_mgr.sender.send(Msg::Keyboard { key: '\r' });
 
     loop {
         task_mgr.run();
@@ -187,11 +189,9 @@ mod tests {
         let mut bsp = bsp::BSP::new();
         bsp.init();
 
-        //bsp.validate();
-
         led::set(Color::Blue);
 
-        //v_mpsc::init(); // clean up before test
+        bsp.validate();
 
         let (mut sender, receiver): (mpsc::Sender<msg::Msg>, mpsc::Receiver<msg::Msg>) =
             mpsc::channel();
@@ -231,9 +231,16 @@ mod tests {
 
         crate::fib::fib_test();
 
-        for _ in 0..10 {
+        for i in 0..100 {
             task_mgr.run();
             dispatch::process(receiver, &mut task_mgr);
+
+            if i == 5 {
+                task_mgr.sender.send(Msg::Keyboard { key: 'A' });
+            }
+            if i == 10 {
+                task_mgr.sender.send(Msg::Keyboard { key: '\r' });
+            }
         }
 
         let stack_usage = stack::usage(false).0 as u32;
@@ -242,8 +249,6 @@ mod tests {
             stack_usage.print_console();
             b" bytes\r\n".print_console();
         }
-
-        //v_mpsc::init(); // clean up after test
 
         led::set(Color::Green);
     }
