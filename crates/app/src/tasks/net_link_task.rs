@@ -43,10 +43,9 @@ pub fn recv(
             key_id,
             enc_text,
             auth_tag,
-
         } => {
             let _ = enc_text;
-            
+
             // Just echo the message back
 
             let mut txt = VecByte::<160>::new();

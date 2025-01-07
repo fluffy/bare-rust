@@ -61,7 +61,6 @@ pub fn recv(
 
     match msg {
         Msg::TextInput { input } => {
-
             // Handle the text input message here
             let msg = Msg::TxtMsgOut {
                 object_id: data.object_id,
@@ -75,7 +74,7 @@ pub fn recv(
             let print_msg = Msg::PrintMsg {
                 text: input.clone(),
             };
-            sender.send( print_msg);
+            sender.send(print_msg);
         }
         Msg::TxtMsgIn {
             object_id,
@@ -84,10 +83,8 @@ pub fn recv(
             text,
         } => {
             let _ = (object_id, group_id, track_alias);
-            
-            let msg = Msg::PrintMsg {
-                text: text.clone(),
-            };
+
+            let msg = Msg::PrintMsg { text: text.clone() };
 
             sender.send(msg);
         }

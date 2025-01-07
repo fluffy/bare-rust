@@ -53,8 +53,7 @@ pub fn recv(
                 // Clear the buffer
                 data.buffer.clear();
 
-                let text_msg = Msg::PrintClearInputMsg {
-                };
+                let text_msg = Msg::PrintClearInputMsg {};
                 sender.send(text_msg);
             } else {
                 if data.buffer.len() < data.buffer.capacity() {

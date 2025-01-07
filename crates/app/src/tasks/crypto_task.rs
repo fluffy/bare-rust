@@ -80,7 +80,7 @@ pub fn recv(
             auth_tag,
         } => {
             let _ = (key_id, auth_tag);
-            
+
             let msg = Msg::TxtMsgIn {
                 object_id: *object_id,
                 group_id: *group_id,
