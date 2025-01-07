@@ -47,6 +47,20 @@ block-beta
         Metrics
     end
 ```
+## Tasks
+
+### Render 
+
+Render keeps track of all the text and graphics that need to be on 
+the screen. The screen is divided up into 10 bands. It then 
+periodically renders all the text and graphics into a pixel buffer 
+that covers just one band. That buffer is then send to the BSP 
+Display module to be displayed on the screen.
+
+Render has display status icons near the top of the screen and has 
+a main text region that is used for displaying text messages as 
+well as the text input region. The text input region is used for 
+displaying data from the keyboard task as the user types.
 
 ## Data Flows
 
@@ -64,6 +78,7 @@ flowchart LR
     B -->|print_input| J[Render]
     D -->|EncTxtMsg| F[NetLink]
     C -->|print| J[Render]
+    C -->|clear| J[Render]
     J -->|bitmap| K[Display]
 ```
 
@@ -138,13 +153,13 @@ block-beta
       UART
     end
     block: Hardware
-      LCD
+      ILI9341 ("LCD\nILI9341")
       Switches
-      LED
-      M24C02
-      WM8960
-      USB
-      NetCPU
+      LED ("LED\nRGB")
+      M24C02 ("EEPROM\nMC24C02")
+      WM8960 ("Audio\nM8960")
+      CH340 ("USB\nCH340")
+      NetCPU ("NetCPU\nESP32")
     end
     Keyboard --> GPIO
     Display --> SPI
@@ -158,13 +173,13 @@ block-beta
     Console --> UART
     Buttons --> GPIO
     NetLink --> UART
-    SPI --> LCD
+    SPI --> ILI9341
     UART --> NetCPU
     I2C --> WM8960
     I2S --> WM8960
     I2C --> M24C02
     GPIO --> Switches
     GPIO --> LED
-    UART --> USB
+    UART --> CH340
 ```
 

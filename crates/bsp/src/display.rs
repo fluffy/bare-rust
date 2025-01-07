@@ -37,18 +37,12 @@ const HEIGHT: usize = 32;
 
 /// Struct keeping track of the display state
 pub struct Display {
-    /// bitmap buffer for the display
-    vram: [u16; WIDTH * HEIGHT],
-    /// dirty flag indicating that row needs to be refreshed to LCD
-    dirty: [bool; HEIGHT],
 }
 
-impl crate::display::Display {
+impl Display {
     #[inline(never)]
     pub fn new() -> Self {
-        crate::display::Display {
-            vram: [0; WIDTH * HEIGHT],
-            dirty: [true; HEIGHT],
+        Display {
         }
     }
 
@@ -59,12 +53,7 @@ impl crate::display::Display {
     pub fn size(&self) -> (u32, u32) {
         (WIDTH as u32, HEIGHT as u32)
     }
-
-    /// Draws a pixel at a specified position.
-    pub fn draw_pixel(&self, x: u32, y: u32, color: u16) {
-        // Draw a pixel at position (x, y)
-        let _unused = (x, y, color);
-    }
+    
 
     /// Draws a bitmap at a specified position.
     pub fn draw_bitmap(
@@ -94,6 +83,5 @@ impl crate::display::Display {
     ///
     pub fn refresh(&self) {
         // Refresh the display
-        let _unused = (&self.vram, &self.dirty);
     }
 }

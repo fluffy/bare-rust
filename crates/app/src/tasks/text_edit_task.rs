@@ -54,8 +54,10 @@ pub fn recv(
                 data.buffer.clear();
             }
 
-            let k = *key as u8;
-            data.buffer.push(k);
+            if data.buffer.len() < data.buffer.capacity() {
+                let k = *key as u8;
+                data.buffer.push(k);
+            }
         }
         _ => {
             // Handle other messages if necessary
