@@ -14,7 +14,6 @@ const NETLINK_TASK_INFO: TaskInfo = TaskInfo {
     mem_budget_bytes: 500,
 };
 
-
 pub fn recv(
     _msg: &Msg,
     _sender: &mut crate::mpsc::Sender<Msg>,
