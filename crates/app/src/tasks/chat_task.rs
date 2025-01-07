@@ -62,7 +62,7 @@ pub fn recv(
     match msg {
         Msg::TextInput { input } => {
             // Handle the text input message here
-            let msg = Msg::TxtMsg {
+            let msg = Msg::TxtMsgOut {
                 object_id: data.object_id,
                 group_id: data.group_id,
                 track_alias: data.track_alias,

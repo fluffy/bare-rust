@@ -73,9 +73,9 @@ the channel for communication.
 flowchart LR
     A[Keyboard] -->|Keypress| B[TextEdit]
     B -->|TextInput| C[Chat]
-    C -->|TxtMsg| D[Crypto]
+    C -->|TxtMsgOut| D[Crypto]
     B -->|print_input| J[Render]
-    D -->|EncTxtMsg| F[NetLink]
+    D -->|EncTxtMsgOut| F[NetLink]
     C -->|print| J[Render]
     C -->|print_clear| J[Render]
 ```

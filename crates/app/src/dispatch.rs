@@ -54,7 +54,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
-            msg::Msg::TxtMsg { .. } => {
+            msg::Msg::TxtMsgOut { .. } => {
                 b"  TxtMsg dispatched\r\n".print_console();
 
                 tasks::crypto_task::recv(
@@ -65,7 +65,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
-            msg::Msg::EncTxtMsg { .. } => {
+            msg::Msg::EncTxtMsgOut { .. } => {
                 b"  EncTxtMsg dispatched\r\n".print_console();
 
                 tasks::net_link_task::recv(

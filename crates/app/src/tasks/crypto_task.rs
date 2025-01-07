@@ -54,13 +54,13 @@ pub fn recv(
     let data = &mut task_data.crypto;
 
     match msg {
-        Msg::TxtMsg {
+        Msg::TxtMsgOut {
             object_id,
             group_id,
             track_alias,
             text,
         } => {
-            let msg = Msg::EncTxtMsg {
+            let msg = Msg::EncTxtMsgOut {
                 object_id: *object_id,
                 group_id: *group_id,
                 track_alias: *track_alias,
