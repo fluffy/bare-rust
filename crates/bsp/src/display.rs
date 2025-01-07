@@ -30,14 +30,12 @@ const WIDTH: usize = 240;
 const HEIGHT: usize = 320;
 
 /// Struct keeping track of the display state
-pub struct Display {
-}
+pub struct Display {}
 
 impl Display {
     #[inline(never)]
     pub fn new() -> Self {
-        Display {
-        }
+        Display {}
     }
 
     #[inline(never)]
@@ -67,6 +65,6 @@ impl Display {
         stride: usize,
     ) {
         // Draw a bitmap at position (x, y)
-        let _unused = ( bitmap, x,y, width, height, stride);
+        let _unused = (bitmap, x, y, width, height, stride);
     }
 }

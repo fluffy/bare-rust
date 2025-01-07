@@ -111,7 +111,7 @@ impl Task for RenderTask {
     fn run(
         &self,
         _incoming_msg: &Msg,
-        _sender: &mut crate::mpsc::Sender<Msg>, 
+        _sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
         task_data: &mut TaskData,
         _metrics: &mut Metrics,
@@ -130,17 +130,15 @@ impl Task for RenderTask {
                 data.bitmap[y * DISPLAY_WIDTH + x] = 0x0000;
             }
         }
-        
-       
+
         bsp.display.draw_bitmap(
-             &data.bitmap,
-            0, // x 
+            &data.bitmap,
+            0,                                       // x
             data.current_band * DISPLAY_BAND_HEIGHT, //y
-            DISPLAY_WIDTH ,
-            DISPLAY_BAND_HEIGHT ,
-            DISPLAY_BAND_HEIGHT , // stride
+            DISPLAY_WIDTH,
+            DISPLAY_BAND_HEIGHT,
+            DISPLAY_BAND_HEIGHT, // stride
         );
-        
     }
 
     /// Returns the information about the render task.

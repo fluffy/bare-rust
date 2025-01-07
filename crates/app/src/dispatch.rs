@@ -65,7 +65,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
-            msg::Msg::PrintMsg {..} => {
+            msg::Msg::PrintMsg { .. } => {
                 b"  PrintClearMsg dispatched\r\n".print_console();
 
                 tasks::render_task::recv(
@@ -76,7 +76,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
-            msg::Msg::PrintInputMsg {..} => {
+            msg::Msg::PrintInputMsg { .. } => {
                 b"  PrintClearMsg dispatched\r\n".print_console();
 
                 tasks::render_task::recv(
@@ -98,7 +98,6 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
                     &mut task_mgr.metrics,
                 );
             }
-
 
             _ => {}
         }

@@ -207,22 +207,22 @@ mod tests {
 
         let chat_task = tasks::chat_task::ChatTask {};
         task_mgr.add_task(&chat_task);
-        
+
         let crypto_task = tasks::crypto_task::CryptoTask {};
         task_mgr.add_task(&crypto_task);
-        
+
         let keyboard_task = tasks::keyboard_task::KeyboardTask {};
         task_mgr.add_task(&keyboard_task);
-        
+
         let metrics_task = tasks::metrics_task::MetricsTask {};
         task_mgr.add_task(&metrics_task);
-        
+
         let net_link_task = tasks::net_link_task::NetLinkTask {};
         task_mgr.add_task(&net_link_task);
-        
+
         let render_task = tasks::render_task::RenderTask {};
         task_mgr.add_task(&render_task);
-        
+
         let text_edit_task = tasks::text_edit_task::TextEditTask {};
         task_mgr.add_task(&text_edit_task);
 

@@ -44,7 +44,7 @@ pub fn recv(
             // Handle the keyboard message here
             if key == &'\r' {
                 // Send the input message
-                
+
                 let text_msg = Msg::PrintInputMsg {
                     text: data.buffer.clone(),
                 };
