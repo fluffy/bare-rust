@@ -6,8 +6,8 @@ use crate::tasks::TaskInfo;
 /// Structure representing the render task.
 pub struct RenderTask {}
 
-const FONT_WIDTH: usize = 8;
-const FONT_HEIGHT: usize = 12;
+const FONT_WIDTH: usize = 11;
+const FONT_HEIGHT: usize = 16;
 const DISPLAY_WIDTH: usize = 240;
 const DISPLAY_HEIGHT: usize = 320;
 const DISPLAY_BAND_HEIGHT: usize = 320 / 10;
@@ -124,7 +124,7 @@ impl Task for RenderTask {
             data.current_band -= 1;
         }
 
-        // TODO render into the band
+        // TODO use font to render text data into the band bitmap 
         for y in 0..DISPLAY_BAND_HEIGHT {
             for x in 0..DISPLAY_WIDTH {
                 data.bitmap[y * DISPLAY_WIDTH + x] = 0x0000;

@@ -30,6 +30,13 @@ pub enum Msg {
         track_alias: u128,
         text: VecByte<160>,
     },
+    EncTxtMsg {
+        object_id: u32,
+        group_id: u32,
+        track_alias: u128,
+        key_id: u32,
+        enc_text: VecByte<160>,
+    },
     PrintClearMsg,
     PrintMsg {
         text: VecByte<160>,

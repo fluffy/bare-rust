@@ -14,6 +14,17 @@ const NETLINK_TASK_INFO: TaskInfo = TaskInfo {
     mem_budget_bytes: 500,
 };
 
+
+pub fn recv(
+    _msg: &Msg,
+    _sender: &mut crate::mpsc::Sender<Msg>,
+    _bsp: &mut bsp::BSP,
+    _task_data: &mut TaskData,
+    _metrics: &mut Metrics,
+) {
+    //let data = &mut task_data.net_link;
+}
+
 impl Task for NetLinkTask {
     /// Method to execute the netLink task.
     /// Reads the state of the netLink and sends a message if the state has changed.
