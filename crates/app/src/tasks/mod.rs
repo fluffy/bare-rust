@@ -7,7 +7,6 @@ mod no_task;
 pub mod buttons_task;
 pub mod chat_task;
 pub mod crypto_task;
-pub mod display_task;
 pub mod fib_task;
 pub mod keyboard_task;
 pub mod metrics_task;

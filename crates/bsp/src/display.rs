@@ -14,12 +14,12 @@
 //!
 //! let display = Display::new();
 //! display.init();
-//! 
+//!
 //! display.draw_bitmap( &[0xFFFF; 240 * 320/10], 0,0, 240, 320/10, 240 );
-//! 
+//!
 //! while !display.ready() {}
 //! ```
-//! 
+//!
 
 extern crate hal;
 
@@ -47,15 +47,15 @@ impl Display {
     pub fn size(&self) -> (u32, u32) {
         (WIDTH as u32, HEIGHT as u32)
     }
-    
+
     /// Returns whether the display is ready to accept the next draw_bitmap command.
     pub fn ready(&self) -> bool {
         true
     }
-    
+
     /// Draws a bitmap at a specified position.
-    /// 
-    /// This is an async call that starts a DMA transfer to the display controller and 
+    ///
+    /// This is an async call that starts a DMA transfer to the display controller and
     /// ready will return false until the transfer is complete.
     pub fn draw_bitmap(
         &self,

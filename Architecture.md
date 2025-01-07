@@ -35,7 +35,6 @@ block-beta
         CryptoTask
         RenderTask
         NetLinkTask
-        DisplayTask
         MetricsTask
       PttTask
       CodecTask
@@ -79,7 +78,6 @@ flowchart LR
     D -->|EncTxtMsg| F[NetLink]
     C -->|print| J[Render]
     C -->|clear| J[Render]
-    J -->|bitmap| K[Display]
 ```
 
 ### Inbound Text Message Data Flow
@@ -89,7 +87,6 @@ flowchart LR
     A[NetLink] -->|EncTxtMsgIn| B[Crypto]
     B -->|TxtMsgIn| C[Chat]
     C -->|print| J[Render]
-    J -->|bitmap| K[Display]
 ```
 
 ### Outbound Audio Data Flow

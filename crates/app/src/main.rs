@@ -115,9 +115,6 @@ fn my_main() {
     let crypto_task = tasks::crypto_task::CryptoTask {};
     task_mgr.add_task(&crypto_task);
 
-    let display_task = tasks::display_task::DisplayTask {};
-    task_mgr.add_task(&display_task);
-
     let keyboard_task = tasks::keyboard_task::KeyboardTask {};
     task_mgr.add_task(&keyboard_task);
 
