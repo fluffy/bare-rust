@@ -85,6 +85,11 @@ fn my_main() {
     #[cfg(not(feature = "std"))]
     bsp.validate();
 
+    //let stuff : [u8;1] = [ 0b0101_0101 ];
+    //stuff.print_console();
+    //led::set(Color::Black);
+    //loop {};
+    
     b"Starting\r\n".print_console();
 
     #[cfg(feature = "std")]
