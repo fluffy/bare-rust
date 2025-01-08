@@ -70,6 +70,7 @@ pub mod info {
 
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
+    pub const LEDS_INVERTED: bool = true;
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
@@ -95,6 +96,7 @@ pub mod info {
 
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
 
+    pub const LEDS_INVERTED: bool = false;
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 12);
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_B, 7);
@@ -120,6 +122,7 @@ pub mod info {
 
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
+    pub const LEDS_INVERTED: bool = false;
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
@@ -145,6 +148,7 @@ pub mod info {
 
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
+    pub const LEDS_INVERTED: bool = false;
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
