@@ -85,7 +85,14 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::write!( USART1.brr[DIV_Fraction;4], frac as u32);
 
     cpu::write!( USART1.cr1[M;1], 0); // 8 data bits
-    cpu::write!( USART1.cr1[PCE;1], 0); // no parity
+    
+    let even_parity = false;
+    if even_parity {
+        cpu::write!( USART1.cr1[PCE;1], 1); // parity control enable
+        cpu::write!( USART1.cr1[PS;1], 0); // even parity
+    } else {
+        cpu::write!( USART1.cr1[PCE;1], 0); // no parity
+    }
     cpu::write!( USART1.cr2[STOP;2], 0b00); // 1 stop bit
 
     cpu::write!( USART1.cr1[TE;1], 1); // transmit enable
