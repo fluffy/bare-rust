@@ -1,6 +1,7 @@
 [workspace]
-members = ["crates/ui","crates/hal","crates/bsp",]
-default-members = ["crates/ui"]
+members = ["crates/ui","crates/hal","crates/bsp","crates/mgmt",]
+default-members = ["crates/ui","crates/mgmt"]
+default-run = "ui"
 resolver = "2"
 
 [workspace.package]
