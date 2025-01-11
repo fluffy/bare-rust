@@ -10,7 +10,7 @@ build:
 
 
 build-mgmt:
-	cargo build --bin mgmt --features bsp/board-hactar12 --target=thumbv7em-none-eabihf
+	cargo build --bin mgmt --features bsp/board-hactar12 --target=thumbv6m-none-eabi
 
 
 test:
