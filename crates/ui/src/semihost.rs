@@ -22,9 +22,10 @@ extern crate std;
 use core::arch::asm;
 
 #[cfg(target_arch = "arm")]
-#[inline]
+#[inline(never)]
+#[allow(dead_code)]
 pub fn exit_no_status() -> ! {
-    unsafe {
+   unsafe {
         asm!(
             "mov r0, #0x18",
             //"mov r1, #0x20026",
@@ -37,6 +38,8 @@ pub fn exit_no_status() -> ! {
 }
 
 #[cfg(target_arch = "arm")]
+#[inline(never)]
+#[allow(dead_code)]
 pub fn exit(ret: i32) -> ! {
     #[repr(C, packed)]
     struct Args {
@@ -48,6 +51,7 @@ pub fn exit(ret: i32) -> ! {
         reason: ADP_STOPPED_APPLICATION_EXIT,
         status: ret,
     };
+    #[allow(unused_variables)]
     let arg_ptr: *const Args = &args;
 
     unsafe {

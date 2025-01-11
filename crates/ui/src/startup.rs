@@ -19,6 +19,9 @@
 //!
 
 #[cfg(not(feature = "std"))]
+use crate::semihost;
+
+#[cfg(not(feature = "std"))]
 use core::ptr;
 
 #[cfg(not(feature = "std"))]
@@ -94,7 +97,7 @@ pub extern "C" fn Reset_Handler() -> ! {
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
     led::set(Color::Red);
-    hal::semihost::exit_no_status();
+    semihost::exit_no_status();
     #[allow(unreachable_code)]
     loop {
         #[cfg(feature = "exit")]

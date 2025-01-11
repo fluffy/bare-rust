@@ -56,7 +56,6 @@
 pub mod clock;
 pub mod cpu;
 pub mod gpio;
-pub mod semihost;
 pub mod svd;
 pub mod timer;
 pub mod uart;
