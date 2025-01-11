@@ -27,4 +27,4 @@ clean:
 
 
 cov:
-	cargo llvm-cov --workspace --lib --tests --bin app --features bsp/board-sim,hal/std,app/std,app/exit  -- --test-threads=1
+	cargo llvm-cov --workspace --lib --tests --bin ui --features bsp/board-sim,hal/std,ui/std,ui/exit  -- --test-threads=1
