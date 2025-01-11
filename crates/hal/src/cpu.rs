@@ -215,6 +215,7 @@ pub struct TimGenReg {
 pub const TIM2: *mut TimGenReg = 0x4000_0000 as *mut TimGenReg;
 
 #[inline(always)]
+//#[inline(never)]
 pub fn update_reg(addr: *mut u32, mask: u32, val: u32) {
     if cfg!(feature = "std") {
         let mut v: u32 = read_reg(addr);
@@ -238,8 +239,10 @@ pub fn write_reg(addr: *mut u32, val: u32) {
         core::ptr::write_volatile(addr, val);
     }
 }
+
 #[cfg(feature = "std")]
 #[inline(always)]
+//#[inline(never)]
 pub fn write_reg(addr: *mut u32, val: u32) {
     unsafe {
         if let Some(ref map_mutex) = SIM {
@@ -256,6 +259,7 @@ pub fn read_reg(addr: *mut u32) -> u32 {
 }
 #[cfg(feature = "std")]
 #[inline(always)]
+//#[inline(never)]
 pub fn read_reg(addr: *mut u32) -> u32 {
     unsafe {
         if let Some(ref map_mutex) = SIM {
