@@ -86,7 +86,7 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
 
     cpu::write!( USART1.cr1[M;1], 0); // 8 data bits
     
-    let even_parity = false;
+    let even_parity = true; // TODO make this configurable
     if even_parity {
         cpu::write!( USART1.cr1[PCE;1], 1); // parity control enable
         cpu::write!( USART1.cr1[PS;1], 0); // even parity
