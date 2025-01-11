@@ -2,7 +2,7 @@
 authors = ["Cullen Jennings <fluffy@iii.ca>"]
 edition = "2021"
 readme = "README.md"
-name = "app"
+name = "ui"
 version = "0.1.1"
 repository = "git@github.com:fluffy/bare-rust.git"
 license = "BSD-2-Clause"
@@ -14,7 +14,7 @@ bsp = { path = "../bsp" }
 
 
 [[bin]]
-name = "app"
+name = "ui"
 test = false
 bench = false
 

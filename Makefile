@@ -2,7 +2,7 @@
 .PHONY: run test doc clean cov
 
 run:
-	cargo run --features bsp/board-sim,hal/std,app/std,app/exit
+	cargo run --features bsp/board-sim,hal/std,ui/std,ui/exit
 
 
 build:
@@ -10,12 +10,12 @@ build:
 
 
 test:
-	cargo test --workspace --lib --tests --bin app  --features bsp/board-sim,hal/std,app/std,app/exit  -- --test-threads=1
-	cargo test --workspace --doc  --features bsp/board-sim,hal/std,app/std,app/exit  -- --test-threads=1
+	cargo test --workspace --lib --tests --bin ui  --features bsp/board-sim,hal/std,ui/std,ui/exit  -- --test-threads=1
+	cargo test --workspace --doc  --features bsp/board-sim,hal/std,ui/std,ui/exit  -- --test-threads=1
 
 
 doc:
-	cargo doc --workspace --features bsp/board-sim,hal/std,app/std,app/exit
+	cargo doc --workspace --features bsp/board-sim,hal/std,ui/std,ui/exit
 
 
 clean:

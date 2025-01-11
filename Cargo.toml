@@ -1,6 +1,6 @@
 [workspace]
-members = ["crates/app","crates/hal","crates/bsp",]
-default-members = ["crates/app"]
+members = ["crates/ui","crates/hal","crates/bsp",]
+default-members = ["crates/ui"]
 resolver = "2"
 
 [workspace.package]
