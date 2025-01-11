@@ -90,7 +90,7 @@ pub extern "C" fn Reset_Handler() -> ! {
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
     led::set(Color::Red);
-    hal::semihost::exit_no_status();
+    //crate::semihost::exit(1);
     #[allow(unreachable_code)]
     loop {
     }
