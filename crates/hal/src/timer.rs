@@ -44,10 +44,12 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use super::cpu;
 use super::cpu::*;
 
+#[cfg(feature = "stm32f405")]
 pub use super::cpu::TIM_GEN as TIM2;
 
 const TIME_WRAP_AROUND: u32 = 3600 * 1000_000; // 1 hour@1Mhz
 
+#[cfg(feature = "stm32f405")]
 #[inline(never)]
 pub fn init2() {
     // enable TIM2 clock
@@ -80,12 +82,21 @@ pub fn init2() {
     cpu::write!(NVIC.iser[IRQ_INDEX], 1 << IRQ_BIT);
 }
 
+#[cfg(feature = "stm32f405")]
 #[inline(never)]
 pub fn handle_tim2_irq() {
     // clear update interrupt flag
     cpu::write!(TIM2.sr[UIF;1], 0);
 }
 
+#[cfg(feature = "stm32f072")]
+#[inline(never)]
+pub fn handle_tim2_irq() {
+    // clear update interrupt flag
+    // TODO 
+}
+
+#[cfg(feature = "stm32f405")]
 #[cfg(target_arch = "arm")]
 #[inline(never)]
 pub fn current_time() -> MicroSeconds {
