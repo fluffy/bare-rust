@@ -3,7 +3,6 @@
 #![no_std]
 #![no_main]
 
-
 //extern crate bsp;
 extern crate hal;
 
@@ -15,7 +14,6 @@ use hal::{cpu, gpio};
 mod stack;
 mod startup;
 
-
 #[no_mangle]
 #[export_name = "main"]
 #[inline(never)]
@@ -26,7 +24,6 @@ pub extern "C" fn main() -> ! {
     loop {}
 }
 
-
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
 fn my_main() {
@@ -35,10 +32,7 @@ fn my_main() {
     //let mut bsp = bsp::BSP::new();
     //bsp.init();
     //bsp.validate();
-     const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
-     const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
-     const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
-
+  
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 
@@ -55,29 +49,37 @@ fn my_main() {
     pub const MCLK_FREQ: u32 = 24_000_000;
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
+    hal::init(CLOCK_HSE_FREQ, CONSOLE_TX, CONSOLE_RX);
 
-    hal::init(CLOCK_HSE_FREQ,  CONSOLE_TX, CONSOLE_RX );
-
-    LED_GREEN_PIN.output();
-    LED_GREEN_PIN.low();
-   
+    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
+    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
+    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
     
+    LED_GREEN_PIN.output();
+    LED_RED_PIN.output();
+    LED_BLUE_PIN.output();
+    
+    LED_GREEN_PIN.high(); 
+    LED_RED_PIN.high();
+    LED_BLUE_PIN.low(); // turn on blue LED
+        
+
     let str = "Starting\r\n";
     for c in str.bytes() {
-        
-        hal::uart::write1( c );
+        hal::uart::write1(c);
     }
 
+    LED_GREEN_PIN.low(); // turn on green LED
+    LED_RED_PIN.high();
+    LED_BLUE_PIN.high();
 
-    //b"Starting\r\n".print_console();
     
+    //b"Starting\r\n".print_console();
 
     //led::set(Color::Green);
 
     //let (stack_usage, stack_current, stack_reserved) = stack::usage(false);
     //let  _ = (stack_usage, stack_current, stack_reserved);
 
-    loop {
-
-    }
+    loop {}
 }
