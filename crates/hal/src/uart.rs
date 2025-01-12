@@ -65,7 +65,7 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::write!(GPIO_A.afrh[(rx_pin-8)*4;4], 0b0001); // PA10 to AF1
 
     // Set baud rate
-    let apb_freq: u32 = 48_000_000; // APB clock frequency
+    let apb_freq: u32 = 24_000_000; // APB clock frequency
     let usart_div: u32 = apb_freq / baud_rate as u32;
     cpu::write!(USART1.brr, usart_div);
 
