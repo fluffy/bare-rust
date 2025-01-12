@@ -6,15 +6,15 @@ rustflags = [
     "-Clinker-plugin-lto",
     "-Clink-arg=-mllvm=-lto-embed-bitcode=optimized",
     "-Clink-arg=-mllvm=-stack-size-section",
-    "-Clink-arg=-Tlinker.ld",
+    "-Clink-arg=-Tcrates/mgmt/memory.x",
 ]
 
 [build]
-#target = "thumbv7em-none-eabihf" # Cortex-M4F
+#target = "thumbv6m-none-eabih" # Cortex-M4F
 
 [test]
 
-[unstable]
-build-std = ["compiler_builtins", "core"]
+#[unstable]
+#build-std = ["compiler_builtins", "core"]
 
 

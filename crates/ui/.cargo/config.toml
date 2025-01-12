@@ -1,0 +1,19 @@
+
+c
+rustflags = [
+    #    "-Zemit-stack-sizes",
+    "-Clinker-plugin-lto",
+    "-Clink-arg=-mllvm=-lto-embed-bitcode=optimized",
+    "-Clink-arg=-mllvm=-stack-size-section",
+    "-Clink-arg=-Tmemory.x",
+]
+
+[build]
+#target = "thumbv7em-none-eabihf" # Cortex-M4F
+
+[test]
+
+#[unstable]
+#build-std = ["compiler_builtins", "core"]
+
+

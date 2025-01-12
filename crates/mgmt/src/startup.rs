@@ -122,13 +122,11 @@ pub extern "C" fn Default_HandlerD() {
 }
 
 #[no_mangle]
-
 pub extern "C" fn Default_HandlerE() {
     Default_Handler();
 }
 
 #[no_mangle]
-
 pub extern "C" fn Default_HandlerF() {
     Default_Handler();
 }

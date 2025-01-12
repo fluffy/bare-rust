@@ -1,7 +1,7 @@
-/* Info for STM32F072CBTx */
+/* Info for STM32F072C8T6 */
 
 _Heap_Size = 0x0;
-_Stack_Size = 0x8000;
+_Stack_Size = 0x100;
 
 MEMORY
 {
