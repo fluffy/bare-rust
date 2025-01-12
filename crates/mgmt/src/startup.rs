@@ -25,12 +25,12 @@ use core::ptr;
 use super::stack::STACK_PAINT_BYTE;
 
 
-#[allow(unused_imports)]
-use bsp::led;
+//#[allow(unused_imports)]
+//use bsp::led;
 
 
-#[allow(unused_imports)]
-use bsp::led::Color;
+//#[allow(unused_imports)]
+//use bsp::led::Color;
 
 
 extern "C" {
@@ -45,7 +45,7 @@ use core::panic::PanicInfo;
 #[inline(never)]
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
-    led::set(Color::Red);
+    // TODO led::set(Color::Red);
     loop {
     }
 }
@@ -89,7 +89,7 @@ pub extern "C" fn Reset_Handler() -> ! {
 #[inline(never)]
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
-    led::set(Color::Red);
+    // TOOO led::set(Color::Red);
     //crate::semihost::exit(1);
     #[allow(unreachable_code)]
     loop {
