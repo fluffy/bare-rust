@@ -92,8 +92,6 @@ pub fn handle_tim2_irq() {
 #[cfg(feature = "stm32f072")]
 #[inline(never)]
 pub fn handle_tim2_irq() {
-    // clear update interrupt flag
-    // TODO 
 }
 
 #[cfg(feature = "stm32f405")]
