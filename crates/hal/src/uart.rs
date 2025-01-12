@@ -45,6 +45,38 @@ use super::gpio;
 
 pub use super::cpu::USART as USART1;
 
+#[cfg(feature = "stm32f072")]
+#[inline(never)]
+pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
+    // Enable USART1 & GPIOA clock
+    cpu::write!(RCC.apb2enr[USART1EN;1], 1);
+    cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
+
+    // Configure PA9 (TX) and PA10 (RX) as alternate function (AF1 for USART1)
+    assert!(tx_pin.0 == GPIO_A as *mut cpu::GpioReg);
+    assert!(rx_pin.0 == GPIO_A as *mut cpu::GpioReg);
+
+    let tx_pin = tx_pin.1;
+    let rx_pin = rx_pin.1;
+
+    cpu::write!(GPIO_A.moder[tx_pin*2;2], 0b10); // PA9 to AF mode
+    cpu::write!(GPIO_A.moder[rx_pin*2;2], 0b10); // PA10 to AF mode
+    cpu::write!(GPIO_A.afrh[(tx_pin-8)*4;4], 0b0001); // PA9 to AF1
+    cpu::write!(GPIO_A.afrh[(rx_pin-8)*4;4], 0b0001); // PA10 to AF1
+
+    // Set baud rate
+    let apb_freq: u32 = 48_000_000; // APB clock frequency
+    let usart_div: u32 = apb_freq / baud_rate as u32;
+    cpu::write!(USART1.brr, usart_div);
+
+    // Enable USART1, transmitter and receiver
+    cpu::write!(USART1.cr1[UE;1], 1); // USART enable
+    cpu::write!(USART1.cr1[TE;1], 1); // Transmitter enable
+    cpu::write!(USART1.cr1[RE;1], 1); // Receiver enable 
+}
+
+
+#[cfg(feature = "stm32f405")]
 #[inline(never)]
 pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // enable USART1 & GPIO clock
@@ -100,11 +132,21 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::write!( USART1.cr1[UE;1], 1); // uart enable
 }
 
+#[cfg(feature = "stm32f405")]
 pub fn write1(c: u8) {
     #[cfg(not(feature = "std"))]
     while (cpu::read!(USART1.sr[TXE;1]) == 0) {}
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
+
+#[cfg(feature = "stm32f072")]
+pub fn write1(c: u8) {
+        // Wait until transmit data register is empty
+        while cpu::read!(USART1.isr[TXE;1]) == 0 {}
+        // Write the byte to the data register
+        cpu::write!(USART1.tdr, c as u32);
+}
+
 
 #[cfg(test)]
 mod tests {

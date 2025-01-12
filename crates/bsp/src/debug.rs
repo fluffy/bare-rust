@@ -31,7 +31,7 @@ impl Debug {
     pub fn new() -> Self {
         Debug {}
     }
-
+    
     #[inline(never)]
     pub fn init(&self) {
         board::info::DEBUG1_PIN.output();
@@ -71,9 +71,12 @@ impl Debug {
 pub fn set(channel: u8, state: bool) {
     assert!(channel == 0);
 
-    if state {
-        board::info::DEBUG1_PIN.high();
-    } else {
-        board::info::DEBUG1_PIN.low();
+    if board::info::NUM_DEBUG_PINS >= 1 {
+        if state {
+            board::info::DEBUG1_PIN.high();
+        } else {
+            board::info::DEBUG1_PIN.low();
+        }
     }
 }
+

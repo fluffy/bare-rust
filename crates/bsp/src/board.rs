@@ -69,6 +69,7 @@ pub mod info {
 
     pub const CLOCK_HSE_FREQ: u32 = 24_000_000; // set to 0 for simulation
 
+    pub const NUM_DEBUG_PINS: usize = 1;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LEDS_INVERTED: bool = true;
@@ -96,7 +97,7 @@ pub mod info {
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
     pub const NUM_DEBUG_PINS: usize = 0;
-    //pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
+    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 5);
 
     pub const LEDS_INVERTED: bool = true;
     pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
@@ -104,12 +105,12 @@ pub mod info {
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
 
     pub const HAS_PTT_BUTTON: bool = false;
-    //pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
-    //pub const PTT_BUTTON_PULL_UP: bool = true;
+    pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_A,11);
+    pub const PTT_BUTTON_PULL_UP: bool = true;
 
     pub const HAS_AI_BUTTON: bool = false;
-    //pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
-    //pub const AI_BUTTON_PULL_UP: bool = true;
+    pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_A, 12);
+    pub const AI_BUTTON_PULL_UP: bool = true;
 
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
@@ -134,6 +135,7 @@ pub mod info {
 
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
+    pub const NUM_DEBUG_PINS: usize = 1;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
 
     pub const LEDS_INVERTED: bool = false;
@@ -160,6 +162,7 @@ pub mod info {
 
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
+    pub const NUM_DEBUG_PINS: usize = 1;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LEDS_INVERTED: bool = false;
@@ -186,6 +189,7 @@ pub mod info {
 
     pub const CLOCK_HSE_FREQ: u32 = 0_000_000; // set to 0 for simulation
 
+    pub const NUM_DEBUG_PINS: usize = 0;
     pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
 
     pub const LEDS_INVERTED: bool = false;
