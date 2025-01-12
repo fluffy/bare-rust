@@ -40,12 +40,23 @@ extern "C" {
 
 #[allow(unused_imports)]
 use core::panic::PanicInfo;
+use hal::{cpu, gpio};
 
 #[cfg(target_arch = "arm")]
 #[inline(never)]
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
-    // TODO led::set(Color::Red);
+    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
+    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
+    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
+
+    LED_GREEN_PIN.output();
+    LED_RED_PIN.output();
+    LED_BLUE_PIN.output();
+
+    LED_GREEN_PIN.high();
+    LED_RED_PIN.low();
+    LED_BLUE_PIN.high();
     loop {
     }
 }
@@ -89,8 +100,18 @@ pub extern "C" fn Reset_Handler() -> ! {
 #[inline(never)]
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
-    // TOOO led::set(Color::Red);
-    //crate::semihost::exit(1);
+    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
+    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
+    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
+
+    LED_GREEN_PIN.output();
+    LED_RED_PIN.output();
+    LED_BLUE_PIN.output();
+
+    LED_GREEN_PIN.high();
+    LED_RED_PIN.low();
+    LED_BLUE_PIN.high();
+    
     #[allow(unreachable_code)]
     loop {
     }
