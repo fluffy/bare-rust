@@ -14,12 +14,12 @@ build-mgmt:
 
 
 test:
-	cargo test --workspace --lib --tests --bin ui  --features bsp/board-sim,hal/std,ui/std,ui/exit  -- --test-threads=1
-	cargo test --workspace --doc  --features bsp/board-sim,hal/std,ui/std,ui/exit  -- --test-threads=1
+	cargo test --workspace --lib --tests --bin ui  --features bsp/board-sim,hal/stm32f405,hal/std,ui/std,ui/exit  -- --test-threads=1
+	cargo test --workspace --doc  --features bsp/board-sim,hal/stm32f405,hal/std,ui/std,ui/exit  -- --test-threads=1
 
 
 doc:
-	cargo doc --workspace --features bsp/board-sim,hal/std,ui/std,ui/exit
+	cargo doc --workspace --features bsp/board-sim,hal/stm32f405,hal/std,ui/std,ui/exit
 
 
 clean:
@@ -27,4 +27,4 @@ clean:
 
 
 cov:
-	cargo llvm-cov --workspace --lib --tests --bin ui --features bsp/board-sim,hal/std,ui/std,ui/exit  -- --test-threads=1
+	cargo llvm-cov --workspace --lib --tests --bin ui --features bsp/board-sim,hal/stm32f405,hal/std,ui/std,ui/exit  -- --test-threads=1
