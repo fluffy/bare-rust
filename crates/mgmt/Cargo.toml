@@ -9,7 +9,7 @@ license = "BSD-2-Clause"
 
 [dependencies]
 #std = {  optional = true }
-hal = { path = "../hal" }
+hal = { path = "../hal"}
 bsp = { path = "../bsp" }
 
 

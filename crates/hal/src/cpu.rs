@@ -46,8 +46,14 @@
 //! behavior if used incorrectly.
 //!
 
-pub use super::svd;
-pub use super::svd::*;
+#[cfg(feature = "stm32f405")]
+use super::svd_stm32f405 as svd;
+
+#[cfg(feature = "stm32f072")]
+use super::svd_stm32f0x2 as svd;
+
+pub use svd::*;
+
 
 #[cfg(feature = "std")]
 extern crate std;

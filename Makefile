@@ -6,11 +6,11 @@ run:
 
 
 build:
-	cargo build --bin ui --features bsp/board-hactar12 --target=thumbv7em-none-eabihf
+	cargo build --bin ui --features bsp/board-hactar12,hal/stm32f405 --target=thumbv7em-none-eabihf
 
 
 build-mgmt:
-	cargo build --bin mgmt --features bsp/board-hactar12-mgmt --target=thumbv6m-none-eabi
+	cargo build --bin mgmt --features bsp/board-hactar12-mgmt,hal/stm32f072 --target=thumbv6m-none-eabi
 
 
 test:
