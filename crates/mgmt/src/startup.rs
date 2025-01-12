@@ -124,7 +124,6 @@ pub extern "C" fn Default_HandlerC() {
 }
 
 #[no_mangle]
-
 pub extern "C" fn Default_HandlerD() {
     Default_Handler();
 }
@@ -203,7 +202,7 @@ pub static Reset_Vector: extern "C" fn() -> ! = Reset_Handler;
 #[cfg(target_arch = "arm")]
 #[link_section = ".vector_table.exceptions"]
 #[no_mangle]
-pub static Exceptions: [IrqVector; 14 + 82] = [
+pub static Exceptions: [IrqVector; 5 + 81] = [
     IrqVector {
         handler: Default_HandlerA,
     }, // NMI
@@ -212,37 +211,20 @@ pub static Exceptions: [IrqVector; 14 + 82] = [
     }, // hard fault
     IrqVector {
         handler: Default_HandlerC,
-    }, // mem manager
+    },  // SVC
     IrqVector {
         handler: Default_HandlerD,
-    }, // bus fault
-    IrqVector {
-        handler: Default_HandlerE,
-    }, // usage
-    IrqVector { not_used: 0 },
-    IrqVector { not_used: 0 },
-    IrqVector { not_used: 0 },
-    IrqVector { not_used: 0 },
-    IrqVector {
-        handler: Default_HandlerF,
-    }, // SVC
-    IrqVector { not_used: 0 }, // ebug mon
-    IrqVector { not_used: 0 },
-    IrqVector {
-        handler: Default_HandlerG,
     }, // Pend  SV
     IrqVector {
-        handler: Default_HandlerH,
+        handler: Default_HandlerE,
     }, // Sys Timer
+    // TODO - int vectors are wrong
     IrqVector {
         handler: Default_Handler1,
     }, // WWDG
     IrqVector {
         handler: Default_Handler1,
     }, // PVD
-    IrqVector {
-        handler: Default_Handler,
-    }, // TAMP_STAMP
     IrqVector {
         handler: Default_Handler,
     }, // RTC_WKUP
