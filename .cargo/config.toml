@@ -6,8 +6,8 @@ rustflags = [
     "-Clinker-plugin-lto",
     "-Clink-arg=-mllvm=-lto-embed-bitcode=optimized",
     "-Clink-arg=-mllvm=-stack-size-section",
-    "-Clink-arg=-Tmem405.x",
-  #  "-Clink-arg=-Tmem072.x",
+  #  "-Clink-arg=-Tmem405.x",
+    "-Clink-arg=-Tmem072.x",
 ]
 
 [build]

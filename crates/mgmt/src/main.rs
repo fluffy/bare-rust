@@ -63,6 +63,8 @@ fn my_main() {
     LED_RED_PIN.high();
     LED_BLUE_PIN.low(); // turn on blue LED
 
+    hal::clock::configure_mco( MCLK );
+        
     let str = "Starting\r\n";
     for c in str.bytes() {
         hal::uart::write1(c);

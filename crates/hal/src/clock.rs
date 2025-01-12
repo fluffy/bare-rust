@@ -70,15 +70,15 @@ pub fn configure_mco(pin: super::gpio::Pin) {
     assert!(pin.1 == 8);
 
     // Enable GPIOA clock
-    //cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
+    cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
 
     // Configure PA8 as alternate function (MCO)
-    //cpu::write!(GPIOA.moder[8*2;2], 0b10); // Set mode to alternate function
-    //cpu::write!(GPIOA.afrh[0;4], 0); // Set AF0 for MCO
+    cpu::write!(GPIO_A.moder[8*2;2], 0b10); // Set mode to alternate function
+    cpu::write!(GPIO_A.afrh[(8-8)*4;4], 0); // Set AF0 for MCO
 
     // Configure MCO to output PLLCLK/2
-    //cpu::write!(RCC.cfgr[MCOSEL;3], 0b100); // Set MCO source to PLLCLK
-    //cpu::write!(RCC.cfgr[MCOPRE;3], 0b011); // Set MCO prescaler to divide by 2
+    cpu::write!(RCC.cfgr[MCO;4], 0b0111); // Set MCO source to PLLCLK
+    cpu::write!(RCC.cfgr[MCOPRE;3], 0b001); // Set MCO prescaler to divide by 2
 }
 
 #[cfg(feature = "stm32f072")]
