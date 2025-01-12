@@ -20,13 +20,11 @@ mod dispatch;
 mod fib;
 mod metrics;
 mod msg;
+mod semihost;
 mod stack;
 mod startup;
 mod tasks;
 mod vec;
-mod semihost;
-
-
 
 pub use msg::Msg;
 //use crate::tasks::text_edit_task;
@@ -91,7 +89,7 @@ fn my_main() {
     //stuff.print_console();
     //led::set(Color::Black);
     //loop {};
-    
+
     b"Starting\r\n".print_console();
 
     #[cfg(feature = "std")]

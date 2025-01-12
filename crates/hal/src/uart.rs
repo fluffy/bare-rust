@@ -72,9 +72,8 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // Enable USART1, transmitter and receiver
     cpu::write!(USART1.cr1[UE;1], 1); // USART enable
     cpu::write!(USART1.cr1[TE;1], 1); // Transmitter enable
-    cpu::write!(USART1.cr1[RE;1], 1); // Receiver enable 
+    cpu::write!(USART1.cr1[RE;1], 1); // Receiver enable
 }
-
 
 #[cfg(feature = "stm32f405")]
 #[inline(never)]
@@ -117,7 +116,7 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::write!( USART1.brr[DIV_Fraction;4], frac as u32);
 
     cpu::write!( USART1.cr1[M;1], 0); // 8 data bits
-    
+
     let even_parity = false;
     if even_parity {
         cpu::write!( USART1.cr1[PCE;1], 1); // parity control enable
@@ -141,12 +140,11 @@ pub fn write1(c: u8) {
 
 #[cfg(feature = "stm32f072")]
 pub fn write1(c: u8) {
-        // Wait until transmit data register is empty
-        while cpu::read!(USART1.isr[TXE;1]) == 0 {}
-        // Write the byte to the data register
-        cpu::write!(USART1.tdr, c as u32);
+    // Wait until transmit data register is empty
+    while cpu::read!(USART1.isr[TXE;1]) == 0 {}
+    // Write the byte to the data register
+    cpu::write!(USART1.tdr, c as u32);
 }
-
 
 #[cfg(test)]
 mod tests {

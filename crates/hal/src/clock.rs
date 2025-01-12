@@ -59,18 +59,16 @@ pub fn init(hse_clk_freq: u32) {
 
     // Wait for PLL to be used as system clock source
     while cpu::read!(RCC.cfgr[SWS;2]) != 0b10 {}
-
 }
 
 // Configures MCO to output half the PLLCLK frequency.
 #[cfg(feature = "stm32f072")]
 #[inline(never)]
-pub fn configure_mco( pin: super::gpio::Pin ) {
-    // TODO 
-    assert!( pin.0 == GPIO_A as *mut cpu::GpioReg);
-    assert!( pin.1 == 8 );
-    
-    
+pub fn configure_mco(pin: super::gpio::Pin) {
+    // TODO
+    assert!(pin.0 == GPIO_A as *mut cpu::GpioReg);
+    assert!(pin.1 == 8);
+
     // Enable GPIOA clock
     //cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
 
@@ -85,10 +83,7 @@ pub fn configure_mco( pin: super::gpio::Pin ) {
 
 #[cfg(feature = "stm32f072")]
 #[inline(never)]
-pub fn validate() {
- 
-}
-
+pub fn validate() {}
 
 #[cfg(feature = "stm32f405")]
 #[inline(never)]

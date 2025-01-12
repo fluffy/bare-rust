@@ -105,7 +105,7 @@ pub mod info {
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
 
     pub const HAS_PTT_BUTTON: bool = false;
-    pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_A,11);
+    pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
     pub const PTT_BUTTON_PULL_UP: bool = true;
 
     pub const HAS_AI_BUTTON: bool = false;

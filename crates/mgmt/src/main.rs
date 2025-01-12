@@ -32,7 +32,7 @@ fn my_main() {
     //let mut bsp = bsp::BSP::new();
     //bsp.init();
     //bsp.validate();
-  
+
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 
@@ -54,15 +54,14 @@ fn my_main() {
     const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
     const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
     const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
-    
+
     LED_GREEN_PIN.output();
     LED_RED_PIN.output();
     LED_BLUE_PIN.output();
-    
-    LED_GREEN_PIN.high(); 
+
+    LED_GREEN_PIN.high();
     LED_RED_PIN.high();
     LED_BLUE_PIN.low(); // turn on blue LED
-        
 
     let str = "Starting\r\n";
     for c in str.bytes() {
@@ -73,7 +72,6 @@ fn my_main() {
     LED_RED_PIN.high();
     LED_BLUE_PIN.high();
 
-    
     //b"Starting\r\n".print_console();
 
     //led::set(Color::Green);

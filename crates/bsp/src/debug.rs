@@ -31,7 +31,7 @@ impl Debug {
     pub fn new() -> Self {
         Debug {}
     }
-    
+
     #[inline(never)]
     pub fn init(&self) {
         board::info::DEBUG1_PIN.output();
@@ -79,4 +79,3 @@ pub fn set(channel: u8, state: bool) {
         }
     }
 }
-

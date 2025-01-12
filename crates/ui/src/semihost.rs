@@ -25,7 +25,7 @@ use core::arch::asm;
 #[inline(never)]
 #[allow(dead_code)]
 pub fn exit_no_status() -> ! {
-   unsafe {
+    unsafe {
         asm!(
             "mov r0, #0x18",
             //"mov r1, #0x20026",

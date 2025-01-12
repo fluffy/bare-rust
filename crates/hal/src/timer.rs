@@ -91,8 +91,7 @@ pub fn handle_tim2_irq() {
 
 #[cfg(feature = "stm32f072")]
 #[inline(never)]
-pub fn handle_tim2_irq() {
-}
+pub fn handle_tim2_irq() {}
 
 #[cfg(feature = "stm32f405")]
 #[cfg(target_arch = "arm")]

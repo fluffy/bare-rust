@@ -60,37 +60,37 @@ pub enum Color {
 
 /// Sets the color of the LED based on the provided `Color` enum value.
 pub fn set(c: Color) {
-    let (mut r, mut g,mut b) = match c {
-        Color::Black => (0,0,0),
-        Color::White => (255,255,255),
-        Color::Red => (255,0,0),
-        Color::Green => (0,255,0),
-        Color::Blue => (0,0,255),
+    let (mut r, mut g, mut b) = match c {
+        Color::Black => (0, 0, 0),
+        Color::White => (255, 255, 255),
+        Color::Red => (255, 0, 0),
+        Color::Green => (0, 255, 0),
+        Color::Blue => (0, 0, 255),
     };
-    
+
     let invert_leds = board::info::LEDS_INVERTED;
     if invert_leds {
-        r = 100 -r;
-        g = 100 -g;
-        b = 100 -b;
+        r = 100 - r;
+        g = 100 - g;
+        b = 100 - b;
     }
-    
-    if r>50 {
+
+    if r > 50 {
         board::info::LED_RED_PIN.high();
     } else {
         board::info::LED_RED_PIN.low();
     }
-    if g>50 {
+    if g > 50 {
         board::info::LED_GREEN_PIN.high();
     } else {
         board::info::LED_GREEN_PIN.low();
     }
-    if b>50 {
+    if b > 50 {
         board::info::LED_BLUE_PIN.high();
     } else {
         board::info::LED_BLUE_PIN.low();
     }
 
     #[cfg(feature = "std")]
-    std::print!("LED: {},{},{}\r\n",r,g,b);
+    std::print!("LED: {},{},{}\r\n", r, g, b);
 }

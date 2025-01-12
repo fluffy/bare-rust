@@ -18,25 +18,19 @@
 //! script in the `linker.ld` file.
 //!
 
-
 use core::ptr;
 
-
 use super::stack::STACK_PAINT_BYTE;
-
 
 //#[allow(unused_imports)]
 //use bsp::led;
 
-
 //#[allow(unused_imports)]
 //use bsp::led::Color;
-
 
 extern "C" {
     fn main() -> !;
 }
-
 
 #[allow(unused_imports)]
 use core::panic::PanicInfo;
@@ -57,8 +51,7 @@ fn panic(_panic: &PanicInfo) -> ! {
     LED_GREEN_PIN.high();
     LED_RED_PIN.low();
     LED_BLUE_PIN.high();
-    loop {
-    }
+    loop {}
 }
 
 extern "C" {
@@ -70,7 +63,6 @@ extern "C" {
     static _estack: u8;
     static mut _heap_start: u8;
 }
-
 
 #[no_mangle]
 #[inline(never)]
@@ -111,25 +103,20 @@ pub extern "C" fn Default_Handler() {
     LED_GREEN_PIN.high();
     LED_RED_PIN.low();
     LED_BLUE_PIN.high();
-    
+
     #[allow(unreachable_code)]
-    loop {
-    }
+    loop {}
 }
-
-
 
 #[no_mangle]
 pub extern "C" fn Default_HandlerA() {
     Default_Handler();
 }
 
-
 #[no_mangle]
 pub extern "C" fn Default_HandlerB() {
     Default_Handler();
 }
-
 
 #[no_mangle]
 pub extern "C" fn Default_HandlerC() {
@@ -192,12 +179,10 @@ pub extern "C" fn Default_Handler6() {
     Default_Handler();
 }
 
-
 #[no_mangle]
 pub extern "C" fn TIM1_UP_TIM10_IRQHandler() {
     //hal::timer::handle_tim1_irq();
 }
-
 
 #[no_mangle]
 pub extern "C" fn TIM2_IRQHandler() {

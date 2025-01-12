@@ -91,17 +91,14 @@ impl BSP {
 
         self.led.init();
 
-       
         self.debug.init();
 
-       
         self.buttons.init();
     }
 
     pub fn validate(&self) {
         hal::validate();
 
-       
         self.buttons.validate();
     }
 }

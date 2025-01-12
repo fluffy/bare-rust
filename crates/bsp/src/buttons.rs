@@ -8,12 +8,9 @@
 //! - `read_ai`: Reads the state of the AI button.
 //!
 
-
-
 extern crate hal;
 
 use crate::board;
-
 
 pub struct Buttons {
     prev_ptt: bool,
@@ -28,7 +25,6 @@ impl Buttons {
             prev_ai: false,
         }
     }
-
 
     #[inline(never)]
     pub fn init(&mut self) {
@@ -52,12 +48,9 @@ impl Buttons {
             }
         }
     }
-    
+
     #[inline(never)]
-    pub fn validate(&self) {
-    
-   
-    }
+    pub fn validate(&self) {}
 
     /// Reads the state of the PTT (Push-To-Talk) button.
     ///
