@@ -63,7 +63,7 @@ fn my_main() {
     LED_RED_PIN.high();
     LED_BLUE_PIN.low(); // turn on blue LED
 
-    hal::clock::configure_mco( MCLK , CLOCK_HSE_FREQ );
+    hal::clock::configure_mco( MCLK , 24_000_000 );
         
     let str = "Starting\r\n";
     for c in str.bytes() {

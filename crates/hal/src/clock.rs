@@ -73,6 +73,8 @@ pub fn configure_mco(pin: super::gpio::Pin, mco_freq: u32) {
     
     let pn = pin.1 as usize;
 
+    assert!( mco_freq == 24_000_000 );
+    
     // Enable GPIOA clock
     cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
 
