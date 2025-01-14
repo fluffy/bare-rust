@@ -63,23 +63,28 @@ fn my_main() {
     LED_RED_PIN.high();
     LED_BLUE_PIN.low(); // turn on blue LED
 
-    hal::clock::configure_mco( MCLK , 24_000_000 );
+    hal::clock::configure_mco( MCLK , MCLK_FREQ);
         
-    let str = "Starting\r\n";
+    UI_BOOT0.output(); UI_BOOT0.low();
+    NET_BOOT0.output(); NET_BOOT0.low();
+
+    UI_NRST.output(); UI_NRST.low();
+    NET_NRST.output(); NET_NRST.low();
+    
+    let str = "MGMT: Starting\r\n";
     for c in str.bytes() {
         hal::uart::write1(c);
     }
 
+    NET_BOOT0.high();
+    NET_NRST.high();
+    
     LED_GREEN_PIN.low(); // turn on green LED
     LED_RED_PIN.high();
     LED_BLUE_PIN.high();
-
-    //b"Starting\r\n".print_console();
-
-    //led::set(Color::Green);
-
-    //let (stack_usage, stack_current, stack_reserved) = stack::usage(false);
-    //let  _ = (stack_usage, stack_current, stack_reserved);
+    
+    let (stack_usage, stack_current, stack_reserved) = stack::usage(false);
+    let  _ = (stack_usage, stack_current, stack_reserved);
 
     loop {}
 }
