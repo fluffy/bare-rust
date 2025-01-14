@@ -33,6 +33,7 @@
 //! }
 //! ```
 
+#[cfg(not(feature = "stm32f072"))]
 use core::ptr;
 
 #[cfg(feature = "std")]
@@ -41,7 +42,10 @@ extern crate std;
 #[cfg(feature = "std")]
 use std::time::{SystemTime, UNIX_EPOCH};
 
+#[cfg(not(feature = "stm32f072"))]
 use super::cpu;
+
+#[cfg(not(feature = "stm32f072"))]
 use super::cpu::*;
 
 #[cfg(feature = "stm32f405")]
