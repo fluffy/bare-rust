@@ -29,9 +29,9 @@ pub fn init(hse_clk_freq: u32) {
     let pll_m: u32;
     match hse_clk_freq {
         16_000_000 => {
-           // pll_m = 0b0001; // this is a x3 pll mult for 48MHz
+            // pll_m = 0b0001; // this is a x3 pll mult for 48MHz
             // pll_m = 0b1010; // hack x12 TODO - fails to boot
-            pll_m = 0b0100; // hack x6 TODO 
+            pll_m = 0b0100; // hack x6 TODO
         }
 
         _ => {
@@ -47,7 +47,7 @@ pub fn init(hse_clk_freq: u32) {
 
     // Configure PLL
     cpu::write!(RCC.cfgr[PLLSRC;2], 1); // HSE as PLL source
-    cpu::write!(RCC.cfgr[PLLMUL;4], pll_m); // PLL multiplier 
+    cpu::write!(RCC.cfgr[PLLMUL;4], pll_m); // PLL multiplier
     cpu::write!(RCC.cfgr[PPRE;3], 0b000); // No AHB prescaler
 
     // Enable PLL
@@ -70,11 +70,11 @@ pub fn configure_mco(pin: super::gpio::Pin, mco_freq: u32) {
     // TODO
     assert!(pin.0 == GPIO_A as *mut cpu::GpioReg);
     assert!(pin.1 >= 8);
-    
+
     let pn = pin.1 as usize;
 
-    assert!( mco_freq == 24_000_000 );
-    
+    assert!(mco_freq == 24_000_000);
+
     // Enable GPIOA clock
     cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
 
@@ -84,14 +84,13 @@ pub fn configure_mco(pin: super::gpio::Pin, mco_freq: u32) {
 
     // Configure MCO to output PLLCLK/2
     cpu::write!(RCC.cfgr[MCO;4], 0b0111); // Set MCO source to PLLCLK
-    //cpu::write!(RCC.cfgr[MCO;4], 0b0100); // Set MCO source to SYSCLK
+                                          //cpu::write!(RCC.cfgr[MCO;4], 0b0100); // Set MCO source to SYSCLK
 
     cpu::write!(RCC.cfgr[PLLNODIV;1], 1); // PLL is NOT devided by 2
-    
+
     //cpu::write!(RCC.cfgr[MCOPRE;3], 0b000); // MCO No prescaler
     cpu::write!(RCC.cfgr[MCOPRE;3], 0b001); // Set MCO prescaler to divide by 2
-    //cpu::write!(RCC.cfgr[MCOPRE;3], 0b011); // MCO prescaler set to divide by 8
-
+                                            //cpu::write!(RCC.cfgr[MCOPRE;3], 0b011); // MCO prescaler set to divide by 8
 }
 
 #[cfg(feature = "stm32f072")]

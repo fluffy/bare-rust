@@ -36,8 +36,8 @@ fn my_main() {
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 
-    pub const UI_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 2);
-    pub const UI_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 3);
+    //pub const UI_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 2);
+    //pub const UI_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 3);
 
     pub const UI_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIO_A, 15);
     pub const UI_NRST: gpio::Pin = gpio::Pin(cpu::GPIO_B, 3);
@@ -63,14 +63,18 @@ fn my_main() {
     LED_RED_PIN.high();
     LED_BLUE_PIN.low(); // turn on blue LED
 
-    hal::clock::configure_mco( MCLK , MCLK_FREQ);
-        
-    UI_BOOT0.output(); UI_BOOT0.low();
-    NET_BOOT0.output(); NET_BOOT0.low();
+    hal::clock::configure_mco(MCLK, MCLK_FREQ);
 
-    UI_NRST.output(); UI_NRST.low();
-    NET_NRST.output(); NET_NRST.low();
-    
+    UI_BOOT0.output();
+    UI_BOOT0.low();
+    NET_BOOT0.output();
+    NET_BOOT0.low();
+
+    UI_NRST.output();
+    UI_NRST.low();
+    NET_NRST.output();
+    NET_NRST.low();
+
     let str = "MGMT: Starting\r\n";
     for c in str.bytes() {
         hal::uart::write1(c);
@@ -78,13 +82,13 @@ fn my_main() {
 
     NET_BOOT0.high();
     NET_NRST.high();
-    
+
     LED_GREEN_PIN.low(); // turn on green LED
     LED_RED_PIN.high();
     LED_BLUE_PIN.high();
-    
+
     let (stack_usage, stack_current, stack_reserved) = stack::usage(false);
-    let  _ = (stack_usage, stack_current, stack_reserved);
+    let _ = (stack_usage, stack_current, stack_reserved);
 
     loop {}
 }

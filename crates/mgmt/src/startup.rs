@@ -211,7 +211,7 @@ pub static Exceptions: [IrqVector; 5 + 81] = [
     }, // hard fault
     IrqVector {
         handler: Default_HandlerC,
-    },  // SVC
+    }, // SVC
     IrqVector {
         handler: Default_HandlerD,
     }, // Pend  SV
