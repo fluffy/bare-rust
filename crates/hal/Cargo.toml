@@ -17,4 +17,7 @@ test = false
 
 [features]
 std = []
+stm32f405 = []
+stm32f072 = []
+
 

@@ -90,7 +90,9 @@ impl BSP {
         self.console.init();
 
         self.led.init();
+
         self.debug.init();
+
         self.buttons.init();
     }
 

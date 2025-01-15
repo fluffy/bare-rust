@@ -16,11 +16,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Build x86
-        run: cargo build --verbose --features bsp/board-sim,hal/std,app/std,app/exit
+      - name: Install Cortex-M0 dependencies
+        run: rustup target add thumbv6m-none-eabi
+      - name: Install Coretex-M4 dependencies
+        run: rustup target add thumbv7em-none-eabihf
+      - name: Build x86 and run sim
+        run: make run
       - name: Build arm hactar12
-        run: cargo build --verbose --features bsp/board-hactar12 --target=thumbv7em-none-eabihf --release
-      - name: Build arm blinkA
-        run: cargo build --verbose --features bsp/board-blinkA --target=thumbv7em-none-eabihf --release
+        run: make build
+      - name: Build arm hactar12 mgmt
+        run: make build-mgmt
       - name: Run tests
-        run: cargo test --verbose --workspace --features bsp/board-sim,hal/std,app/std  -- --test-threads=1
+        run: make test

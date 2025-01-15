@@ -6,13 +6,19 @@ load
 set print asm-demangle on
 
 break Default_Handler
-break app::startup::panic
-#break app::startup::Reset_Handler
+
+#break ui::startup::panic
+#break ui::startup::Reset_Handler
+#break ui::my_main
+#break ui::main
+
+break mgmt::startup::panic
+break mgmt::startup::Reset_Handler
+#break mgmt::my_main
+break mgmt::main
 
 
-# break at start of program
-#stepi
+break at start of program
+stepi
 
-break app::my_main
-#break app::main
 

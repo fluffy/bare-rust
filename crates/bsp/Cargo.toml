@@ -23,6 +23,7 @@ test = false
 #default = [ "board-sim" ]
 std = []
 board-hactar12 = []
+board-hactar12-mgmt = []
 board-blinkA = []
 board-qemu = [ ]
 board-sim = [ "std" ]

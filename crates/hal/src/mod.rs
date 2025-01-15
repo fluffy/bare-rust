@@ -56,10 +56,12 @@
 pub mod clock;
 pub mod cpu;
 pub mod gpio;
-pub mod semihost;
-pub mod svd;
+
 pub mod timer;
 pub mod uart;
+
+pub mod svd_stm32f0x2;
+pub mod svd_stm32f405;
 
 #[inline(never)]
 /// Initializes the hardware.
@@ -77,6 +79,7 @@ pub fn init(hse_clk_freq: u32, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // do after uart is up
 
     // Do last as this starts timer events
+    #[cfg(feature = "stm32f405")]
     timer::init2();
 }
 

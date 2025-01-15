@@ -6,7 +6,8 @@ rustflags = [
     "-Clinker-plugin-lto",
     "-Clink-arg=-mllvm=-lto-embed-bitcode=optimized",
     "-Clink-arg=-mllvm=-stack-size-section",
-    "-Clink-arg=-Tlinker.ld",
+  #  "-Clink-arg=-Tmem405.x",
+  #  "-Clink-arg=-Tmem072.x",
 ]
 
 [build]
@@ -14,7 +15,7 @@ rustflags = [
 
 [test]
 
-[unstable]
-build-std = ["compiler_builtins", "core"]
+#[unstable]
+#build-std = ["compiler_builtins", "core"]
 
 

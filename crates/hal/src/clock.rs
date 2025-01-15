@@ -16,12 +16,88 @@
 
 use core::ptr;
 
-//use super::board;
 use super::cpu;
 use super::cpu::*;
 
-//use super::board;
+#[allow(unused_imports)]
+use super::gpio;
 
+#[cfg(feature = "stm32f072")]
+#[inline(never)]
+/// Initializes the clock configuration based on the board-specific settings.
+pub fn init(hse_clk_freq: u32) {
+    let pll_m: u32;
+    match hse_clk_freq {
+        16_000_000 => {
+            // pll_m = 0b0001; // this is a x3 pll mult for 48MHz
+            // pll_m = 0b1010; // hack x12 TODO - fails to boot
+            pll_m = 0b0100; // hack x6 TODO
+        }
+
+        _ => {
+            panic!("HSE Clk Freq not supported");
+        }
+    }
+
+    // Enable HSE
+    cpu::write!(RCC.cr[HSEON;1], 1);
+
+    // Wait for HSE to be ready
+    while cpu::read!(RCC.cr[HSERDY;1]) == 0 {}
+
+    // Configure PLL
+    cpu::write!(RCC.cfgr[PLLSRC;2], 1); // HSE as PLL source
+    cpu::write!(RCC.cfgr[PLLMUL;4], pll_m); // PLL multiplier
+    cpu::write!(RCC.cfgr[PPRE;3], 0b000); // No AHB prescaler
+
+    // Enable PLL
+    cpu::write!(RCC.cr[PLLON;1], 1);
+
+    // Wait for PLL to be ready
+    while cpu::read!(RCC.cr[PLLRDY;1]) == 0 {}
+
+    // Select PLL as system clock source
+    cpu::write!(RCC.cfgr[SW;2], 0b10); // PLL as system clock source
+
+    // Wait for PLL to be used as system clock source
+    while cpu::read!(RCC.cfgr[SWS;2]) != 0b10 {}
+}
+
+// Configures MCO to output half the PLLCLK frequency.
+#[cfg(feature = "stm32f072")]
+#[inline(never)]
+pub fn configure_mco(pin: super::gpio::Pin, mco_freq: u32) {
+    // TODO
+    assert!(pin.0 == GPIO_A as *mut cpu::GpioReg);
+    assert!(pin.1 >= 8);
+
+    let pn = pin.1 as usize;
+
+    assert!(mco_freq == 24_000_000);
+
+    // Enable GPIOA clock
+    cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
+
+    // Configure PA8 as alternate function (MCO)
+    cpu::write!(GPIO_A.moder[pn*2;2], 0b10); // Set mode to alternate function
+    cpu::write!(GPIO_A.afrh[(pn-8)*4;4], 0); // Set AF0 for MCO
+
+    // Configure MCO to output PLLCLK/2
+    cpu::write!(RCC.cfgr[MCO;4], 0b0111); // Set MCO source to PLLCLK
+                                          //cpu::write!(RCC.cfgr[MCO;4], 0b0100); // Set MCO source to SYSCLK
+
+    cpu::write!(RCC.cfgr[PLLNODIV;1], 1); // PLL is NOT devided by 2
+
+    //cpu::write!(RCC.cfgr[MCOPRE;3], 0b000); // MCO No prescaler
+    cpu::write!(RCC.cfgr[MCOPRE;3], 0b001); // Set MCO prescaler to divide by 2
+                                            //cpu::write!(RCC.cfgr[MCOPRE;3], 0b011); // MCO prescaler set to divide by 8
+}
+
+#[cfg(feature = "stm32f072")]
+#[inline(never)]
+pub fn validate() {}
+
+#[cfg(feature = "stm32f405")]
 #[inline(never)]
 /// Initializes the clock configuration based on the board-specific settings.
 pub fn init(_hse_clk_freq: u32) {
@@ -126,6 +202,7 @@ pub fn init(_hse_clk_freq: u32) {
     }
 }
 
+#[cfg(feature = "stm32f405")]
 #[inline(never)]
 /// Validates the clock configuration to ensure it is set up correctly.
 pub fn validate() {

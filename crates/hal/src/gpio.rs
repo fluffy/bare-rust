@@ -62,10 +62,16 @@ use super::cpu;
 pub use super::cpu::*;
 //pub use super::svd::*;
 
+#[cfg(feature = "stm32f405")]
 pub fn init() {
     cpu::write!(RCC.ahb1enr[GPIOAEN;1], 1 );
     cpu::write!(RCC.ahb1enr[GPIOBEN;1], 1 );
     cpu::write!(RCC.ahb1enr[GPIOCEN;1], 1 );
+}
+
+#[cfg(feature = "stm32f072")]
+pub fn init() {
+    cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
 }
 
 #[derive(Copy, Clone)]
