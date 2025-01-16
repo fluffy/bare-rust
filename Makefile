@@ -13,6 +13,12 @@ build-mgmt:
 	cd crates/mgmt; cargo build --bin mgmt --features hal/stm32f072 --target=thumbv6m-none-eabi  --verbose
 
 
+run-mgmt:
+	echo run "openocd -f crates/mgmt/openocd.cfg" in background
+	echo run something like "screen /dev/tty.usbserial-120 115200" in another window
+	echo "run cd crates/mgmt; cargo run --bin mgmt --features hal/stm32f072 --target=thumbv6m-none-eabi  --verbose"
+
+
 test:
 	cargo test --workspace --lib --tests --bin ui  --features bsp/board-sim,hal/stm32f405,hal/std,ui/std,ui/exit  -- --test-threads=1
 	cargo test --workspace --doc  --features bsp/board-sim,hal/stm32f405,hal/std,ui/std,ui/exit  -- --test-threads=1
