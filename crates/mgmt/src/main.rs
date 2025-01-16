@@ -36,8 +36,8 @@ fn my_main() {
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 
-    //pub const UI_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 2);
-    //pub const UI_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 3);
+    pub const UI_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 2);
+    pub const UI_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 3);
 
     pub const UI_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIO_A, 15);
     pub const UI_NRST: gpio::Pin = gpio::Pin(cpu::GPIO_B, 3);
@@ -50,6 +50,8 @@ fn my_main() {
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
     hal::init(CLOCK_HSE_FREQ, CONSOLE_TX, CONSOLE_RX);
+    
+    hal::uart::init2(115200, UI_RX, UI_TX);
 
     const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
     const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
@@ -90,5 +92,9 @@ fn my_main() {
     let (stack_usage, stack_current, stack_reserved) = stack::usage(false);
     let _ = (stack_usage, stack_current, stack_reserved);
 
-    loop {}
+    loop {
+        let c: u8;
+        c = hal::uart::read2();
+        hal::uart::write1(c);
+    }
 }
