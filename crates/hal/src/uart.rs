@@ -56,6 +56,8 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // Configure PA9 (TX) and PA10 (RX) as alternate function (AF1 for USART1)
     assert!(tx_pin.0 == GPIO_A as *mut cpu::GpioReg);
     assert!(rx_pin.0 == GPIO_A as *mut cpu::GpioReg);
+    assert!( tx_pin.1 >= 8 );
+    assert!( tx_pin.1 >= 8 );
 
     let tx_pin = tx_pin.1;
     let rx_pin = rx_pin.1;
@@ -86,14 +88,16 @@ pub fn init2(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // Configure PA2 (TX) and P3 (RX) as alternate function (AF1 for USART1)
     assert!(tx_pin.0 == GPIO_A as *mut cpu::GpioReg);
     assert!(rx_pin.0 == GPIO_A as *mut cpu::GpioReg);
+    assert!( tx_pin.1 < 8 );
+    assert!( tx_pin.1 < 8 );
 
     let tx_pin = tx_pin.1;
     let rx_pin = rx_pin.1;
 
-    cpu::write!(GPIO_A.moder[tx_pin*2;2], 0b10); // PA2 to AF mode
+    cpu::write!(GPIO_A.moder[tx_pin*2;2], 0b10); // PA2 to AF mode // TODO
     cpu::write!(GPIO_A.moder[rx_pin*2;2], 0b10); // PA2 to AF mode
-    cpu::write!(GPIO_A.afrh[(tx_pin-8)*4;4], 0b0001); // PA2 to AF1
-    cpu::write!(GPIO_A.afrh[(rx_pin-8)*4;4], 0b0001); // PA3 to AF1
+    cpu::write!(GPIO_A.afrl[(tx_pin)*4;4], 0b0001); // PA2 to AF1
+    cpu::write!(GPIO_A.afrl[(rx_pin)*4;4], 0b0001); // PA3 to AF1
 
     // Set baud rate
     let apb_freq: u32 = 48_000_000; // APB clock frequency
