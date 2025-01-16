@@ -281,6 +281,9 @@ pub const USART1: *mut UsartReg = 0x4001_1000 as *mut UsartReg;
 #[cfg(feature = "stm32f072")]
 pub const USART1: *mut UsartReg = 0x4001_3800 as *mut UsartReg;
 
+#[cfg(feature = "stm32f072")]
+pub const USART2: *mut UsartReg = 0x4000_4400 as *mut UsartReg;
+
 #[cfg(feature = "stm32f405")]
 #[repr(C)]
 pub struct TimAdvReg {
