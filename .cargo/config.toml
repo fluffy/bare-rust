@@ -1,6 +1,6 @@
 
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
-runner = "arm-none-eabi-gdb -q -x openocd.gdb"
+
 rustflags = [
     #    "-Zemit-stack-sizes",
     "-Clinker-plugin-lto",

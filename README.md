@@ -5,6 +5,14 @@ Bare rust project for STM32
 Read the [Architecture.md](Architecture.md) document for more
 information.
 
+# Instalations
+
+```sh
+rustup target add thumbv6m-none-eab
+rustup target add thumbv7em-none-eabihf
+```
+
+
 # Running on Board
 
 Connect up the stlink to board.
