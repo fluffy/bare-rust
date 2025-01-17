@@ -135,8 +135,8 @@ fn my_main() {
     let text_edit_task = tasks::text_edit_task::TextEditTask {};
     task_mgr.add_task(&text_edit_task);
 
-    //let fib_task = tasks::fib_task::FibTask {};
-    //task_mgr.add_task(&fib_task);
+    let fib_task = tasks::fib_task::FibTask {};
+    task_mgr.add_task(&fib_task);
 
     led::set(Color::Green);
 

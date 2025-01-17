@@ -8,19 +8,12 @@ repository = "git@github.com:fluffy/bare-rust.git"
 license = "BSD-2-Clause"
 
 [dependencies]
-#std = {  optional = true }
 hal = { path = "../hal"}
-#bsp = { path = "../bsp" }
-
 
 [[bin]]
 name = "mgmt"
 test = false
 bench = false
 
-
 [features]
-#default = [ "board-blinkA" ]
-#default = [ "board-hactar12" ]
-
-
+default = [ "hal/stm32f072" ]

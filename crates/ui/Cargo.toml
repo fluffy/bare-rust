@@ -20,9 +20,7 @@ bench = false
 
 
 [features]
-#default = [ "board-blinkA" ]
-#default = [ "board-hactar12" ]
-#default = [ "board-sim" ]
+default = [ "bsp/board-hactar12","hal/stm32f405" ]
 std = []
 exit = []
 
