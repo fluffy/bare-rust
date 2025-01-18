@@ -194,6 +194,69 @@ pub struct NVICReg {
 #[cfg(feature = "stm32f405")]
 pub const NVIC: *mut NVICReg = 0xE000_E100 as *mut NVICReg;
 
+
+#[cfg(feature = "stm32f405")]
+#[repr(C)]
+pub struct DmaReg {
+    pub lisr: u32,
+    pub hisr: u32,
+    pub lifcr: u32,
+    pub hifcr: u32,
+    pub s0cr: u32,
+    pub s0ndtr: u32,
+    pub s0par: u32,
+    pub s0m0ar: u32,
+    pub s0m1ar: u32,
+    pub s0fcr: u32,
+    pub s1cr: u32,
+    pub s1ndtr: u32,
+    pub s1par: u32,
+    pub s1m0ar: u32,
+    pub s1m1ar: u32,
+    pub s1fcr: u32,
+    pub s2cr: u32,
+    pub s2ndtr: u32,
+    pub s2par: u32,
+    pub s2m0ar: u32,
+    pub s2m1ar: u32,
+    pub s2fcr: u32,
+    pub s3cr: u32,
+    pub s3ndtr: u32,
+    pub s3par: u32,
+    pub s3m0ar: u32,
+    pub s3m1ar: u32,
+    pub s3fcr: u32,
+    pub s4cr: u32,
+    pub s4ndtr: u32,
+    pub s4par: u32,
+    pub s4m0ar: u32,
+    pub s4m1ar: u32,
+    pub s4fcr: u32,
+    pub s5cr: u32,
+    pub s5ndtr: u32,
+    pub s5par: u32,
+    pub s5m0ar: u32,
+    pub s5m1ar: u32,
+    pub s5fcr: u32,
+    pub s6cr: u32,
+    pub s6ndtr: u32,
+    pub s6par: u32,
+    pub s6m0ar: u32,
+    pub s6m1ar: u32,
+    pub s6fcr: u32,
+    pub s7cr: u32,
+    pub s7ndtr: u32,
+    pub s7par: u32,
+    pub s7m0ar: u32,
+    pub s7m1ar: u32,
+    pub s7fcr: u32,
+}
+
+#[cfg(feature = "stm32f405")]
+pub const DMA1: *mut DmaReg = 0x4002_6000 as *mut DmaReg;
+#[cfg(feature = "stm32f405")]
+pub const DMA2: *mut DmaReg = 0x4002_6400 as *mut DmaReg;
+
 #[cfg(feature = "stm32f405")]
 #[repr(C)]
 pub struct GpioReg {
