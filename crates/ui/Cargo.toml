@@ -9,8 +9,8 @@ license = "BSD-2-Clause"
 
 [dependencies]
 #std = {  optional = true }
-hal = { path = "../hal" }
-bsp = { path = "../bsp" }
+hal = { path = "../hal" , features = ["stm32f405"] }
+bsp = { path = "../bsp" , features = ["board-hactar12"] }
 
 
 [[bin]]
