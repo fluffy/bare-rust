@@ -71,7 +71,9 @@ pub fn init() {
 
 #[cfg(feature = "stm32f072")]
 pub fn init() {
+    
     cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
+    cpu::write!(RCC.ahbenr[IOPBEN;1], 1);
 }
 
 #[derive(Copy, Clone)]
@@ -84,6 +86,7 @@ impl Pin {
         return Pin(gpio, p);
     }
 
+    #[inline(never)]
     pub fn output(&self) {
         let gpio = self.0;
         let pin_num = self.1;
@@ -104,6 +107,7 @@ impl Pin {
         cpu::write!( gpio.ospeedr[pin_num*2;2], 0b00);
     }
 
+    #[inline(never)]
     pub fn input(&self) {
         let gpio = self.0;
         let pin_num = self.1;
@@ -115,6 +119,7 @@ impl Pin {
         cpu::write!( gpio.moder[pin_num*2;2], 0b00);
     }
 
+    #[inline(never)]
     #[allow(dead_code)]
     pub fn pulldown(&self) {
         let gpio = self.0;
@@ -124,6 +129,7 @@ impl Pin {
         cpu::write!(gpio.pupdr[pin_num * 2; 2], 0b10);
     }
 
+    #[inline(never)]
     #[allow(dead_code)]
     pub fn pullup(&self) {
         let gpio = self.0;
@@ -133,6 +139,7 @@ impl Pin {
         cpu::write!(gpio.pupdr[pin_num * 2; 2], 0b01);
     }
 
+    #[inline(always)]
     pub fn low(&self) {
         let gpio = self.0;
         let pin_num = self.1;
@@ -140,16 +147,18 @@ impl Pin {
         cpu::write!(gpio.bsrr, 0b1 << (pin_num + 16));
     }
 
+    #[inline(always)]
     pub fn high(&self) {
         let gpio = self.0;
-        let pin_num = self.1;
+        let pin_num = self.1 as u32;
 
         cpu::write!(gpio.bsrr, 0b1 << (pin_num + 0));
     }
 
+    #[inline(always)]
     pub fn read(&self) -> bool {
         let gpio = self.0;
-        let pin_num: u32 = self.1 as u32;
+        let pin_num = self.1;
 
         let val = cpu::read!( gpio.idr[pin_num*1;1] );
         val != 0
