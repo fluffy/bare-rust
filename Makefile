@@ -4,7 +4,7 @@
 all: build build-mgmt test doc 
 
 run-sim:
-	cargo run --bin ui --no-default-features --features bsp/board-sim,hal/stm32f405,hal/std,ui/std,ui/exit
+	cd crates/ui ; cargo run --bin ui --no-default-features --features bsp/board-sim,hal/stm32f405,hal/std,bsp/std,ui/std,ui/exit
 
 
 build:
