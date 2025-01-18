@@ -22,6 +22,13 @@ use super::cpu::*;
 #[allow(unused_imports)]
 use super::gpio;
 
+
+#[cfg(all(feature = "stm32f072", feature = "stm32f405"))]
+compile_error!(
+    "Must specify only a single CPU type featre"
+);
+
+
 #[cfg(feature = "stm32f072")]
 #[inline(never)]
 /// Initializes the clock configuration based on the board-specific settings.
@@ -71,7 +78,7 @@ pub fn configure_mco(pin: super::gpio::Pin, mco_freq: u32) {
     assert!(pin.0 == GPIO_A as *mut cpu::GpioReg);
     assert!(pin.1 >= 8);
 
-    let pn = pin.1 as usize;
+    let pn = pin.1;
 
     assert!(mco_freq == 24_000_000);
 

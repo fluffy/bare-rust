@@ -10,7 +10,6 @@ license = "BSD-2-Clause"
 [dependencies]
 hal = { path = "../hal" }
 
-
 [lib]
 name = "bsp"
 path = "src/mod.rs"
@@ -23,7 +22,6 @@ test = false
 #default = [ "board-sim" ]
 std = []
 board-hactar12 = []
-board-hactar12-mgmt = []
 board-blinkA = []
 board-qemu = [ ]
 board-sim = [ "std" ]

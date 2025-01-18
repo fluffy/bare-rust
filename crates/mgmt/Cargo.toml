@@ -8,12 +8,12 @@ repository = "git@github.com:fluffy/bare-rust.git"
 license = "BSD-2-Clause"
 
 [dependencies]
-hal = { path = "../hal"}
+#hal = { path = "../hal", features = ["stm32f072"] }
+hal = { path = "../hal" }
 
 [[bin]]
 name = "mgmt"
 test = false
 bench = false
 
-[features]
-default = [ "hal/stm32f072" ]
+

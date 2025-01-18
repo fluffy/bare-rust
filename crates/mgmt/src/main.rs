@@ -27,12 +27,7 @@ pub extern "C" fn main() -> ! {
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
 fn my_main() {
-    //msg::test_msg();
-
-    //let mut bsp = bsp::BSP::new();
-    //bsp.init();
-    //bsp.validate();
-
+    
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 
@@ -67,23 +62,27 @@ fn my_main() {
 
     hal::clock::configure_mco(MCLK, MCLK_FREQ);
 
-    UI_BOOT0.output();
-    UI_BOOT0.low();
+    // make sur boot are low before any rest 
+    UI_BOOT0.output(); 
     NET_BOOT0.output();
+    UI_BOOT0.low();
     NET_BOOT0.low();
 
     UI_NRST.output();
-    UI_NRST.low();
     NET_NRST.output();
-    NET_NRST.low();
+
+
+   UI_NRST.low();
+   NET_NRST.low();
 
     let str = "MGMT: Starting\r\n";
     for c in str.bytes() {
         hal::uart::write1(c);
     }
 
-    NET_BOOT0.high();
-    NET_NRST.high();
+   UI_NRST.high();
+   NET_NRST.high();
+    
 
     LED_GREEN_PIN.low(); // turn on green LED
     LED_RED_PIN.high();
