@@ -71,7 +71,7 @@ pub fn configure_mco(pin: super::gpio::Pin, mco_freq: u32) {
     assert!(pin.0 == GPIO_A as *mut cpu::GpioReg);
     assert!(pin.1 >= 8);
 
-    let pn = pin.1 as usize;
+    let pn = pin.1;
 
     assert!(mco_freq == 24_000_000);
 
