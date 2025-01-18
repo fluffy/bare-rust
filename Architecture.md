@@ -51,15 +51,20 @@ block-beta
 ### Render 
 
 Render keeps track of all the text and graphics that need to be on 
-the screen. The screen is divided up into 10 bands. It then 
+the screen. The screen is divided up into 20 bands. It then 
 periodically renders all the text and graphics into a pixel buffer 
 that covers just one band. That buffer is then send to the BSP 
-Display module to be displayed on the screen.
+Display module to be displayed on the screen. A band is drawn 
+every 10 ms giving a worst case frame rate of 5 fps.The screen is 
+240 by 320. The SDI interface supports up to 10 MHz. 
 
 Render has display status icons near the top of the screen and has 
 a main text region that is used for displaying text messages as 
 well as the text input region. The text input region is used for 
 displaying data from the keyboard task as the user types.
+
+The data transferred to the LCD is 16 bit color (5R,6G,5B) and the 
+display has a LUT to move it to 18 bit color (6R,6G,6B).  
 
 ## Data Flows
 
