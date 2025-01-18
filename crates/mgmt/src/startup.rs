@@ -44,13 +44,14 @@ fn panic(_panic: &PanicInfo) -> ! {
     const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
     const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
 
-    LED_GREEN_PIN.output();
     LED_RED_PIN.output();
+    LED_GREEN_PIN.output();
     LED_BLUE_PIN.output();
 
-    LED_GREEN_PIN.high();
     LED_RED_PIN.low();
+    LED_GREEN_PIN.high();
     LED_BLUE_PIN.high();
+
     loop {}
 }
 
