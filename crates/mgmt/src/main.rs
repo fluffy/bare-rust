@@ -27,7 +27,6 @@ pub extern "C" fn main() -> ! {
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
 fn my_main() {
-    
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
 
@@ -45,7 +44,7 @@ fn my_main() {
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
     hal::init(CLOCK_HSE_FREQ, CONSOLE_TX, CONSOLE_RX);
-    
+
     hal::uart::init2(115200, UI_RX, UI_TX);
 
     const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
@@ -62,27 +61,27 @@ fn my_main() {
 
     hal::clock::configure_mco(MCLK, MCLK_FREQ);
 
-    // make sur boot are low before any rest 
-    UI_BOOT0.output(); 
+    // make sur boot are low before any rest
+    UI_BOOT0.output();
     NET_BOOT0.output();
     UI_BOOT0.low();
     NET_BOOT0.low();
 
-    UI_NRST.output();
-    NET_NRST.output();
+    UI_NRST.open_drain();
+    UI_NRST.pullup();
+    NET_NRST.open_drain();
+    NET_NRST.pullup();
 
-
-   UI_NRST.low();
-   NET_NRST.low();
+    UI_NRST.low();
+    NET_NRST.low();
 
     let str = "MGMT: Starting\r\n";
     for c in str.bytes() {
         hal::uart::write1(c);
     }
 
-   UI_NRST.high();
-   NET_NRST.high();
-    
+    UI_NRST.high();
+    NET_NRST.high();
 
     LED_GREEN_PIN.low(); // turn on green LED
     LED_RED_PIN.high();
