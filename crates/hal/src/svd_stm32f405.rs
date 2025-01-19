@@ -4,6 +4,415 @@
 #![allow(unused)]
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
+pub mod DMA {
+    pub mod lisr {
+        pub const TCIF3: u8 = 27;
+        pub const HTIF3: u8 = 26;
+        pub const TEIF3: u8 = 25;
+        pub const DMEIF3: u8 = 24;
+        pub const FEIF3: u8 = 22;
+        pub const TCIF2: u8 = 21;
+        pub const HTIF2: u8 = 20;
+        pub const TEIF2: u8 = 19;
+        pub const DMEIF2: u8 = 18;
+        pub const FEIF2: u8 = 16;
+        pub const TCIF1: u8 = 11;
+        pub const HTIF1: u8 = 10;
+        pub const TEIF1: u8 = 9;
+        pub const DMEIF1: u8 = 8;
+        pub const FEIF1: u8 = 6;
+        pub const TCIF0: u8 = 5;
+        pub const HTIF0: u8 = 4;
+        pub const TEIF0: u8 = 3;
+        pub const DMEIF0: u8 = 2;
+        pub const FEIF0: u8 = 0;
+    }
+    pub mod hisr {
+        pub const TCIF7: u8 = 27;
+        pub const HTIF7: u8 = 26;
+        pub const TEIF7: u8 = 25;
+        pub const DMEIF7: u8 = 24;
+        pub const FEIF7: u8 = 22;
+        pub const TCIF6: u8 = 21;
+        pub const HTIF6: u8 = 20;
+        pub const TEIF6: u8 = 19;
+        pub const DMEIF6: u8 = 18;
+        pub const FEIF6: u8 = 16;
+        pub const TCIF5: u8 = 11;
+        pub const HTIF5: u8 = 10;
+        pub const TEIF5: u8 = 9;
+        pub const DMEIF5: u8 = 8;
+        pub const FEIF5: u8 = 6;
+        pub const TCIF4: u8 = 5;
+        pub const HTIF4: u8 = 4;
+        pub const TEIF4: u8 = 3;
+        pub const DMEIF4: u8 = 2;
+        pub const FEIF4: u8 = 0;
+    }
+    pub mod lifcr {
+        pub const CTCIF3: u8 = 27;
+        pub const CHTIF3: u8 = 26;
+        pub const CTEIF3: u8 = 25;
+        pub const CDMEIF3: u8 = 24;
+        pub const CFEIF3: u8 = 22;
+        pub const CTCIF2: u8 = 21;
+        pub const CHTIF2: u8 = 20;
+        pub const CTEIF2: u8 = 19;
+        pub const CDMEIF2: u8 = 18;
+        pub const CFEIF2: u8 = 16;
+        pub const CTCIF1: u8 = 11;
+        pub const CHTIF1: u8 = 10;
+        pub const CTEIF1: u8 = 9;
+        pub const CDMEIF1: u8 = 8;
+        pub const CFEIF1: u8 = 6;
+        pub const CTCIF0: u8 = 5;
+        pub const CHTIF0: u8 = 4;
+        pub const CTEIF0: u8 = 3;
+        pub const CDMEIF0: u8 = 2;
+        pub const CFEIF0: u8 = 0;
+    }
+    pub mod hifcr {
+        pub const CTCIF7: u8 = 27;
+        pub const CHTIF7: u8 = 26;
+        pub const CTEIF7: u8 = 25;
+        pub const CDMEIF7: u8 = 24;
+        pub const CFEIF7: u8 = 22;
+        pub const CTCIF6: u8 = 21;
+        pub const CHTIF6: u8 = 20;
+        pub const CTEIF6: u8 = 19;
+        pub const CDMEIF6: u8 = 18;
+        pub const CFEIF6: u8 = 16;
+        pub const CTCIF5: u8 = 11;
+        pub const CHTIF5: u8 = 10;
+        pub const CTEIF5: u8 = 9;
+        pub const CDMEIF5: u8 = 8;
+        pub const CFEIF5: u8 = 6;
+        pub const CTCIF4: u8 = 5;
+        pub const CHTIF4: u8 = 4;
+        pub const CTEIF4: u8 = 3;
+        pub const CDMEIF4: u8 = 2;
+        pub const CFEIF4: u8 = 0;
+    }
+    pub mod s0cr {
+        pub const CHSEL: u8 = 25;
+        pub const MBURST: u8 = 23;
+        pub const PBURST: u8 = 21;
+        pub const CT: u8 = 19;
+        pub const DBM: u8 = 18;
+        pub const PL: u8 = 16;
+        pub const PINCOS: u8 = 15;
+        pub const MSIZE: u8 = 13;
+        pub const PSIZE: u8 = 11;
+        pub const MINC: u8 = 10;
+        pub const PINC: u8 = 9;
+        pub const CIRC: u8 = 8;
+        pub const DIR: u8 = 6;
+        pub const PFCTRL: u8 = 5;
+        pub const TCIE: u8 = 4;
+        pub const HTIE: u8 = 3;
+        pub const TEIE: u8 = 2;
+        pub const DMEIE: u8 = 1;
+        pub const EN: u8 = 0;
+    }
+    pub mod s0ndtr {
+        pub const NDT: u8 = 0;
+    }
+    pub mod s0par {
+        pub const PA: u8 = 0;
+    }
+    pub mod s0m0ar {
+        pub const M0A: u8 = 0;
+    }
+    pub mod s0m1ar {
+        pub const M1A: u8 = 0;
+    }
+    pub mod s0fcr {
+        pub const FEIE: u8 = 7;
+        pub const FS: u8 = 3;
+        pub const DMDIS: u8 = 2;
+        pub const FTH: u8 = 0;
+    }
+    pub mod s1cr {
+        pub const CHSEL: u8 = 25;
+        pub const MBURST: u8 = 23;
+        pub const PBURST: u8 = 21;
+        pub const ACK: u8 = 20;
+        pub const CT: u8 = 19;
+        pub const DBM: u8 = 18;
+        pub const PL: u8 = 16;
+        pub const PINCOS: u8 = 15;
+        pub const MSIZE: u8 = 13;
+        pub const PSIZE: u8 = 11;
+        pub const MINC: u8 = 10;
+        pub const PINC: u8 = 9;
+        pub const CIRC: u8 = 8;
+        pub const DIR: u8 = 6;
+        pub const PFCTRL: u8 = 5;
+        pub const TCIE: u8 = 4;
+        pub const HTIE: u8 = 3;
+        pub const TEIE: u8 = 2;
+        pub const DMEIE: u8 = 1;
+        pub const EN: u8 = 0;
+    }
+    pub mod s1ndtr {
+        pub const NDT: u8 = 0;
+    }
+    pub mod s1par {
+        pub const PA: u8 = 0;
+    }
+    pub mod s1m0ar {
+        pub const M0A: u8 = 0;
+    }
+    pub mod s1m1ar {
+        pub const M1A: u8 = 0;
+    }
+    pub mod s1fcr {
+        pub const FEIE: u8 = 7;
+        pub const FS: u8 = 3;
+        pub const DMDIS: u8 = 2;
+        pub const FTH: u8 = 0;
+    }
+    pub mod s2cr {
+        pub const CHSEL: u8 = 25;
+        pub const MBURST: u8 = 23;
+        pub const PBURST: u8 = 21;
+        pub const ACK: u8 = 20;
+        pub const CT: u8 = 19;
+        pub const DBM: u8 = 18;
+        pub const PL: u8 = 16;
+        pub const PINCOS: u8 = 15;
+        pub const MSIZE: u8 = 13;
+        pub const PSIZE: u8 = 11;
+        pub const MINC: u8 = 10;
+        pub const PINC: u8 = 9;
+        pub const CIRC: u8 = 8;
+        pub const DIR: u8 = 6;
+        pub const PFCTRL: u8 = 5;
+        pub const TCIE: u8 = 4;
+        pub const HTIE: u8 = 3;
+        pub const TEIE: u8 = 2;
+        pub const DMEIE: u8 = 1;
+        pub const EN: u8 = 0;
+    }
+    pub mod s2ndtr {
+        pub const NDT: u8 = 0;
+    }
+    pub mod s2par {
+        pub const PA: u8 = 0;
+    }
+    pub mod s2m0ar {
+        pub const M0A: u8 = 0;
+    }
+    pub mod s2m1ar {
+        pub const M1A: u8 = 0;
+    }
+    pub mod s2fcr {
+        pub const FEIE: u8 = 7;
+        pub const FS: u8 = 3;
+        pub const DMDIS: u8 = 2;
+        pub const FTH: u8 = 0;
+    }
+    pub mod s3cr {
+        pub const CHSEL: u8 = 25;
+        pub const MBURST: u8 = 23;
+        pub const PBURST: u8 = 21;
+        pub const ACK: u8 = 20;
+        pub const CT: u8 = 19;
+        pub const DBM: u8 = 18;
+        pub const PL: u8 = 16;
+        pub const PINCOS: u8 = 15;
+        pub const MSIZE: u8 = 13;
+        pub const PSIZE: u8 = 11;
+        pub const MINC: u8 = 10;
+        pub const PINC: u8 = 9;
+        pub const CIRC: u8 = 8;
+        pub const DIR: u8 = 6;
+        pub const PFCTRL: u8 = 5;
+        pub const TCIE: u8 = 4;
+        pub const HTIE: u8 = 3;
+        pub const TEIE: u8 = 2;
+        pub const DMEIE: u8 = 1;
+        pub const EN: u8 = 0;
+    }
+    pub mod s3ndtr {
+        pub const NDT: u8 = 0;
+    }
+    pub mod s3par {
+        pub const PA: u8 = 0;
+    }
+    pub mod s3m0ar {
+        pub const M0A: u8 = 0;
+    }
+    pub mod s3m1ar {
+        pub const M1A: u8 = 0;
+    }
+    pub mod s3fcr {
+        pub const FEIE: u8 = 7;
+        pub const FS: u8 = 3;
+        pub const DMDIS: u8 = 2;
+        pub const FTH: u8 = 0;
+    }
+    pub mod s4cr {
+        pub const CHSEL: u8 = 25;
+        pub const MBURST: u8 = 23;
+        pub const PBURST: u8 = 21;
+        pub const ACK: u8 = 20;
+        pub const CT: u8 = 19;
+        pub const DBM: u8 = 18;
+        pub const PL: u8 = 16;
+        pub const PINCOS: u8 = 15;
+        pub const MSIZE: u8 = 13;
+        pub const PSIZE: u8 = 11;
+        pub const MINC: u8 = 10;
+        pub const PINC: u8 = 9;
+        pub const CIRC: u8 = 8;
+        pub const DIR: u8 = 6;
+        pub const PFCTRL: u8 = 5;
+        pub const TCIE: u8 = 4;
+        pub const HTIE: u8 = 3;
+        pub const TEIE: u8 = 2;
+        pub const DMEIE: u8 = 1;
+        pub const EN: u8 = 0;
+    }
+    pub mod s4ndtr {
+        pub const NDT: u8 = 0;
+    }
+    pub mod s4par {
+        pub const PA: u8 = 0;
+    }
+    pub mod s4m0ar {
+        pub const M0A: u8 = 0;
+    }
+    pub mod s4m1ar {
+        pub const M1A: u8 = 0;
+    }
+    pub mod s4fcr {
+        pub const FEIE: u8 = 7;
+        pub const FS: u8 = 3;
+        pub const DMDIS: u8 = 2;
+        pub const FTH: u8 = 0;
+    }
+    pub mod s5cr {
+        pub const CHSEL: u8 = 25;
+        pub const MBURST: u8 = 23;
+        pub const PBURST: u8 = 21;
+        pub const ACK: u8 = 20;
+        pub const CT: u8 = 19;
+        pub const DBM: u8 = 18;
+        pub const PL: u8 = 16;
+        pub const PINCOS: u8 = 15;
+        pub const MSIZE: u8 = 13;
+        pub const PSIZE: u8 = 11;
+        pub const MINC: u8 = 10;
+        pub const PINC: u8 = 9;
+        pub const CIRC: u8 = 8;
+        pub const DIR: u8 = 6;
+        pub const PFCTRL: u8 = 5;
+        pub const TCIE: u8 = 4;
+        pub const HTIE: u8 = 3;
+        pub const TEIE: u8 = 2;
+        pub const DMEIE: u8 = 1;
+        pub const EN: u8 = 0;
+    }
+    pub mod s5ndtr {
+        pub const NDT: u8 = 0;
+    }
+    pub mod s5par {
+        pub const PA: u8 = 0;
+    }
+    pub mod s5m0ar {
+        pub const M0A: u8 = 0;
+    }
+    pub mod s5m1ar {
+        pub const M1A: u8 = 0;
+    }
+    pub mod s5fcr {
+        pub const FEIE: u8 = 7;
+        pub const FS: u8 = 3;
+        pub const DMDIS: u8 = 2;
+        pub const FTH: u8 = 0;
+    }
+    pub mod s6cr {
+        pub const CHSEL: u8 = 25;
+        pub const MBURST: u8 = 23;
+        pub const PBURST: u8 = 21;
+        pub const ACK: u8 = 20;
+        pub const CT: u8 = 19;
+        pub const DBM: u8 = 18;
+        pub const PL: u8 = 16;
+        pub const PINCOS: u8 = 15;
+        pub const MSIZE: u8 = 13;
+        pub const PSIZE: u8 = 11;
+        pub const MINC: u8 = 10;
+        pub const PINC: u8 = 9;
+        pub const CIRC: u8 = 8;
+        pub const DIR: u8 = 6;
+        pub const PFCTRL: u8 = 5;
+        pub const TCIE: u8 = 4;
+        pub const HTIE: u8 = 3;
+        pub const TEIE: u8 = 2;
+        pub const DMEIE: u8 = 1;
+        pub const EN: u8 = 0;
+    }
+    pub mod s6ndtr {
+        pub const NDT: u8 = 0;
+    }
+    pub mod s6par {
+        pub const PA: u8 = 0;
+    }
+    pub mod s6m0ar {
+        pub const M0A: u8 = 0;
+    }
+    pub mod s6m1ar {
+        pub const M1A: u8 = 0;
+    }
+    pub mod s6fcr {
+        pub const FEIE: u8 = 7;
+        pub const FS: u8 = 3;
+        pub const DMDIS: u8 = 2;
+        pub const FTH: u8 = 0;
+    }
+    pub mod s7cr {
+        pub const CHSEL: u8 = 25;
+        pub const MBURST: u8 = 23;
+        pub const PBURST: u8 = 21;
+        pub const ACK: u8 = 20;
+        pub const CT: u8 = 19;
+        pub const DBM: u8 = 18;
+        pub const PL: u8 = 16;
+        pub const PINCOS: u8 = 15;
+        pub const MSIZE: u8 = 13;
+        pub const PSIZE: u8 = 11;
+        pub const MINC: u8 = 10;
+        pub const PINC: u8 = 9;
+        pub const CIRC: u8 = 8;
+        pub const DIR: u8 = 6;
+        pub const PFCTRL: u8 = 5;
+        pub const TCIE: u8 = 4;
+        pub const HTIE: u8 = 3;
+        pub const TEIE: u8 = 2;
+        pub const DMEIE: u8 = 1;
+        pub const EN: u8 = 0;
+    }
+    pub mod s7ndtr {
+        pub const NDT: u8 = 0;
+    }
+    pub mod s7par {
+        pub const PA: u8 = 0;
+    }
+    pub mod s7m0ar {
+        pub const M0A: u8 = 0;
+    }
+    pub mod s7m1ar {
+        pub const M1A: u8 = 0;
+    }
+    pub mod s7fcr {
+        pub const FEIE: u8 = 7;
+        pub const FS: u8 = 3;
+        pub const DMDIS: u8 = 2;
+        pub const FTH: u8 = 0;
+    }
+}
 pub mod RCC {
     pub mod cr {
         pub const PLLI2SRDY: u8 = 27;

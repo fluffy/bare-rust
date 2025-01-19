@@ -135,8 +135,8 @@ fn my_main() {
     let text_edit_task = tasks::text_edit_task::TextEditTask {};
     task_mgr.add_task(&text_edit_task);
 
-    let fib_task = tasks::fib_task::FibTask {};
-    task_mgr.add_task(&fib_task);
+    //let fib_task = tasks::fib_task::FibTask {};
+    //task_mgr.add_task(&fib_task);
 
     led::set(Color::Green);
 
@@ -155,6 +155,18 @@ fn my_main() {
         b" bytes\r\n".print_console();
     }
 
+    // TODO remove - just testing
+    if false {
+        if cfg!(not(feature = "std")) {
+            b"  Pre  DMA\r\n".print_console();
+            let data = b"TEST DMA \r\n";
+            hal::uart::write1_dma(data);
+
+            fib::fib_test();
+            b"  Post  DMA\r\n".print_console();
+        }
+    }
+    
     // fib::fib_test();
     #[cfg(feature = "exit")]
     task_mgr.sender.send(Msg::Keyboard { key: '\r' });
