@@ -155,6 +155,16 @@ fn my_main() {
         b" bytes\r\n".print_console();
     }
 
+    if true {
+        fib::fib_test();
+        
+        // TODO remove - just testing 
+        let data =b"TEST DMA \r\n";
+        hal::uart::write1_dma( data );
+
+        fib::fib_test();
+    }
+    
     // fib::fib_test();
     #[cfg(feature = "exit")]
     task_mgr.sender.send(Msg::Keyboard { key: '\r' });
@@ -163,6 +173,8 @@ fn my_main() {
         task_mgr.run();
         dispatch::process(receiver, &mut task_mgr);
 
+     
+        
         #[cfg(feature = "exit")]
         {
             b"Stopping\r\n".print_console();
