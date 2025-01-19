@@ -150,9 +150,25 @@ pub extern "C" fn Default_HandlerH() {
 }
 
 #[no_mangle]
-pub extern "C" fn Default_Handler1() {
+pub extern "C" fn Default_Handler1a() {
     Default_Handler();
 }
+
+#[no_mangle]
+pub extern "C" fn Default_Handler1b() {
+    Default_Handler();
+}
+
+#[no_mangle]
+pub extern "C" fn Default_Handler1c() {
+    Default_Handler();
+}
+
+#[no_mangle]
+pub extern "C" fn Default_Handler1d() {
+    Default_Handler();
+}
+
 
 #[no_mangle]
 pub extern "C" fn Default_Handler2() {
@@ -221,10 +237,10 @@ pub static Exceptions: [IrqVector; 5 + 81] = [
     }, // Sys Timer
     // TODO - int vectors are wrong
     IrqVector {
-        handler: Default_Handler1,
+        handler: Default_Handler1a,
     }, // WWDG
     IrqVector {
-        handler: Default_Handler1,
+        handler: Default_Handler1b,
     }, // PVD
     IrqVector {
         handler: Default_Handler,
@@ -290,7 +306,7 @@ pub static Exceptions: [IrqVector; 5 + 81] = [
         handler: Default_Handler,
     }, // EXTI9_5
     IrqVector {
-        handler: Default_Handler1,
+        handler: Default_Handler1c,
     }, // TIM1_BRK_TIM9
     IrqVector {
         handler: TIM1_UP_TIM10_IRQHandler,
