@@ -112,6 +112,17 @@ pub extern "C" fn Default_Handler() {
     panic!("Default_Handler should never be called in simulation");
 }
 
+
+#[cfg(target_arch = "arm")]
+#[cfg(not(feature = "std"))]
+#[inline(never)]
+#[no_mangle]
+pub extern "C" fn Dma_Uart1_Handler() {
+    led::set(Color::White); // TODO: remove this
+    hal::uart::dma_uart1_irq();
+}
+
+
 #[cfg(not(feature = "std"))]
 #[no_mangle]
 pub extern "C" fn Default_HandlerA() {
@@ -457,7 +468,7 @@ pub static Exceptions: [IrqVector; 14 + 82] = [
         handler: Default_Handler,
     }, // DMA2_Stream6
     IrqVector {
-        handler: Default_Handler,
+        handler: Dma_Uart1_Handler,
     }, // DMA2_Stream7
     IrqVector {
         handler: Default_Handler,
