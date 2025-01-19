@@ -108,6 +108,27 @@ impl Pin {
     }
 
     #[inline(never)]
+    pub fn open_drain(&self) {
+        let gpio = self.0;
+        let pin_num = self.1;
+
+        // set mode to output
+        cpu::write!( gpio.moder[pin_num*2;2], 0b01);
+
+        // Set output type to open-drain
+        cpu::write!(gpio.otyper[pin_num * 1; 1], 0b1);
+        
+        // set output as high
+        cpu::write!( gpio.odr[pin_num*1;1], 0b0);
+
+        // set  pull up 
+        cpu::write!( gpio.pupdr[pin_num*2;2], 0b01);
+
+        // set speed to slow
+        cpu::write!( gpio.ospeedr[pin_num*2;2], 0b00);
+    }
+
+    #[inline(never)]
     pub fn input(&self) {
         let gpio = self.0;
         let pin_num = self.1;
