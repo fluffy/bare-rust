@@ -173,8 +173,6 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::write!( USART1.cr1[TE;1], 1); // transmit enable
     cpu::write!( USART1.cr1[RE;1], 1); // receive enable
     cpu::write!( USART1.cr1[UE;1], 1); // uart enable
-    
-  
 }
 
 #[cfg(feature = "stm32f405")]
@@ -184,18 +182,14 @@ pub fn write1(c: u8) {
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
 
-
-#[cfg(any( feature = "std" , not(feature = "stm32f405")))]
-pub fn write1_dma( _data: &[u8]) {
-    
-}
-
+#[cfg(any(feature = "std", not(feature = "stm32f405")))]
+pub fn write1_dma(_data: &[u8]) {}
 
 #[cfg(not(feature = "std"))]
 #[cfg(feature = "stm32f405")]
 pub fn write1_dma(data: &[u8]) {
     // Uses DMA 2, Channel 4, Stream 7
-    
+
     // Setup DMA transfer from memory to USART1
     let dest: u32 = unsafe { core::ptr::addr_of!((*USART1).dr) as u32 };
     let len: u32 = data.len() as u32;
@@ -206,7 +200,7 @@ pub fn write1_dma(data: &[u8]) {
     cpu::write!(DMA2.s7m0ar, src);
 
     // TODO Configure DMA channel: memory-to-peripheral, increment memory, enable transfer complete interrupt
-    cpu::write!( DMA2.s7cr[CHSEL;2], 0b100); // Using Channel #4 
+    cpu::write!( DMA2.s7cr[CHSEL;2], 0b100); // Using Channel #4
 
     cpu::write!( DMA2.s7cr[DBM;1], 0b0 ); // Disable double buffer mode
 
@@ -233,11 +227,13 @@ pub fn write1_dma(data: &[u8]) {
     // Enable DMA2 Channel 2 transfer complete interrupt in NVIC
     // TODO cpu::write!(NVIC.iser[0], 1 << DMA2_Channel2_3_IRQn);
 
-    // Check if the transfer complete flag is set
-    while cpu::read!(DMA2.lisr[TCIF2;1]) == 0 {}
+    if false {
+        // Check if the transfer complete flag is set
+        while cpu::read!(DMA2.lisr[TCIF2;1]) == 0 {}
 
-    // Clear the transfer complete flag
-    cpu::write!(DMA2.lifcr[CTCIF2;1], 1);
+        // Clear the transfer complete flag
+        cpu::write!(DMA2.lifcr[CTCIF2;1], 1);
+    }
 }
 
 #[cfg(feature = "stm32f072")]
