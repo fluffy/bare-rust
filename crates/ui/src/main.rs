@@ -100,7 +100,9 @@ fn my_main() {
             b"  Pre  DMA\r\n".print_console();
             //let data = b"TEST DMA \r\n";
             let data = b"1234";
-            hal::uart::write1_dma(data);
+            unsafe { // TODO remove unsafe
+               hal::uart::write1_dma(data);
+            }
 
             fib::fib_test();
             b"  Post  DMA\r\n".print_console();

@@ -182,36 +182,110 @@ pub fn write1(c: u8) {
 #[cfg(any(feature = "std", not(feature = "stm32f405")))]
 pub fn write1_dma(_data: &[u8]) {}
 
+//use core::ptr;
+
+const USART1_BASE: u32 = 0x40011000;
+const DMA2_BASE: u32 = 0x40026400;
+const RCC_BASE: u32 = 0x40023800;
+
+const USART1_DR: u32 = USART1_BASE + 0x04;
+const USART1_CR1: u32 = USART1_BASE + 0x0C;
+const USART1_CR3: u32 = USART1_BASE + 0x14;
+const USART1_BRR: u32 = USART1_BASE + 0x08;
+const USART1_SR: u32 = USART1_BASE + 0x00;
+
+const DMA2_S7CR: u32 = DMA2_BASE + 0xA0;
+const DMA2_S7NDTR: u32 = DMA2_BASE + 0xA4;
+const DMA2_S7PAR: u32 = DMA2_BASE + 0xA8;
+const DMA2_S7M0AR: u32 = DMA2_BASE + 0xAC;
+const DMA2_HISR: u32 = DMA2_BASE + 0x04;
+const DMA2_HIFCR: u32 = DMA2_BASE + 0x0C;
+
+const RCC_AHB1ENR: u32 = RCC_BASE + 0x30;
+const RCC_APB2ENR: u32 = RCC_BASE + 0x44;
+
+const DMA2EN: u32 = 1 << 22;
+const USART1EN: u32 = 1 << 4;
+
+const NVIC_ISER2: u32 = 0xE000E108;
+const DMA2_STREAM7_IRQ: u32 = 70;
+
 #[cfg(not(feature = "std"))]
 #[cfg(feature = "stm32f405")]
-pub fn write1_dma(data: &[u8]) {
+pub unsafe fn write1_dma(data: &[u8]) {
+    let baud_rate: u32 = 115200;
+
+    // Enable DMA2 and USART1 clocks
+    ptr::write_volatile(RCC_AHB1ENR as *mut u32, DMA2EN);
+    ptr::write_volatile(RCC_APB2ENR as *mut u32, USART1EN);
+
+    // Configure USART1
+    let apb_freq: u32 = 84_000_000;
+    let usart_div: u32 = apb_freq / baud_rate;
+    ptr::write_volatile(USART1_BRR as *mut u32, usart_div);
+    ptr::write_volatile(USART1_CR1 as *mut u32, 0x200C); // Enable USART, TX, RX
+    ptr::write_volatile(USART1_CR3 as *mut u32, 0x40); // Enable DMA transmission
+
+    // Configure DMA2 Stream 7
+    ptr::write_volatile(DMA2_S7CR as *mut u32, 0); // Disable stream
+    while ptr::read_volatile(DMA2_S7CR as *mut u32) & 1 != 0 {} // Wait until disabled
+
+    ptr::write_volatile(DMA2_S7PAR as *mut u32, USART1_DR);
+    ptr::write_volatile(DMA2_S7M0AR as *mut u32, data.as_ptr() as u32);
+    ptr::write_volatile(DMA2_S7NDTR as *mut u32, data.len() as u32);
+
+    // Configure DMA stream settings
+    let dma_cr = (4 << 25) | (1 << 10) | (1 << 8) | (1 << 6) | (1 << 4); // Channel 4, memory increment, memory-to-peripheral
+    ptr::write_volatile(DMA2_S7CR as *mut u32, dma_cr);
+
+    // Enable DMA2 Stream 7
+    ptr::write_volatile(DMA2_S7CR as *mut u32, dma_cr | 1);
+
+    // Enable DMA2 Stream 7 interrupt in NVIC
+    ptr::write_volatile(NVIC_ISER2 as *mut u32, 1 << (DMA2_STREAM7_IRQ - 64));
+    
+    // Wait for transfer to complete
+    while ptr::read_volatile(DMA2_HISR as *mut u32) & 0x40 == 0 {
+        if ptr::read_volatile(DMA2_HISR as *mut u32) & 0x0B != 0 {
+            panic!("DMA transfer error");
+        }
+        
+    }
+    // clear transfer complete flag
+    ptr::write_volatile(DMA2_HIFCR as *mut u32, 0x40);
+    
+}
+
+#[cfg(not(feature = "std"))]
+#[cfg(feature = "stm32f405")]
+pub fn write1_dma_save(data: &[u8]) {
+    // TODO
     // DMA for USART1_TX
-    // Uses DMA 2, Channel 4, Stream 7 
+    // Uses DMA 2, Channel 4, Stream 7
     // See page 311 of RM0090
 
     // Enable DMA2 clocks
     cpu::write!( RCC.ahb1enr[DMA2EN;1], 1);
-    
-    cpu::write!(DMA2.s7cr, 0 ); // Disable DMA2 Stream 7 while configuring
+
+    cpu::write!(DMA2.s7cr, 0); // Disable DMA2 Stream 7 while configuring
     while cpu::read!(DMA2.s7cr[EN;1]) != 0 {} // Wait until the stream is disabled
 
     cpu::write!( USART1.cr1[UE;1], 0b0 ); // Disable USART1
-    
+
     // Enable USART1 DMA transmission
     cpu::write!(USART1.cr3[DMAT;1], 1); // Enable DMA transmission
     cpu::write!(USART1.sr[TC;1], 1); // Clear the transfer complete flag
 
     cpu::write!( USART1.cr1[UE;1], 0b1 ); // enable USART1
 
-    
     // Setup DMA transfer from memory to USART1
     let dest: u32 = unsafe { core::ptr::addr_of!((*USART1).dr) as u32 };
     let len: u32 = data.len() as u32;
     let src: u32 = data.as_ptr() as u32;
-    
-    assert!( dest ==  0x4001_1000 + 0x04 ); // USART1->DR
-    assert!( len == 4 );
-    
+
+    assert!(dest == 0x4001_1000 + 0x04); // USART1->DR
+    assert!(len == 4);
+
     cpu::write!(DMA2.s7ndtr, len);
     cpu::write!(DMA2.s7par, dest);
     cpu::write!(DMA2.s7m0ar, src);
@@ -232,7 +306,7 @@ pub fn write1_dma(data: &[u8]) {
     cpu::write!( DMA2.s7cr[DIR;2], 0b01); // Set direction as memory to peripheral
 
     cpu::write!( DMA2.s7cr[PFCTRL;1], 0b0); // disable peripheral flow controller
-    
+
     cpu::write!( DMA2.hifcr[CDMEIF7;1], 0b1); // clear the old direct transfer error flag
     cpu::write!( DMA2.hifcr[CTEIF7;1], 0b1); // clear the old transfer error flag
     cpu::write!( DMA2.hifcr[CFEIF7;1], 0b1); // clear the old FIFO error flag
@@ -242,19 +316,19 @@ pub fn write1_dma(data: &[u8]) {
     cpu::write!( DMA2.s7cr[TEIE;1], 0b1); // Enable transfer error interrupt
     cpu::write!( DMA2.s7cr[DMEIE;1], 0b1); // Enable transfer error interrupt
 
-    // DMA2 Stream7 global interrupt = 70 // from SVD file 
-    // NVIC interrupt enable 
+    // DMA2 Stream7 global interrupt = 70 // from SVD file
+    // NVIC interrupt enable
     let itr = 70;
-    cpu::write!( NVIC.iser[itr/32], 1 << (itr%32)); // Enable DMA2 Stream 7 interrupt
+    cpu::write!(NVIC.iser[itr / 32], 1 << (itr % 32)); // Enable DMA2 Stream 7 interrupt
     let pri_loc = itr * 4;
     let pri = 0b0011;
-    cpu::write!( NVIC.ipr[pri_loc/32], pri << (pri_loc%32)); // Enable DMA2 Stream 7 interrupt
+    cpu::write!(NVIC.ipr[pri_loc / 32], pri << (pri_loc % 32)); // Enable DMA2 Stream 7 interrupt
 
-    // Clear prior events flags 
-    
+    // Clear prior events flags
+
     // Enable DMA2 Stream 7
     cpu::write!(DMA2.s7cr[EN;1], 1);
- 
+
     if true {
         // Check if the transfer complete flag is set
         while cpu::read!(DMA2.hisr[TCIF7;1]) == 0 {
@@ -286,8 +360,7 @@ pub fn dma_uart1_irq() {
         cpu::write!( DMA2.hifcr[CTCIF7; 1], 0b1);
 
         // TODO
-    }
-    else { 
+    } else {
         panic!("DMA transfer complete flag not set");
     }
 }
