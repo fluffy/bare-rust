@@ -171,7 +171,8 @@ impl<'a> TaskMgr<'a> {
                 duration.print_console();
                 b" us\r\n".print_console();
 
-                panic!("Task {} overran time budget", i);
+                b"Task overran time budget".print_console();
+                //TODO panic!("Task {} overran time budget", i);
             }
 
             let stack_usage = end_stack_usage - base_stack_usage;
@@ -179,7 +180,7 @@ impl<'a> TaskMgr<'a> {
                 b"Exceeded memory budget\r\n  usage==".print_console();
                 (stack_usage as u64).print_console();
                 b"\r\n".print_console();
-                panic!("Task {} overran memory budget", i);
+                //TODO panic!("Task {} overran memory budget", i);
             }
 
             // Update metrics
