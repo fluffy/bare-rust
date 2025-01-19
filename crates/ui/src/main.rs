@@ -155,7 +155,7 @@ fn my_main() {
         b" bytes\r\n".print_console();
     }
 
-    if true {
+    if cfg!(not(feature = "std")) {
         fib::fib_test();
         
         // TODO remove - just testing 

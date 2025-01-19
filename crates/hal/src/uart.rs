@@ -46,7 +46,10 @@ use super::gpio;
 pub use super::cpu::USART as USART1;
 pub use super::cpu::USART as USART2;
 
+#[cfg(feature = "stm32f405")]
 pub use super::cpu::DMA as DMA1;
+
+#[cfg(feature = "stm32f405")]
 pub use super::cpu::DMA as DMA2;
 
 #[cfg(feature = "stm32f072")]
@@ -180,6 +183,13 @@ pub fn write1(c: u8) {
     while (cpu::read!(USART1.sr[TXE;1]) == 0) {}
     cpu::write!(USART1.dr[DR;8], c as u32);
 }
+
+
+#[cfg(any( feature = "std" , not(feature = "stm32f405")))]
+pub fn write1_dma( _data: &[u8]) {
+    
+}
+
 
 #[cfg(not(feature = "std"))]
 #[cfg(feature = "stm32f405")]
