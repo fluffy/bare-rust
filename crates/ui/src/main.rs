@@ -90,8 +90,23 @@ fn my_main() {
     //led::set(Color::Black);
     //loop {};
 
+    led::set(Color::Blue);
+    
     b"Starting\r\n".print_console();
+    
+    // TODO remove - just testing
+    if true {
+        if cfg!(not(feature = "std")) {
+            b"  Pre  DMA\r\n".print_console();
+            //let data = b"TEST DMA \r\n";
+            let data = b"1234";
+            hal::uart::write1_dma(data);
 
+            fib::fib_test();
+            b"  Post  DMA\r\n".print_console();
+        }
+    }
+    
     #[cfg(feature = "std")]
     print_memory_sizes();
 
@@ -155,17 +170,6 @@ fn my_main() {
         b" bytes\r\n".print_console();
     }
 
-    // TODO remove - just testing
-    if false {
-        if cfg!(not(feature = "std")) {
-            b"  Pre  DMA\r\n".print_console();
-            let data = b"TEST DMA \r\n";
-            hal::uart::write1_dma(data);
-
-            fib::fib_test();
-            b"  Post  DMA\r\n".print_console();
-        }
-    }
     
     // fib::fib_test();
     #[cfg(feature = "exit")]
