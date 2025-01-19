@@ -12,7 +12,7 @@ build:
 
 
 flash:
-	cd crates/ui ; cargo flash --chip STM32F405RG --release
+	cd crates/ui ; cargo flash --chip STM32F405RG --releasecargo flash --chip STM32F405RG --bin ui --no-default-features --features bsp/board-hactar12,hal/stm32f405 --target=thumbv7em-none-eabihf
 
 
 build-mgmt:
@@ -20,7 +20,7 @@ build-mgmt:
 
 
 flash-mgmt:
-	cd crates/mgmt; cargo flash --chip STM32F072CB --release
+	cd crates/mgmt; cargo flash --chip STM32F072CB --bin mgmt --no-default-features --features hal/stm32f072 --target=thumbv6m-none-eabi --release
 
 
 run-mgmt:
