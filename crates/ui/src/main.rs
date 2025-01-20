@@ -72,6 +72,8 @@ fn print_memory_sizes() {
     );
 }
 
+const TEST_PRINT_DATA: &[u8;4] = b"1234";
+
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
 fn my_main() {
@@ -99,9 +101,9 @@ fn my_main() {
         if cfg!(not(feature = "std")) {
             b"  Pre  DMA\r\n".print_console();
             //let data = b"TEST DMA \r\n";
-            let data = b"1234";
+            //let static const test_print_data = b"1234";
             unsafe { // TODO remove unsafe
-               hal::uart::write1_dma(data);
+               hal::uart::write1_dma(TEST_PRINT_DATA);
             }
 
             fib::fib_test();
