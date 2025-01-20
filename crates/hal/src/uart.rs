@@ -231,14 +231,14 @@ pub unsafe fn write1_dma(data: &[u8]) {
     ptr::write_volatile(USART1_BRR as *mut u32, usart_div);
     // odd parity | transmit enable | transmit enable
     ptr::write_volatile(USART1_CR1 as *mut u32, 0x2000
-                        | 0x8  /*foo*/
+                        | 0x8
             | 0x4
     ); // Enable USART, TX, RX
     ptr::write_volatile(USART1_CR3 as *mut u32,
                         0x40 // DMAT dma transmition mode
     ); // Enable DMA transmission
 
-    // Configure DMA2 Stream 7 - TODO need in other code
+    // Configure DMA2 Stream 7
     ptr::write_volatile(DMA2_S7CR as *mut u32, 0); // Disable stream
     while ptr::read_volatile(DMA2_S7CR as *mut u32) & 1 != 0 {} // Wait until disabled
 
