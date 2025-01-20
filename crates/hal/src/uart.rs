@@ -184,30 +184,36 @@ pub fn write1_dma(_data: &[u8]) {}
 
 //use core::ptr;
 
+// checked
 const USART1_BASE: u32 = 0x40011000;
 const DMA2_BASE: u32 = 0x40026400;
 const RCC_BASE: u32 = 0x40023800;
 
+// checked
 const USART1_DR: u32 = USART1_BASE + 0x04;
 const USART1_CR1: u32 = USART1_BASE + 0x0C;
 const USART1_CR3: u32 = USART1_BASE + 0x14;
 const USART1_BRR: u32 = USART1_BASE + 0x08;
-const USART1_SR: u32 = USART1_BASE + 0x00;
+//const USART1_SR: u32 = USART1_BASE + 0x00;
 
-const DMA2_S7CR: u32 = DMA2_BASE + 0xA0;
-const DMA2_S7NDTR: u32 = DMA2_BASE + 0xA4;
-const DMA2_S7PAR: u32 = DMA2_BASE + 0xA8;
-const DMA2_S7M0AR: u32 = DMA2_BASE + 0xAC;
-const DMA2_HISR: u32 = DMA2_BASE + 0x04;
-const DMA2_HIFCR: u32 = DMA2_BASE + 0x0C;
+// checked wrong
+const DMA2_S7CR: u32 = DMA2_BASE + 0xb8; //0xA0; // b8
+const DMA2_S7NDTR: u32 = DMA2_BASE + 0xbc; //0xA4; //bc
+const DMA2_S7PAR: u32 = DMA2_BASE + 0xc0; //0xA8; //C0
+const DMA2_S7M0AR: u32 = DMA2_BASE + 0xc4; // 0xAC; //C4
+const DMA2_HISR: u32 = DMA2_BASE + 0x04; // OK
+const DMA2_HIFCR: u32 = DMA2_BASE + 0x0C; // OK
 
+// checked
 const RCC_AHB1ENR: u32 = RCC_BASE + 0x30;
 const RCC_APB2ENR: u32 = RCC_BASE + 0x44;
 
+// checked
 const DMA2EN: u32 = 1 << 22;
 const USART1EN: u32 = 1 << 4;
 
-const NVIC_ISER2: u32 = 0xE000E108;
+// checked
+const NVIC_ISER2: u32 = 0xE000E100 + 0x8;
 const DMA2_STREAM7_IRQ: u32 = 70;
 
 #[cfg(not(feature = "std"))]
@@ -223,10 +229,16 @@ pub unsafe fn write1_dma(data: &[u8]) {
     let apb_freq: u32 = 84_000_000;
     let usart_div: u32 = apb_freq / baud_rate;
     ptr::write_volatile(USART1_BRR as *mut u32, usart_div);
-    ptr::write_volatile(USART1_CR1 as *mut u32, 0x200C); // Enable USART, TX, RX
-    ptr::write_volatile(USART1_CR3 as *mut u32, 0x40); // Enable DMA transmission
+    // odd parity | transmit enable | transmit enable
+    ptr::write_volatile(USART1_CR1 as *mut u32, 0x2000
+                        | 0x8  /*foo*/
+            | 0x4
+    ); // Enable USART, TX, RX
+    ptr::write_volatile(USART1_CR3 as *mut u32,
+                        0x40 // DMAT dma transmition mode
+    ); // Enable DMA transmission
 
-    // Configure DMA2 Stream 7
+    // Configure DMA2 Stream 7 - TODO need in other code
     ptr::write_volatile(DMA2_S7CR as *mut u32, 0); // Disable stream
     while ptr::read_volatile(DMA2_S7CR as *mut u32) & 1 != 0 {} // Wait until disabled
 
@@ -235,7 +247,13 @@ pub unsafe fn write1_dma(data: &[u8]) {
     ptr::write_volatile(DMA2_S7NDTR as *mut u32, data.len() as u32);
 
     // Configure DMA stream settings
-    let dma_cr = (4 << 25) | (1 << 10) | (1 << 8) | (1 << 6) | (1 << 4); // Channel 4, memory increment, memory-to-peripheral
+    let dma_cr = (4 << 25) // channel 4
+        | (1 << 10) // MINC Memory increment
+        | (1 << 8) //  Circular mode enabled
+        | (1 << 6) // 0x01 this is memory to pher[herial
+        | (1 << 4) // TCIE - transfer complete interupt
+        ;
+    // Channel 4, memory increment, memory-to-peripheral
     ptr::write_volatile(DMA2_S7CR as *mut u32, dma_cr);
 
     // Enable DMA2 Stream 7
@@ -245,14 +263,18 @@ pub unsafe fn write1_dma(data: &[u8]) {
     ptr::write_volatile(NVIC_ISER2 as *mut u32, 1 << (DMA2_STREAM7_IRQ - 64));
     
     // Wait for transfer to complete
-    while ptr::read_volatile(DMA2_HISR as *mut u32) & 0x40 == 0 {
-        if ptr::read_volatile(DMA2_HISR as *mut u32) & 0x0B != 0 {
+    while ptr::read_volatile(DMA2_HISR as *mut u32) & (1<<27) == 0 // FIEF5 0x40 seems wrong
+    {
+        if ptr::read_volatile(DMA2_HISR as *mut u32) & (0b1101 << 22) != 0
+        // x0B == 11 = 8+2+1 = TEIF4 | DMEIF4 | FEIF4 - seems wrong
+        {
             panic!("DMA transfer error");
         }
         
     }
     // clear transfer complete flag
-    ptr::write_volatile(DMA2_HIFCR as *mut u32, 0x40);
+    ptr::write_volatile(DMA2_HIFCR as *mut u32, 1<<27 // 0x40 seems wrong
+    );
     
 }
 
