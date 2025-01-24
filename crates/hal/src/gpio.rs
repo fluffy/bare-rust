@@ -71,7 +71,6 @@ pub fn init() {
 
 #[cfg(feature = "stm32f072")]
 pub fn init() {
-    
     cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
     cpu::write!(RCC.ahbenr[IOPBEN;1], 1);
 }
@@ -117,11 +116,11 @@ impl Pin {
 
         // Set output type to open-drain
         cpu::write!(gpio.otyper[pin_num * 1; 1], 0b1);
-        
+
         // set output as high
         cpu::write!( gpio.odr[pin_num*1;1], 0b0);
 
-        // set  pull up 
+        // set  pull up
         cpu::write!( gpio.pupdr[pin_num*2;2], 0b01);
 
         // set speed to slow

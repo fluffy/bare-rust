@@ -169,7 +169,6 @@ pub extern "C" fn Default_Handler1d() {
     Default_Handler();
 }
 
-
 #[no_mangle]
 pub extern "C" fn Default_Handler2() {
     Default_Handler();

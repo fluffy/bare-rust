@@ -230,12 +230,10 @@ pub unsafe fn write1_dma(data: &[u8]) {
     let usart_div: u32 = apb_freq / baud_rate;
     ptr::write_volatile(USART1_BRR as *mut u32, usart_div);
     // odd parity | transmit enable | transmit enable
-    ptr::write_volatile(USART1_CR1 as *mut u32, 0x2000
-                        | 0x8
-            | 0x4
-    ); // Enable USART, TX, RX
-    ptr::write_volatile(USART1_CR3 as *mut u32,
-                        0x40 // DMAT dma transmition mode
+    ptr::write_volatile(USART1_CR1 as *mut u32, 0x2000 | 0x8 | 0x4); // Enable USART, TX, RX
+    ptr::write_volatile(
+        USART1_CR3 as *mut u32,
+        0x40, // DMAT dma transmition mode
     ); // Enable DMA transmission
 
     // Configure DMA2 Stream 7
@@ -261,21 +259,22 @@ pub unsafe fn write1_dma(data: &[u8]) {
 
     // Enable DMA2 Stream 7 interrupt in NVIC
     ptr::write_volatile(NVIC_ISER2 as *mut u32, 1 << (DMA2_STREAM7_IRQ - 64));
-    
+
     // Wait for transfer to complete
-    while ptr::read_volatile(DMA2_HISR as *mut u32) & (1<<27) == 0 // FIEF5 0x40 seems wrong
+    while ptr::read_volatile(DMA2_HISR as *mut u32) & (1 << 27) == 0
+    // FIEF5 0x40 seems wrong
     {
         if ptr::read_volatile(DMA2_HISR as *mut u32) & (0b1101 << 22) != 0
         // x0B == 11 = 8+2+1 = TEIF4 | DMEIF4 | FEIF4 - seems wrong
         {
             panic!("DMA transfer error");
         }
-        
     }
     // clear transfer complete flag
-    ptr::write_volatile(DMA2_HIFCR as *mut u32, 1<<27 // 0x40 seems wrong
+    ptr::write_volatile(
+        DMA2_HIFCR as *mut u32,
+        1 << 27, // 0x40 seems wrong
     );
-    
 }
 
 #[cfg(not(feature = "std"))]

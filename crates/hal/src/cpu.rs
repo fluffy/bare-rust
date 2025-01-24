@@ -194,7 +194,6 @@ pub struct NVICReg {
 #[cfg(feature = "stm32f405")]
 pub const NVIC: *mut NVICReg = 0xE000_E100 as *mut NVICReg;
 
-
 #[cfg(feature = "stm32f405")]
 #[repr(C)]
 pub struct DmaReg {
@@ -452,11 +451,8 @@ pub fn write_reg(addr: *mut u32, val: u32) {
 #[cfg(not(feature = "std"))]
 #[inline(always)]
 pub fn read_reg(addr: *mut u32) -> u32 {
-    unsafe { 
-        core::ptr::read_volatile(addr)
-    }
+    unsafe { core::ptr::read_volatile(addr) }
 }
-
 
 #[cfg(feature = "std")]
 #[inline(always)]
@@ -480,10 +476,10 @@ pub fn read_reg(addr: *mut u32) -> u32 {
 #[macro_export]
 macro_rules! write {
     ( $x:ident.$y:ident[$z:ident;$w:expr],  $data:expr  ) => {
-        let offset:u8 = $x::$y::$z;
+        let offset: u8 = $x::$y::$z;
         //let offset = concat_idents!($x, _, $y, _, $z);
-        let mut mask :u32= (1u32 << $w) - 1;
-        let mut val :u32 = $data & mask;
+        let mut mask: u32 = (1u32 << $w) - 1;
+        let mut val: u32 = $data & mask;
         mask = mask << offset;
         val = val << offset;
         unsafe {
@@ -493,9 +489,9 @@ macro_rules! write {
     };
 
     ( $x:ident.$y:ident[$z:expr;$w:expr],  $data:expr  ) => {{
-        let offset :u8= $z;
-        let mut mask :u32= (1u32 << $w) - 1;
-        let mut val :u32= $data & mask;
+        let offset: u8 = $z;
+        let mut mask: u32 = (1u32 << $w) - 1;
+        let mut val: u32 = $data & mask;
         mask = mask << offset;
         val = val << offset;
         unsafe {
@@ -505,7 +501,7 @@ macro_rules! write {
     }};
 
     ( $x:ident.$y:ident[$z:expr],  $data:expr  ) => {{
-        let val :u32= $data;
+        let val: u32 = $data;
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y[$z]);
             cpu::write_reg(addr, val);
@@ -513,7 +509,7 @@ macro_rules! write {
     }};
 
     ( $x:ident.$y:ident ,  $data:expr  ) => {
-        let val:u32 = $data;
+        let val: u32 = $data;
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
             cpu::write_reg(addr, val);
@@ -526,8 +522,8 @@ pub(crate) use write;
 #[macro_export]
 macro_rules! read {
     ( $x:ident.$y:ident[$z:ident;$w:expr] ) => {{
-        let offset:u8 = $x::$y::$z;
-        let mask:u32 = (1u32 << $w) - 1;
+        let offset: u8 = $x::$y::$z;
+        let mask: u32 = (1u32 << $w) - 1;
         let mut val: u32;
 
         unsafe {
@@ -541,7 +537,7 @@ macro_rules! read {
     ( $x:ident.$y:ident[$z:expr;$w:expr] ) => {{
         let offset: u8 = $z;
         let mask: u32 = (1u32 << $w) - 1;
-        let mut val :u32;
+        let mut val: u32;
 
         unsafe {
             let addr = ptr::addr_of_mut!((*$x).$y);
