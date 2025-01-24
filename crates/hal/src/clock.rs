@@ -22,12 +22,8 @@ use super::cpu::*;
 #[allow(unused_imports)]
 use super::gpio;
 
-
 #[cfg(all(feature = "stm32f072", feature = "stm32f405"))]
-compile_error!(
-    "Must specify only a single CPU type featre"
-);
-
+compile_error!("Must specify only a single CPU type featre");
 
 #[cfg(feature = "stm32f072")]
 #[inline(never)]

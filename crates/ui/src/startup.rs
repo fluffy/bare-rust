@@ -112,7 +112,6 @@ pub extern "C" fn Default_Handler() {
     panic!("Default_Handler should never be called in simulation");
 }
 
-
 #[cfg(target_arch = "arm")]
 #[cfg(not(feature = "std"))]
 #[inline(never)]
@@ -121,7 +120,6 @@ pub extern "C" fn Dma_Uart1_Handler() {
     led::set(Color::White); // TODO: remove this
     hal::uart::dma_uart1_irq();
 }
-
 
 #[cfg(not(feature = "std"))]
 #[no_mangle]
