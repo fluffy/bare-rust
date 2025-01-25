@@ -1543,9 +1543,9 @@ pub const DMA2: *mut DmaReg = 0x40026400 as *mut DmaReg;
 
 pub const RCC: *mut RccReg = 0x40023800 as *mut RccReg;
 
-pub const GPIO_C: *mut GpioReg = 0x40020800 as *mut GpioReg;
+pub const GPIOC: *mut GpioReg = 0x40020800 as *mut GpioReg;
 
-pub const GPIO_B: *mut GpioReg = 0x40020400 as *mut GpioReg;
+pub const GPIOB: *mut GpioReg = 0x40020400 as *mut GpioReg;
 
 pub const GPIOA: *mut GpioReg = 0x40020000 as *mut GpioReg;
 

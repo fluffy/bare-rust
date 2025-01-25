@@ -34,10 +34,10 @@ fn my_main() {
     pub const UI_RX: gpio::Pin = gpio::Pin(cpu::GPIOA, 3);
 
     pub const UI_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIOA, 15);
-    pub const UI_NRST: gpio::Pin = gpio::Pin(cpu::GPIO_B, 3);
+    pub const UI_NRST: gpio::Pin = gpio::Pin(cpu::GPIOB, 3);
 
-    pub const NET_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIO_B, 5);
-    pub const NET_NRST: gpio::Pin = gpio::Pin(cpu::GPIO_B, 4);
+    pub const NET_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIOB, 5);
+    pub const NET_NRST: gpio::Pin = gpio::Pin(cpu::GPIOB, 4);
 
     pub const MCLK: gpio::Pin = gpio::Pin(cpu::GPIOA, 8);
     pub const MCLK_FREQ: u32 = 24_000_000;
