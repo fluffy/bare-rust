@@ -44,7 +44,7 @@
 //!     gpio::init();
 //!
 //!     // Create a new pin instance
-//!     let pin = Pin::new(cpu::GPIO_A, 5);
+//!     let pin = Pin::new(cpu::GPIOA, 5);
 //!
 //!     // Configure the pin as output and set it high
 //!     pin.output();

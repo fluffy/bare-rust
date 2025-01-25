@@ -20,7 +20,7 @@
 //! - `FLASH`: Base address for the Flash registers.
 //! - `RCC`: Base address for the RCC registers.
 //! - `NVIC`: Base address for the NVIC registers.
-//! - `GPIO_A`, `GPIO_B`, `GPIO_C`: Base addresses for the GPIO registers.
+//! - `GPIOA`, `GPIO_B`, `GPIO_C`: Base addresses for the GPIO registers.
 //! - `USART1`: Base address for the USART1 registers.
 //! - `TIM1`, `TIM2`: Base addresses for the TIM1 and TIM2 registers.
 //!
@@ -138,7 +138,7 @@ pub struct GpioReg {
 
 #[cfg(feature = "stm32f072")]
 #[allow(unused)]
-pub const GPIO_A: *mut GpioReg = 0x4800_0000 as *mut GpioReg;
+pub const GPIOA: *mut GpioReg = 0x4800_0000 as *mut GpioReg;
 
 #[cfg(feature = "stm32f072")]
 #[allow(unused)]

@@ -75,7 +75,7 @@ pub fn init(hse_clk_freq: u32) {
 #[inline(never)]
 pub fn configure_mco(pin: super::gpio::Pin, mco_freq: u32) {
     // TODO
-    assert!(pin.0 == GPIO_A as *mut cpu::GpioReg);
+    assert!(pin.0 == GPIOA as *mut cpu::GpioReg);
     assert!(pin.1 >= 8);
 
     let pn = pin.1;
@@ -86,8 +86,8 @@ pub fn configure_mco(pin: super::gpio::Pin, mco_freq: u32) {
     cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
 
     // Configure PA8 as alternate function (MCO)
-    cpu::write!(GPIO_A.moder[pn*2;2], 0b10); // Set mode to alternate function
-    cpu::write!(GPIO_A.afrh[(pn-8)*4;4], 0); // Set AF0 for MCO
+    cpu::write!(GPIOA.moder[pn*2;2], 0b10); // Set mode to alternate function
+    cpu::write!(GPIOA.afrh[(pn-8)*4;4], 0); // Set AF0 for MCO
 
     // Configure MCO to output PLLCLK/2
     cpu::write!(RCC.cfgr[MCO;4], 0b0111); // Set MCO source to PLLCLK
