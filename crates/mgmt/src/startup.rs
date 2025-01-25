@@ -40,9 +40,9 @@ use hal::{cpu, gpio};
 #[inline(never)]
 #[panic_handler]
 fn panic(_panic: &PanicInfo) -> ! {
-    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
-    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
-    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
+    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 4);
+    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 6);
+    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 7);
 
     LED_RED_PIN.output();
     LED_GREEN_PIN.output();
@@ -93,9 +93,9 @@ pub extern "C" fn Reset_Handler() -> ! {
 #[inline(never)]
 #[no_mangle]
 pub extern "C" fn Default_Handler() {
-    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
-    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
-    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
+    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 4);
+    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 6);
+    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 7);
 
     LED_GREEN_PIN.output();
     LED_RED_PIN.output();

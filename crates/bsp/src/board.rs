@@ -69,12 +69,12 @@ pub mod info {
     pub const CLOCK_HSE_FREQ: u32 = 24_000_000; // set to 0 for simulation
 
     pub const NUM_DEBUG_PINS: usize = 1;
-    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
+    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 11);
 
     pub const LEDS_INVERTED: bool = true;
-    pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
+    pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 6);
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
-    pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
+    pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 1);
 
     pub const HAS_PTT_BUTTON: bool = true;
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
@@ -84,8 +84,8 @@ pub mod info {
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = true;
 
-    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
-    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIOA, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIOA, 10);
 }
 
 #[cfg(feature = "board-blinkA")]
@@ -96,11 +96,11 @@ pub mod info {
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
     pub const NUM_DEBUG_PINS: usize = 1;
-    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
+    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 8);
 
     pub const LEDS_INVERTED: bool = false;
-    pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 12);
-    pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
+    pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 12);
+    pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 11);
     pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_B, 7);
 
     pub const HAS_PTT_BUTTON: bool = true;
@@ -111,8 +111,8 @@ pub mod info {
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 13);
     pub const AI_BUTTON_PULL_UP: bool = false;
 
-    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
-    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIOA, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIOA, 10);
 }
 
 #[cfg(feature = "board-qemu")]
@@ -123,12 +123,12 @@ pub mod info {
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
     pub const NUM_DEBUG_PINS: usize = 1;
-    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
+    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 11);
 
     pub const LEDS_INVERTED: bool = false;
-    pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
+    pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 6);
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
-    pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
+    pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 1);
 
     pub const HAS_PTT_BUTTON: bool = false;
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
@@ -138,8 +138,8 @@ pub mod info {
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = true;
 
-    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
-    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIOA, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIOA, 10);
 }
 
 #[cfg(feature = "board-sim")]
@@ -150,12 +150,12 @@ pub mod info {
     pub const CLOCK_HSE_FREQ: u32 = 0_000_000; // set to 0 for simulation
 
     pub const NUM_DEBUG_PINS: usize = 0;
-    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 11);
+    pub const DEBUG1_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 11);
 
     pub const LEDS_INVERTED: bool = false;
-    pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
+    pub const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 6);
     pub const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_C, 5);
-    pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 1);
+    pub const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 1);
 
     pub const HAS_PTT_BUTTON: bool = false;
     pub const PTT_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 0);
@@ -165,8 +165,8 @@ pub mod info {
     pub const AI_BUTTON: gpio::Pin = gpio::Pin(cpu::GPIO_C, 1);
     pub const AI_BUTTON_PULL_UP: bool = false;
 
-    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
-    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIOA, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIOA, 10);
 }
 
 #[cfg(test)]

@@ -1547,7 +1547,7 @@ pub const GPIO_C: *mut GpioReg = 0x40020800 as *mut GpioReg;
 
 pub const GPIO_B: *mut GpioReg = 0x40020400 as *mut GpioReg;
 
-pub const GPIO_A: *mut GpioReg = 0x40020000 as *mut GpioReg;
+pub const GPIOA: *mut GpioReg = 0x40020000 as *mut GpioReg;
 
 pub const USART1: *mut UsartReg = 0x40011000 as *mut UsartReg;
 
