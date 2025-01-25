@@ -4,6 +4,7 @@
 #![allow(unused)]
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
+
 pub mod DMA {
     pub mod lisr {
         pub const TCIF3: u8 = 27;
@@ -413,6 +414,7 @@ pub mod DMA {
         pub const FTH: u8 = 0;
     }
 }
+
 pub mod RCC {
     pub mod cr {
         pub const PLLI2SRDY: u8 = 27;
@@ -725,6 +727,7 @@ pub mod RCC {
         pub const PLLI2SNx: u8 = 6;
     }
 }
+
 pub mod USART {
     pub mod sr {
         pub const CTS: u8 = 9;
@@ -792,6 +795,7 @@ pub mod USART {
         pub const PSC: u8 = 0;
     }
 }
+
 pub mod TIM_ADV {
     pub mod cr1 {
         pub const CKD: u8 = 8;
@@ -965,6 +969,7 @@ pub mod TIM_ADV {
         pub const DTG: u8 = 0;
     }
 }
+
 pub mod TIM_GEN {
     pub mod cr1 {
         pub const CKD: u8 = 8;
@@ -1116,6 +1121,7 @@ pub mod TIM_GEN {
         pub const ITR1_RMP: u8 = 10;
     }
 }
+
 pub mod FLASH {
     pub mod acr {
         pub const LATENCY: u8 = 0;
@@ -1162,3 +1168,226 @@ pub mod FLASH {
         pub const nWRP: u8 = 16;
     }
 }
+
+
+
+
+#[repr(C)]
+pub struct DmaReg {
+    pub lisr: u32,
+    pub hisr: u32,
+    pub lifcr: u32,
+    pub hifcr: u32,
+    pub s0cr: u32,
+    pub s0ndtr: u32,
+    pub s0par: u32,
+    pub s0m0ar: u32,
+    pub s0m1ar: u32,
+    pub s0fcr: u32,
+    pub s1cr: u32,
+    pub s1ndtr: u32,
+    pub s1par: u32,
+    pub s1m0ar: u32,
+    pub s1m1ar: u32,
+    pub s1fcr: u32,
+    pub s2cr: u32,
+    pub s2ndtr: u32,
+    pub s2par: u32,
+    pub s2m0ar: u32,
+    pub s2m1ar: u32,
+    pub s2fcr: u32,
+    pub s3cr: u32,
+    pub s3ndtr: u32,
+    pub s3par: u32,
+    pub s3m0ar: u32,
+    pub s3m1ar: u32,
+    pub s3fcr: u32,
+    pub s4cr: u32,
+    pub s4ndtr: u32,
+    pub s4par: u32,
+    pub s4m0ar: u32,
+    pub s4m1ar: u32,
+    pub s4fcr: u32,
+    pub s5cr: u32,
+    pub s5ndtr: u32,
+    pub s5par: u32,
+    pub s5m0ar: u32,
+    pub s5m1ar: u32,
+    pub s5fcr: u32,
+    pub s6cr: u32,
+    pub s6ndtr: u32,
+    pub s6par: u32,
+    pub s6m0ar: u32,
+    pub s6m1ar: u32,
+    pub s6fcr: u32,
+    pub s7cr: u32,
+    pub s7ndtr: u32,
+    pub s7par: u32,
+    pub s7m0ar: u32,
+    pub s7m1ar: u32,
+    pub s7fcr: u32,
+}
+
+
+#[repr(C)]
+pub struct RccReg {
+    pub cr: u32,
+    pub pllcfgr: u32,
+    pub cfgr: u32,
+    pub cir: u32,
+
+    pub ahb1rstr: u32,
+    pub ahb2rstr: u32,
+    pub ahb3rstr: u32,
+    reserved1: u32,
+
+    pub apb1_enr: u32,
+    pub apb12enr: u32,
+    reserved2: u32,
+    reserved3: u32,
+
+    pub ahb1enr: u32,
+    pub ahb2enr: u32,
+    pub ahb3enr: u32,
+    reserved4: u32,
+
+    pub apb1enr: u32,
+    pub apb2enr: u32,
+    reserved5: u32,
+    reserved6: u32,
+
+    pub ahb1lpenr: u32,
+    pub ahb2lpenr: u32,
+    pub ahb3lpenr: u32,
+    reserved7: u32,
+
+    pub apb1lpenr: u32,
+    pub apb2lpenr: u32,
+    reserved8: u32,
+    reserved9: u32,
+
+    pub bdcr: u32,
+    pub csr: u32,
+    reserved10: u32,
+    reserved11: u32,
+
+    pub sscgr: u32,
+    pub pli2scfgr: u32,
+}
+
+
+#[repr(C)]
+pub struct GpioReg {
+    pub moder: u32,
+    pub otyper: u32,
+    pub ospeedr: u32,
+    pub pupdr: u32,
+    pub idr: u32,
+    pub odr: u32,
+    pub bsrr: u32,
+    pub lckr: u32,
+    pub afrl: u32,
+    pub afrh: u32,
+    pub brr: u32,
+}
+
+
+
+#[repr(C)]
+pub struct UsartReg {
+    pub sr: u32,
+    pub dr: u32,
+    pub brr: u32,
+    pub cr1: u32,
+    pub cr2: u32,
+    pub cr3: u32,
+    pub gtpr: u32,
+}
+
+
+#[repr(C)]
+pub struct TIM_ADVReg {
+    pub cr1: u32,
+    pub cr2: u32,
+    pub smcr: u32,
+    pub dier: u32,
+    pub sr: u32,
+    pub egr: u32,
+    pub ccmr1: u32,
+    pub ccmr2: u32,
+    pub ccer: u32,
+    pub cnt: u32,
+    pub psc: u32,
+    pub arr: u32,
+    pub rcr: u32,
+    pub ccr1: u32,
+    pub ccr2: u32,
+    pub ccr3: u32,
+    pub ccr4: u32,
+    pub bdtr: u32,
+    pub dcr: u32,
+    pub dmar: u32,
+}
+
+
+#[repr(C)]
+pub struct TimGenReg {
+    pub cr1: u32,
+    pub cr2: u32,
+    pub smcr: u32,
+    pub dier: u32,
+    pub sr: u32,
+    pub egr: u32,
+    pub ccmr1: u32,
+    pub ccmr2: u32,
+    pub ccer: u32,
+    pub cnt: u32,
+    pub psc: u32,
+    pub arr: u32,
+    pub rcr: u32,
+    pub ccr1: u32,
+    pub ccr2: u32,
+    pub ccr3: u32,
+    pub ccr4: u32,
+    pub bdtr: u32,
+    pub dcr: u32,
+    pub dmar: u32,
+}
+
+
+#[repr(C)]
+pub struct FlashReg {
+    pub acr: u32,
+    pub keyr: u32,
+    pub opkeyr: u32,
+    pub sr: u32,
+    pub cr: u32,
+    pub optcr: u32,
+}
+
+
+
+pub const DMA2: *mut DmaReg = 0x40026400 as *mut DmaReg;
+
+pub const RCC: *mut RccReg = 0x40023800 as *mut RccReg;
+
+pub const GPIO_C: *mut GpioReg = 0x40020800 as *mut GpioReg;
+
+pub const GPIO_B: *mut GpioReg = 0x40020400 as *mut GpioReg;
+
+pub const GPIO_A: *mut GpioReg = 0x40020000 as *mut GpioReg;
+
+pub const USART1: *mut UsartReg = 0x40011000 as *mut UsartReg;
+
+pub const TIM1: *mut TIM_ADVReg = 0x40010000 as *mut TIM_ADVReg;
+
+pub const TIM2: *mut TimGenReg = 0x40000000 as *mut TimGenReg;
+
+pub const FLASH: *mut FlashReg = 0x40023C00 as *mut FlashReg;
+
+
+
+//pub const DMA1: *mut DmaReg = 0x4002_6000 as *mut DmaReg;
+
+
+
