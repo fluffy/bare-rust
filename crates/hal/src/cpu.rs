@@ -48,13 +48,9 @@
 
 #[cfg(feature = "stm32f405")]
 use super::svd_stm32f405 as svd;
-pub use svd::*;
-
 
 #[cfg(feature = "stm32f072")]
 use super::svd_stm32f0x2 as svd;
-
-pub use svd::*;
 
 #[cfg(any(feature = "stm32f072", feature = "stm32f405"))]
 pub use svd::*;
@@ -66,7 +62,6 @@ extern crate std;
 use std::collections::HashMap;
 #[cfg(feature = "std")]
 use std::sync::Mutex;
-
 
 #[cfg(feature = "stm32f405")]
 #[repr(C)]

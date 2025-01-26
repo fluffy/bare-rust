@@ -102,6 +102,7 @@ fn my_main() {
             b"  Pre  DMA\r\n".print_console();
             //let data = b"TEST DMA \r\n";
             //let static const test_print_data = b"1234";
+            #[allow(unused_unsafe)]
             unsafe {
                 // TODO remove unsafe
                 hal::uart::write1_dma(TEST_PRINT_DATA);
