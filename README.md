@@ -11,6 +11,8 @@ information.
 rustup target add thumbv6m-none-eab
 rustup target add thumbv7em-none-eabihf
 brew install probe-rs-tools
+or
+cargo install probe-rs-tools 
 ```
 
 

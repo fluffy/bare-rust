@@ -10,9 +10,16 @@ run-sim:
 build:
 	cd crates/ui ; cargo build --bin ui --no-default-features --features bsp/board-hactar12,hal/stm32f405 --target=thumbv7em-none-eabihf --verbose
 
+build-A:
+	cd crates/ui ; cargo build --bin ui --no-default-features --features bsp/board-blinkA,hal/stm32f405 --target=thumbv7em-none-eabihf --verbose
+
 
 flash:
 	cd crates/ui ; cargo flash --chip STM32F405RG --bin ui --no-default-features --features bsp/board-hactar12,hal/stm32f405 --target=thumbv7em-none-eabihf
+
+
+flash-A:
+	cd crates/ui ; cargo flash --chip STM32F405RG --bin ui --no-default-features --features bsp/board-blinkA,hal/stm32f405 --target=thumbv7em-none-eabihf
 
 
 build-mgmt:

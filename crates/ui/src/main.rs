@@ -72,6 +72,8 @@ fn print_memory_sizes() {
     );
 }
 
+const TEST_PRINT_DATA: &[u8; 4] = b"1234";
+
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
 fn my_main() {
@@ -90,7 +92,25 @@ fn my_main() {
     //led::set(Color::Black);
     //loop {};
 
+    led::set(Color::Blue);
+
     b"Starting\r\n".print_console();
+
+    // TODO remove - just testing
+    if false {
+        if cfg!(not(feature = "std")) {
+            b"  Pre  DMA\r\n".print_console();
+            //let data = b"TEST DMA \r\n";
+            //let static const test_print_data = b"1234";
+            unsafe {
+                // TODO remove unsafe
+                hal::uart::write1_dma(TEST_PRINT_DATA);
+            }
+
+            fib::fib_test();
+            b"  Post  DMA\r\n".print_console();
+        }
+    }
 
     #[cfg(feature = "std")]
     print_memory_sizes();
@@ -155,18 +175,6 @@ fn my_main() {
         b" bytes\r\n".print_console();
     }
 
-    // TODO remove - just testing
-    if false {
-        if cfg!(not(feature = "std")) {
-            b"  Pre  DMA\r\n".print_console();
-            let data = b"TEST DMA \r\n";
-            hal::uart::write1_dma(data);
-
-            fib::fib_test();
-            b"  Post  DMA\r\n".print_console();
-        }
-    }
-    
     // fib::fib_test();
     #[cfg(feature = "exit")]
     task_mgr.sender.send(Msg::Keyboard { key: '\r' });
