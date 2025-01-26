@@ -63,7 +63,6 @@ use std::collections::HashMap;
 #[cfg(feature = "std")]
 use std::sync::Mutex;
 
-
 #[cfg(feature = "stm32f405")]
 #[repr(C)]
 pub struct NVICReg {

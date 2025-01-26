@@ -189,7 +189,6 @@ pub fn write1_dma(_data: &[u8]) {}
 pub unsafe fn write1_dma(data: &[u8]) {
     let baud_rate: u32 = 115200;
 
-
     // checked
     const USART1_BASE: u32 = 0x40011000;
     const DMA2_BASE: u32 = 0x40026400;
@@ -222,7 +221,6 @@ pub unsafe fn write1_dma(data: &[u8]) {
     const NVIC_ISER2: u32 = 0xE000E100 + 0x8;
     const DMA2_STREAM7_IRQ: u32 = 70;
 
-    
     // Enable DMA2 and USART1 clocks
     ptr::write_volatile(RCC_AHB1ENR as *mut u32, DMA2EN);
     ptr::write_volatile(RCC_APB2ENR as *mut u32, USART1EN);
