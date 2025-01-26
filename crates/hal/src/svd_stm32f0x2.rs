@@ -313,59 +313,6 @@ pub mod USART {
     }
 }
 
-pub mod FLASH {
-    pub mod acr {
-        pub const LATENCY: u8 = 0;
-        pub const PRFTBE: u8 = 4;
-        pub const PRFTBS: u8 = 5;
-    }
-    pub mod keyr {
-        pub const FKEYR: u8 = 0;
-    }
-    pub mod optkeyr {
-        pub const OPTKEYR: u8 = 0;
-    }
-    pub mod sr {
-        pub const EOP: u8 = 5;
-        pub const WRPRT: u8 = 4;
-        pub const PGERR: u8 = 2;
-        pub const BSY: u8 = 0;
-    }
-    pub mod cr {
-        pub const FORCE_OPTLOAD: u8 = 13;
-        pub const EOPIE: u8 = 12;
-        pub const ERRIE: u8 = 10;
-        pub const OPTWRE: u8 = 9;
-        pub const LOCK: u8 = 7;
-        pub const STRT: u8 = 6;
-        pub const OPTER: u8 = 5;
-        pub const OPTPG: u8 = 4;
-        pub const MER: u8 = 2;
-        pub const PER: u8 = 1;
-        pub const PG: u8 = 0;
-    }
-    pub mod ar {
-        pub const FAR: u8 = 0;
-    }
-    pub mod obr {
-        pub const OPTERR: u8 = 0;
-        pub const RDPRT: u8 = 1;
-        pub const WDG_SW: u8 = 8;
-        pub const nRST_STOP: u8 = 9;
-        pub const nRST_STDBY: u8 = 10;
-        pub const nBOOT0: u8 = 11;
-        pub const nBOOT1: u8 = 12;
-        pub const VDDA_MONITOR: u8 = 13;
-        pub const RAM_PARITY_CHECK: u8 = 14;
-        pub const BOOT_SEL: u8 = 15;
-        pub const Data0: u8 = 16;
-        pub const Data1: u8 = 24;
-    }
-    pub mod wrpr {
-        pub const WRP: u8 = 0;
-    }
-}
-
 #[repr(C)]
 pub struct GpioReg {
     pub moder: u32,
@@ -423,4 +370,3 @@ pub const RCC: *mut RccReg = 0x40021000 as *mut RccReg;
 pub const USART1: *mut UsartReg = 0x40013800 as *mut UsartReg;
 
 pub const USART2: *mut UsartReg = 0x40004400 as *mut UsartReg;
-
