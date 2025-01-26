@@ -79,4 +79,13 @@ cd crates/ui
 cargo build  --release
 arm-none-eabi-size ../../target/thumbv7em-none-eabihf/release/ui 
 cargo nm --release -- -a -n
+
+cargo objdump --bin mgmt --no-default-features --features hal/stm32f072 --target=thumbv6m-none-eabi   --  --disassemble-symbols="mgmt::my_main::h198d2405b1d924dc"  --source   --demangle
+
+cargo objdump --bin mgmt --no-default-features --features hal/stm32f072 --target=thumbv6m-none-eabi   --  --disassemble-all  --source   --demangle
+
+ cargo objdump --release  --bin ui --no-default-features --features bsp/board-hactar12,hal/stm32f405 --target=thumbv7em-none-eabihf  --  --disassemble-symbols="ui::fib::fib::h66fa5b0d20d9db18"  --source   --demangle
+
+cargo objdump  --bin ui --no-default-features --features bsp/board-hactar12,hal/stm32f405 --target=thumbv7em-none-eabihf  --  --disassemble-symbols="ui::fib::fib::hc749cb1bc8cd917c"  --source   --demangle
+
 ```
