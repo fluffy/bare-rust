@@ -48,11 +48,11 @@
 
 #[cfg(feature = "stm32f405")]
 use super::svd_stm32f405 as svd;
-pub use svd::*;
-
 
 #[cfg(feature = "stm32f072")]
 use super::svd_stm32f0x2 as svd;
+
+pub use svd::*;
 
 #[cfg(any(feature = "stm32f072", feature = "stm32f405"))]
 //pub use svd::*;
@@ -64,109 +64,6 @@ extern crate std;
 use std::collections::HashMap;
 #[cfg(feature = "std")]
 use std::sync::Mutex;
-
-
-#[cfg(feature = "stm32f072")]
-#[repr(C)]
-pub struct RccReg {
-    pub cr: u32,
-    //pub pllcfgr: u32,
-    pub cfgr: u32,
-    pub cir: u32,
-
-    pub ahb2rstr: u32,
-    pub ahb1rstr: u32,
-    //pub ahb3rstr: u32,
-    //reserved1: u32,
-    pub ahbenr: u32,
-
-    //pub apb1_enr: u32,
-    //pub apb12enr: u32,
-    //reserved2: u32,
-    //reserved3: u32,
-
-    //pub ahb2enr: u32,
-    //pub ahb1enr: u32,
-    //pub ahb3enr: u32,
-    //reserved4: u32,
-    pub apb2enr: u32,
-    pub apb1enr: u32,
-    //reserved5: u32,
-    //reserved6: u32,
-
-    //pub ahb1lpenr: u32,
-    //pub ahb2lpenr: u32,
-    //pub ahb3lpenr: u32,
-    //reserved7: u32,
-
-    //pub apb1lpenr: u32,
-    //pub apb2lpenr: u32,
-    //reserved8: u32,
-    //reserved9: u32,
-    pub bdcr: u32,
-    pub csr: u32,
-    //reserved10: u32,
-    //reserved11: u32,
-    pub ahbrstr: u32,
-    pub cfgr2: u32,
-    pub cfgr3: u32,
-    pub cr2: u32,
-    //pub sscgr: u32,
-    //pub pli2scfgr: u32,
-}
-
-#[cfg(feature = "stm32f072")]
-pub const RCC: *mut RccReg = 0x4002_1000 as *mut RccReg;
-
-
-
-#[cfg(feature = "stm32f072")]
-#[repr(C)]
-pub struct GpioReg {
-    pub moder: u32,
-    pub otyper: u32,
-    pub ospeedr: u32,
-    pub pupdr: u32,
-    pub idr: u32,
-    pub odr: u32,
-    pub bsrr: u32,
-    pub lckr: u32,
-    pub afrl: u32,
-    pub afrh: u32,
-    pub brr: u32,
-}
-
-#[cfg(feature = "stm32f072")]
-#[allow(unused)]
-pub const GPIOA: *mut GpioReg = 0x4800_0000 as *mut GpioReg;
-
-#[cfg(feature = "stm32f072")]
-#[allow(unused)]
-pub const GPIOB: *mut GpioReg = 0x4800_0400 as *mut GpioReg;
-
-
-#[cfg(feature = "stm32f072")]
-#[repr(C)]
-pub struct UsartReg {
-    pub cr1: u32,
-    pub cr2: u32,
-    pub cr3: u32,
-    pub brr: u32,
-    pub gtpr: u32,
-
-    pub rtor: u32,
-    pub rqr: u32,
-    pub isr: u32,
-    pub icr: u32,
-    pub rdr: u32,
-    pub tdr: u32,
-}
-
-#[cfg(feature = "stm32f072")]
-pub const USART1: *mut UsartReg = 0x4001_3800 as *mut UsartReg;
-
-#[cfg(feature = "stm32f072")]
-pub const USART2: *mut UsartReg = 0x4000_4400 as *mut UsartReg;
 
 
 #[cfg(feature = "stm32f405")]
