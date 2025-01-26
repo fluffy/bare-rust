@@ -5,6 +5,223 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 
+pub mod GPIO {
+    pub mod moder {
+        pub const MODER15: u8 = 30;
+        pub const MODER14: u8 = 28;
+        pub const MODER13: u8 = 26;
+        pub const MODER12: u8 = 24;
+        pub const MODER11: u8 = 22;
+        pub const MODER10: u8 = 20;
+        pub const MODER9: u8 = 18;
+        pub const MODER8: u8 = 16;
+        pub const MODER7: u8 = 14;
+        pub const MODER6: u8 = 12;
+        pub const MODER5: u8 = 10;
+        pub const MODER4: u8 = 8;
+        pub const MODER3: u8 = 6;
+        pub const MODER2: u8 = 4;
+        pub const MODER1: u8 = 2;
+        pub const MODER0: u8 = 0;
+    }
+    pub mod otyper {
+        pub const OT15: u8 = 15;
+        pub const OT14: u8 = 14;
+        pub const OT13: u8 = 13;
+        pub const OT12: u8 = 12;
+        pub const OT11: u8 = 11;
+        pub const OT10: u8 = 10;
+        pub const OT9: u8 = 9;
+        pub const OT8: u8 = 8;
+        pub const OT7: u8 = 7;
+        pub const OT6: u8 = 6;
+        pub const OT5: u8 = 5;
+        pub const OT4: u8 = 4;
+        pub const OT3: u8 = 3;
+        pub const OT2: u8 = 2;
+        pub const OT1: u8 = 1;
+        pub const OT0: u8 = 0;
+    }
+    pub mod ospeedr {
+        pub const OSPEEDR15: u8 = 30;
+        pub const OSPEEDR14: u8 = 28;
+        pub const OSPEEDR13: u8 = 26;
+        pub const OSPEEDR12: u8 = 24;
+        pub const OSPEEDR11: u8 = 22;
+        pub const OSPEEDR10: u8 = 20;
+        pub const OSPEEDR9: u8 = 18;
+        pub const OSPEEDR8: u8 = 16;
+        pub const OSPEEDR7: u8 = 14;
+        pub const OSPEEDR6: u8 = 12;
+        pub const OSPEEDR5: u8 = 10;
+        pub const OSPEEDR4: u8 = 8;
+        pub const OSPEEDR3: u8 = 6;
+        pub const OSPEEDR2: u8 = 4;
+        pub const OSPEEDR1: u8 = 2;
+        pub const OSPEEDR0: u8 = 0;
+    }
+    pub mod pupdr {
+        pub const PUPDR15: u8 = 30;
+        pub const PUPDR14: u8 = 28;
+        pub const PUPDR13: u8 = 26;
+        pub const PUPDR12: u8 = 24;
+        pub const PUPDR11: u8 = 22;
+        pub const PUPDR10: u8 = 20;
+        pub const PUPDR9: u8 = 18;
+        pub const PUPDR8: u8 = 16;
+        pub const PUPDR7: u8 = 14;
+        pub const PUPDR6: u8 = 12;
+        pub const PUPDR5: u8 = 10;
+        pub const PUPDR4: u8 = 8;
+        pub const PUPDR3: u8 = 6;
+        pub const PUPDR2: u8 = 4;
+        pub const PUPDR1: u8 = 2;
+        pub const PUPDR0: u8 = 0;
+    }
+    pub mod idr {
+        pub const IDR15: u8 = 15;
+        pub const IDR14: u8 = 14;
+        pub const IDR13: u8 = 13;
+        pub const IDR12: u8 = 12;
+        pub const IDR11: u8 = 11;
+        pub const IDR10: u8 = 10;
+        pub const IDR9: u8 = 9;
+        pub const IDR8: u8 = 8;
+        pub const IDR7: u8 = 7;
+        pub const IDR6: u8 = 6;
+        pub const IDR5: u8 = 5;
+        pub const IDR4: u8 = 4;
+        pub const IDR3: u8 = 3;
+        pub const IDR2: u8 = 2;
+        pub const IDR1: u8 = 1;
+        pub const IDR0: u8 = 0;
+    }
+    pub mod odr {
+        pub const ODR15: u8 = 15;
+        pub const ODR14: u8 = 14;
+        pub const ODR13: u8 = 13;
+        pub const ODR12: u8 = 12;
+        pub const ODR11: u8 = 11;
+        pub const ODR10: u8 = 10;
+        pub const ODR9: u8 = 9;
+        pub const ODR8: u8 = 8;
+        pub const ODR7: u8 = 7;
+        pub const ODR6: u8 = 6;
+        pub const ODR5: u8 = 5;
+        pub const ODR4: u8 = 4;
+        pub const ODR3: u8 = 3;
+        pub const ODR2: u8 = 2;
+        pub const ODR1: u8 = 1;
+        pub const ODR0: u8 = 0;
+    }
+    pub mod bsrr {
+        pub const BR15: u8 = 31;
+        pub const BR14: u8 = 30;
+        pub const BR13: u8 = 29;
+        pub const BR12: u8 = 28;
+        pub const BR11: u8 = 27;
+        pub const BR10: u8 = 26;
+        pub const BR9: u8 = 25;
+        pub const BR8: u8 = 24;
+        pub const BR7: u8 = 23;
+        pub const BR6: u8 = 22;
+        pub const BR5: u8 = 21;
+        pub const BR4: u8 = 20;
+        pub const BR3: u8 = 19;
+        pub const BR2: u8 = 18;
+        pub const BR1: u8 = 17;
+        pub const BR0: u8 = 16;
+        pub const BS15: u8 = 15;
+        pub const BS14: u8 = 14;
+        pub const BS13: u8 = 13;
+        pub const BS12: u8 = 12;
+        pub const BS11: u8 = 11;
+        pub const BS10: u8 = 10;
+        pub const BS9: u8 = 9;
+        pub const BS8: u8 = 8;
+        pub const BS7: u8 = 7;
+        pub const BS6: u8 = 6;
+        pub const BS5: u8 = 5;
+        pub const BS4: u8 = 4;
+        pub const BS3: u8 = 3;
+        pub const BS2: u8 = 2;
+        pub const BS1: u8 = 1;
+        pub const BS0: u8 = 0;
+    }
+    pub mod lckr {
+        pub const LCKK: u8 = 16;
+        pub const LCK15: u8 = 15;
+        pub const LCK14: u8 = 14;
+        pub const LCK13: u8 = 13;
+        pub const LCK12: u8 = 12;
+        pub const LCK11: u8 = 11;
+        pub const LCK10: u8 = 10;
+        pub const LCK9: u8 = 9;
+        pub const LCK8: u8 = 8;
+        pub const LCK7: u8 = 7;
+        pub const LCK6: u8 = 6;
+        pub const LCK5: u8 = 5;
+        pub const LCK4: u8 = 4;
+        pub const LCK3: u8 = 3;
+        pub const LCK2: u8 = 2;
+        pub const LCK1: u8 = 1;
+        pub const LCK0: u8 = 0;
+    }
+    pub mod afrl {
+        pub const AFRL7: u8 = 28;
+        pub const AFRL6: u8 = 24;
+        pub const AFRL5: u8 = 20;
+        pub const AFRL4: u8 = 16;
+        pub const AFRL3: u8 = 12;
+        pub const AFRL2: u8 = 8;
+        pub const AFRL1: u8 = 4;
+        pub const AFRL0: u8 = 0;
+    }
+    pub mod afrh {
+        pub const AFRH15: u8 = 28;
+        pub const AFRH14: u8 = 24;
+        pub const AFRH13: u8 = 20;
+        pub const AFRH12: u8 = 16;
+        pub const AFRH11: u8 = 12;
+        pub const AFRH10: u8 = 8;
+        pub const AFRH9: u8 = 4;
+        pub const AFRH8: u8 = 0;
+    }
+    pub mod brr {
+        pub const BR0: u8 = 0;
+        pub const BR1: u8 = 1;
+        pub const BR2: u8 = 2;
+        pub const BR3: u8 = 3;
+        pub const BR4: u8 = 4;
+        pub const BR5: u8 = 5;
+        pub const BR6: u8 = 6;
+        pub const BR7: u8 = 7;
+        pub const BR8: u8 = 8;
+        pub const BR9: u8 = 9;
+        pub const BR10: u8 = 10;
+        pub const BR11: u8 = 11;
+        pub const BR12: u8 = 12;
+        pub const BR13: u8 = 13;
+        pub const BR14: u8 = 14;
+        pub const BR15: u8 = 15;
+    }
+}
+
+pub mod WWDG {
+    pub mod cr {
+        pub const WDGA: u8 = 7;
+        pub const T: u8 = 0;
+    }
+    pub mod cfr {
+        pub const EWI: u8 = 9;
+        pub const WDGTB: u8 = 7;
+        pub const W: u8 = 0;
+    }
+    pub mod sr {
+        pub const EWIF: u8 = 0;
+    }
+}
+
 pub mod RCC {
     pub mod cr {
         pub const HSION: u8 = 0;
@@ -313,6 +530,59 @@ pub mod USART {
     }
 }
 
+pub mod FLASH {
+    pub mod acr {
+        pub const LATENCY: u8 = 0;
+        pub const PRFTBE: u8 = 4;
+        pub const PRFTBS: u8 = 5;
+    }
+    pub mod keyr {
+        pub const FKEYR: u8 = 0;
+    }
+    pub mod optkeyr {
+        pub const OPTKEYR: u8 = 0;
+    }
+    pub mod sr {
+        pub const EOP: u8 = 5;
+        pub const WRPRT: u8 = 4;
+        pub const PGERR: u8 = 2;
+        pub const BSY: u8 = 0;
+    }
+    pub mod cr {
+        pub const FORCE_OPTLOAD: u8 = 13;
+        pub const EOPIE: u8 = 12;
+        pub const ERRIE: u8 = 10;
+        pub const OPTWRE: u8 = 9;
+        pub const LOCK: u8 = 7;
+        pub const STRT: u8 = 6;
+        pub const OPTER: u8 = 5;
+        pub const OPTPG: u8 = 4;
+        pub const MER: u8 = 2;
+        pub const PER: u8 = 1;
+        pub const PG: u8 = 0;
+    }
+    pub mod ar {
+        pub const FAR: u8 = 0;
+    }
+    pub mod obr {
+        pub const OPTERR: u8 = 0;
+        pub const RDPRT: u8 = 1;
+        pub const WDG_SW: u8 = 8;
+        pub const nRST_STOP: u8 = 9;
+        pub const nRST_STDBY: u8 = 10;
+        pub const nBOOT0: u8 = 11;
+        pub const nBOOT1: u8 = 12;
+        pub const VDDA_MONITOR: u8 = 13;
+        pub const RAM_PARITY_CHECK: u8 = 14;
+        pub const BOOT_SEL: u8 = 15;
+        pub const Data0: u8 = 16;
+        pub const Data1: u8 = 24;
+    }
+    pub mod wrpr {
+        pub const WRP: u8 = 0;
+    }
+}
+
 #[repr(C)]
 pub struct GpioReg {
     pub moder: u32,
@@ -326,6 +596,13 @@ pub struct GpioReg {
     pub afrl: u32,
     pub afrh: u32,
     pub brr: u32,
+}
+
+#[repr(C)]
+pub struct WwdgReg {
+    pub cr: u32,
+    pub cfr: u32,
+    pub sr: u32,
 }
 
 #[repr(C)]
@@ -361,12 +638,29 @@ pub struct UsartReg {
     pub tdr: u32,
 }
 
+#[repr(C)]
+pub struct FlashReg {
+    pub acr: u32,
+    pub keyr: u32,
+    pub optkeyr: u32,
+    pub sr: u32,
+    pub cr: u32,
+    pub ar: u32,
+    reserved1: u32,
+    pub obr: u32,
+    pub wrpr: u32,
+}
+
 pub const GPIOB: *mut GpioReg = 0x48000400 as *mut GpioReg;
 
 pub const GPIOA: *mut GpioReg = 0x48000000 as *mut GpioReg;
+
+pub const WWDG: *mut WwdgReg = 0x40002C00 as *mut WwdgReg;
 
 pub const RCC: *mut RccReg = 0x40021000 as *mut RccReg;
 
 pub const USART1: *mut UsartReg = 0x40013800 as *mut UsartReg;
 
 pub const USART2: *mut UsartReg = 0x40004400 as *mut UsartReg;
+
+pub const FLASH: *mut FlashReg = 0x40022000 as *mut FlashReg;

@@ -980,6 +980,22 @@ pub mod USART {
     }
 }
 
+pub mod WWDG {
+    pub mod cr {
+        pub const WDGA: u8 = 7;
+        pub const T: u8 = 0;
+    }
+    pub mod cfr {
+        pub const EWI: u8 = 9;
+        pub const WDGTB1: u8 = 8;
+        pub const WDGTB0: u8 = 7;
+        pub const W: u8 = 0;
+    }
+    pub mod sr {
+        pub const EWIF: u8 = 0;
+    }
+}
+
 pub mod TIM_ADV {
     pub mod cr1 {
         pub const CKD: u8 = 8;
@@ -1120,6 +1136,9 @@ pub mod TIM_ADV {
     pub mod arr {
         pub const ARR: u8 = 0;
     }
+    pub mod rcr {
+        pub const REP: u8 = 0;
+    }
     pub mod ccr1 {
         pub const CCR1: u8 = 0;
     }
@@ -1132,16 +1151,6 @@ pub mod TIM_ADV {
     pub mod ccr4 {
         pub const CCR4: u8 = 0;
     }
-    pub mod dcr {
-        pub const DBL: u8 = 8;
-        pub const DBA: u8 = 0;
-    }
-    pub mod dmar {
-        pub const DMAB: u8 = 0;
-    }
-    pub mod rcr {
-        pub const REP: u8 = 0;
-    }
     pub mod bdtr {
         pub const MOE: u8 = 15;
         pub const AOE: u8 = 14;
@@ -1151,6 +1160,13 @@ pub mod TIM_ADV {
         pub const OSSI: u8 = 10;
         pub const LOCK: u8 = 8;
         pub const DTG: u8 = 0;
+    }
+    pub mod dcr {
+        pub const DBL: u8 = 8;
+        pub const DBA: u8 = 0;
+    }
+    pub mod dmar {
+        pub const DMAB: u8 = 0;
     }
 }
 
@@ -1473,6 +1489,13 @@ pub struct UsartReg {
 }
 
 #[repr(C)]
+pub struct WwdgReg {
+    pub cr: u32,
+    pub cfr: u32,
+    pub sr: u32,
+}
+
+#[repr(C)]
 pub struct TimAdvReg {
     pub cr1: u32,
     pub cr2: u32,
@@ -1510,12 +1533,12 @@ pub struct TimGenReg {
     pub cnt: u32,
     pub psc: u32,
     pub arr: u32,
-    pub rcr: u32, // reserved
+    reserved1: u32,
     pub ccr1: u32,
     pub ccr2: u32,
     pub ccr3: u32,
     pub ccr4: u32,
-    pub bdtr: u32, // reserved
+    reserved2: u32,
     pub dcr: u32,
     pub dmar: u32,
     pub or: u32,
@@ -1542,6 +1565,8 @@ pub const GPIOB: *mut GpioReg = 0x40020400 as *mut GpioReg;
 pub const GPIOA: *mut GpioReg = 0x40020000 as *mut GpioReg;
 
 pub const USART1: *mut UsartReg = 0x40011000 as *mut UsartReg;
+
+pub const WWDG: *mut WwdgReg = 0x40002C00 as *mut WwdgReg;
 
 pub const TIM1: *mut TimAdvReg = 0x40010000 as *mut TimAdvReg;
 
