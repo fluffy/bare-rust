@@ -1419,8 +1419,8 @@ pub struct RccReg {
     pub ahb2rstr: u32,
     pub ahb3rstr: u32,
     reserved1: u32,
-    pub apb1_enr: u32,
-    pub apb12enr: u32,
+    pub apb1rstr: u32,
+    pub apb2rstr: u32,
     reserved2: u32,
     reserved3: u32,
     pub ahb1enr: u32,
@@ -1444,7 +1444,7 @@ pub struct RccReg {
     reserved10: u32,
     reserved11: u32,
     pub sscgr: u32,
-    pub pli2scfgr: u32,
+    pub plli2scfgr: u32,
 }
 
 #[repr(C)]
@@ -1459,7 +1459,6 @@ pub struct GpioReg {
     pub lckr: u32,
     pub afrl: u32,
     pub afrh: u32,
-    pub brr: u32,
 }
 
 #[repr(C)]
@@ -1511,21 +1510,22 @@ pub struct TimGenReg {
     pub cnt: u32,
     pub psc: u32,
     pub arr: u32,
-    pub rcr: u32,
+    pub rcr: u32, // reserved
     pub ccr1: u32,
     pub ccr2: u32,
     pub ccr3: u32,
     pub ccr4: u32,
-    pub bdtr: u32,
+    pub bdtr: u32, // reserved
     pub dcr: u32,
     pub dmar: u32,
+    pub or: u32,
 }
 
 #[repr(C)]
 pub struct FlashReg {
     pub acr: u32,
     pub keyr: u32,
-    pub opkeyr: u32,
+    pub optkeyr: u32,
     pub sr: u32,
     pub cr: u32,
     pub optcr: u32,
