@@ -184,43 +184,45 @@ pub fn write1_dma(_data: &[u8]) {}
 
 //use core::ptr;
 
-// checked
-const USART1_BASE: u32 = 0x40011000;
-const DMA2_BASE: u32 = 0x40026400;
-const RCC_BASE: u32 = 0x40023800;
-
-// checked
-const USART1_DR: u32 = USART1_BASE + 0x04;
-const USART1_CR1: u32 = USART1_BASE + 0x0C;
-const USART1_CR3: u32 = USART1_BASE + 0x14;
-const USART1_BRR: u32 = USART1_BASE + 0x08;
-//const USART1_SR: u32 = USART1_BASE + 0x00;
-
-// checked wrong
-const DMA2_S7CR: u32 = DMA2_BASE + 0xb8; //0xA0; // b8
-const DMA2_S7NDTR: u32 = DMA2_BASE + 0xbc; //0xA4; //bc
-const DMA2_S7PAR: u32 = DMA2_BASE + 0xc0; //0xA8; //C0
-const DMA2_S7M0AR: u32 = DMA2_BASE + 0xc4; // 0xAC; //C4
-const DMA2_HISR: u32 = DMA2_BASE + 0x04; // OK
-const DMA2_HIFCR: u32 = DMA2_BASE + 0x0C; // OK
-
-// checked
-const RCC_AHB1ENR: u32 = RCC_BASE + 0x30;
-const RCC_APB2ENR: u32 = RCC_BASE + 0x44;
-
-// checked
-const DMA2EN: u32 = 1 << 22;
-const USART1EN: u32 = 1 << 4;
-
-// checked
-const NVIC_ISER2: u32 = 0xE000E100 + 0x8;
-const DMA2_STREAM7_IRQ: u32 = 70;
-
 #[cfg(not(feature = "std"))]
 #[cfg(feature = "stm32f405")]
 pub unsafe fn write1_dma(data: &[u8]) {
     let baud_rate: u32 = 115200;
 
+
+    // checked
+    const USART1_BASE: u32 = 0x40011000;
+    const DMA2_BASE: u32 = 0x40026400;
+    const RCC_BASE: u32 = 0x40023800;
+
+    // checked
+    const USART1_DR: u32 = USART1_BASE + 0x04;
+    const USART1_CR1: u32 = USART1_BASE + 0x0C;
+    const USART1_CR3: u32 = USART1_BASE + 0x14;
+    const USART1_BRR: u32 = USART1_BASE + 0x08;
+    //const USART1_SR: u32 = USART1_BASE + 0x00;
+
+    // checked wrong
+    const DMA2_S7CR: u32 = DMA2_BASE + 0xb8; //0xA0; // b8
+    const DMA2_S7NDTR: u32 = DMA2_BASE + 0xbc; //0xA4; //bc
+    const DMA2_S7PAR: u32 = DMA2_BASE + 0xc0; //0xA8; //C0
+    const DMA2_S7M0AR: u32 = DMA2_BASE + 0xc4; // 0xAC; //C4
+    const DMA2_HISR: u32 = DMA2_BASE + 0x04; // OK
+    const DMA2_HIFCR: u32 = DMA2_BASE + 0x0C; // OK
+
+    // checked
+    const RCC_AHB1ENR: u32 = RCC_BASE + 0x30;
+    const RCC_APB2ENR: u32 = RCC_BASE + 0x44;
+
+    // checked
+    const DMA2EN: u32 = 1 << 22;
+    const USART1EN: u32 = 1 << 4;
+
+    // checked
+    const NVIC_ISER2: u32 = 0xE000E100 + 0x8;
+    const DMA2_STREAM7_IRQ: u32 = 70;
+
+    
     // Enable DMA2 and USART1 clocks
     ptr::write_volatile(RCC_AHB1ENR as *mut u32, DMA2EN);
     ptr::write_volatile(RCC_APB2ENR as *mut u32, USART1EN);
