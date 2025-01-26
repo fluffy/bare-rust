@@ -97,7 +97,7 @@ fn my_main() {
     b"Starting\r\n".print_console();
 
     // TODO remove - just testing
-    if true {
+    if false {
         if cfg!(not(feature = "std")) {
             b"  Pre  DMA\r\n".print_console();
             //let data = b"TEST DMA \r\n";
