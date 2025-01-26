@@ -27,19 +27,19 @@ pub extern "C" fn main() -> ! {
 #[inline(never)]
 /// Main function that initializes the system and runs the task manager.
 fn my_main() {
-    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 9);
-    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 10);
+    pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIOA, 9);
+    pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIOA, 10);
 
-    pub const UI_TX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 2);
-    pub const UI_RX: gpio::Pin = gpio::Pin(cpu::GPIO_A, 3);
+    pub const UI_TX: gpio::Pin = gpio::Pin(cpu::GPIOA, 2);
+    pub const UI_RX: gpio::Pin = gpio::Pin(cpu::GPIOA, 3);
 
-    pub const UI_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIO_A, 15);
-    pub const UI_NRST: gpio::Pin = gpio::Pin(cpu::GPIO_B, 3);
+    pub const UI_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIOA, 15);
+    pub const UI_NRST: gpio::Pin = gpio::Pin(cpu::GPIOB, 3);
 
-    pub const NET_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIO_B, 5);
-    pub const NET_NRST: gpio::Pin = gpio::Pin(cpu::GPIO_B, 4);
+    pub const NET_BOOT0: gpio::Pin = gpio::Pin(cpu::GPIOB, 5);
+    pub const NET_NRST: gpio::Pin = gpio::Pin(cpu::GPIOB, 4);
 
-    pub const MCLK: gpio::Pin = gpio::Pin(cpu::GPIO_A, 8);
+    pub const MCLK: gpio::Pin = gpio::Pin(cpu::GPIOA, 8);
     pub const MCLK_FREQ: u32 = 24_000_000;
     pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
 
@@ -47,9 +47,9 @@ fn my_main() {
 
     hal::uart::init2(115200, UI_RX, UI_TX);
 
-    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 4);
-    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 6);
-    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIO_A, 7);
+    const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 4);
+    const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 6);
+    const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 7);
 
     LED_GREEN_PIN.output();
     LED_RED_PIN.output();

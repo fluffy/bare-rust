@@ -40,12 +40,12 @@
 //!  use hal::cpu;
 //!  use hal::gpio;
 //!  
-//!  let tx = gpio::Pin(cpu::GPIO_A, 9);
-//!  let rx = gpio::Pin(cpu::GPIO_A, 10);
+//!  let tx = gpio::Pin(cpu::GPIOA, 9);
+//!  let rx = gpio::Pin(cpu::GPIOA, 10);
 //!  let clock_freq = 16_000_000;
 //!  hal::init(clock_freq, tx, rx);
 //!
-//!  let pin = gpio::Pin(cpu::GPIO_A, 6);
+//!  let pin = gpio::Pin(cpu::GPIOA, 6);
 //!  pin.output(); // set pin as output
 //!  pin.high(); // set pin to logic level high
 //!
