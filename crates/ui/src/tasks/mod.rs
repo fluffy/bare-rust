@@ -9,8 +9,8 @@ pub mod chat_task;
 pub mod crypto_task;
 pub mod fib_task;
 pub mod keyboard_task;
-pub mod metrics_task;
 pub mod link_task;
+pub mod metrics_task;
 pub mod render_task;
 pub mod text_edit_task;
 
@@ -147,7 +147,7 @@ impl<'a> TaskMgr<'a> {
             }
 
             let start_time = hal::timer::current_time();
-            t.run( self.sender, self.bsp, self.data, self.metrics);
+            t.run(self.sender, self.bsp, self.data, self.metrics);
             let end_time = hal::timer::current_time();
             let (end_stack_usage, ..) = stack::usage(false);
 
