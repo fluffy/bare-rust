@@ -19,7 +19,7 @@ impl Data {
 }
 
 /// Information about the netLink task.
-const NETLINK_TASK_INFO: TaskInfo = TaskInfo {
+const LINK_TASK_INFO: TaskInfo = TaskInfo {
     name: b"Link____",
     run_every_us: 100_000,
     time_budget_us: 10_000,
@@ -80,6 +80,6 @@ impl Task for LinkTask {
 
     /// Returns the information about the netLink task.
     fn info(&self) -> &'static TaskInfo {
-        &NETLINK_TASK_INFO
+        &LINK_TASK_INFO
     }
 }
