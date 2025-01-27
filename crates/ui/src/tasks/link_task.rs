@@ -5,7 +5,7 @@ use crate::tasks::TaskInfo;
 use crate::vec::VecByte;
 
 /// Structure representing the netLink task.
-pub struct NetLinkTask {}
+pub struct LinkTask {}
 
 pub struct Data {
     _junk: u32,
@@ -20,7 +20,7 @@ impl Data {
 
 /// Information about the netLink task.
 const NETLINK_TASK_INFO: TaskInfo = TaskInfo {
-    name: b"NetLink_",
+    name: b"Link____",
     run_every_us: 100_000,
     time_budget_us: 10_000,
     mem_budget_bytes: 500,
@@ -66,7 +66,7 @@ pub fn recv(
     }
 }
 
-impl Task for NetLinkTask {
+impl Task for LinkTask {
     /// Method to execute the netLink task.
     /// Reads the state of the netLink and sends a message if the state has changed.
     fn run(

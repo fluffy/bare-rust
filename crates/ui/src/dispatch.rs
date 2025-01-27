@@ -68,7 +68,7 @@ pub fn process(receiver: mpsc::Receiver<msg::Msg>, task_mgr: &mut tasks::TaskMgr
             msg::Msg::EncTxtMsgOut { .. } => {
                 b"  EncTxtMsgOut dispatched\r\n".print_console();
 
-                tasks::net_link_task::recv(
+                tasks::link_task::recv(
                     &msg,
                     &mut task_mgr.sender,
                     &mut task_mgr.bsp,

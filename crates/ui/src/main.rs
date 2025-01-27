@@ -147,7 +147,7 @@ fn my_main() {
     let metrics_task = tasks::metrics_task::MetricsTask {};
     task_mgr.add_task(&metrics_task);
 
-    let net_link_task = tasks::net_link_task::NetLinkTask {};
+    let net_link_task = tasks::link_task::LinkTask {};
     task_mgr.add_task(&net_link_task);
 
     let render_task = tasks::render_task::RenderTask {};
@@ -243,7 +243,7 @@ mod tests {
         let metrics_task = tasks::metrics_task::MetricsTask {};
         task_mgr.add_task(&metrics_task);
 
-        let net_link_task = tasks::net_link_task::NetLinkTask {};
+        let net_link_task = tasks::link_task::LinkTask {};
         task_mgr.add_task(&net_link_task);
 
         let render_task = tasks::render_task::RenderTask {};

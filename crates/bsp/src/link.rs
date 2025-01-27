@@ -1,4 +1,4 @@
-//! # Netlink Module
+//! # Link Module
 //!
 //! This module provides functionality for sending and receiving messages to the NET CPU.
 
@@ -7,8 +7,8 @@ extern crate hal;
 #[cfg(feature = "std")]
 extern crate std;
 
-/// Enum representing different types of Netlink messages.
-pub enum NetlinkMessage {
+/// Enum representing different types of Link messages.
+pub enum LinkMessage {
     None,
     OutMoqObject {
         object_id: u32,
@@ -38,25 +38,25 @@ pub enum NetlinkMessage {
     },
 }
 
-pub struct Netlink {}
+pub struct Link {}
 
-impl crate::netlink::Netlink {
+impl crate::link::Link {
     #[inline(never)]
     pub fn new() -> Self {
-        crate::netlink::Netlink {}
+        crate::link::Link {}
     }
 
     #[inline(never)]
     pub fn init(&self) {}
 
     /// Queue a message to be sent to NET CPU
-    pub fn send(&self, _message: NetlinkMessage) {
+    pub fn send(&self, _message: LinkMessage) {
         // Send a message
     }
 
     // Check if there is a message from NET CPU and if so return it.
     // If there is no message, return None.
-    pub fn receive(&self) -> NetlinkMessage {
-        NetlinkMessage::None
+    pub fn receive(&self) -> LinkMessage {
+        LinkMessage::None
     }
 }
