@@ -67,7 +67,6 @@ pub trait Task {
     /// Method to execute the task.
     fn run(
         &self,
-        msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
         data: &mut TaskData,
@@ -148,8 +147,7 @@ impl<'a> TaskMgr<'a> {
             }
 
             let start_time = hal::timer::current_time();
-            let msg = Msg::None;
-            t.run(&msg, self.sender, self.bsp, self.data, self.metrics);
+            t.run( self.sender, self.bsp, self.data, self.metrics);
             let end_time = hal::timer::current_time();
             let (end_stack_usage, ..) = stack::usage(false);
 

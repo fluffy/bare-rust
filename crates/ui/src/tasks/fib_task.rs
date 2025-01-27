@@ -25,7 +25,6 @@ impl Task for FibTask {
     /// Calculates the Fibonacci sequence up to the 34th number.
     fn run(
         &self,
-        _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
         _task_data: &mut TaskData,

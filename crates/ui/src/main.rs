@@ -43,7 +43,7 @@ pub extern "C" fn main() -> ! {
 #[cfg(feature = "std")]
 /// Entry point for the application when the `std` feature is enabled.
 fn main() {
-    led::set(Color::Red);
+    led::set(Color::Blue);
     my_main();
 }
 

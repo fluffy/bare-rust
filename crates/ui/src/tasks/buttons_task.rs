@@ -24,7 +24,6 @@ impl Task for ButtonTask {
     /// Reads the state of the button and sends a message if the state has changed.
     fn run(
         &self,
-        _incoming_msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
         _task_data: &mut TaskData,
