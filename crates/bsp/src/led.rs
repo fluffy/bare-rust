@@ -56,6 +56,9 @@ pub enum Color {
     Red, // only used for errors
     Green,
     Blue,
+    Teal,
+    Yellow,
+    Purple,
 }
 
 /// Sets the color of the LED based on the provided `Color` enum value.
@@ -66,6 +69,9 @@ pub fn set(c: Color) {
         Color::Red => (255, 0, 0),
         Color::Green => (0, 255, 0),
         Color::Blue => (0, 0, 255),
+        Color::Teal => (0, 255, 255),
+        Color::Yellow => (255, 255, 0),
+        Color::Purple => (255, 0, 255),
     };
 
     let invert_leds = board::info::LEDS_INVERTED;
