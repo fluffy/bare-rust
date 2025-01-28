@@ -34,7 +34,7 @@ block-beta
         ChatTask
         CryptoTask
         RenderTask
-        NetLinkTask
+        LinkTask
         MetricsTask
       PttTask
       CodecTask
@@ -80,7 +80,7 @@ flowchart LR
     B -->|TextInput| C[Chat]
     C -->|TxtMsgOut| D[Crypto]
     B -->|print_input| J[Render]
-    D -->|EncTxtMsgOut| F[NetLink]
+    D -->|EncTxtMsgOut| F[Link]
     C -->|print| J[Render]
     C -->|print_clear| J[Render]
 ```
@@ -89,7 +89,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[NetLink] -->|EncTxtMsgIn| B[Crypto]
+    A[Link] -->|EncTxtMsgIn| B[Crypto]
     B -->|TxtMsgIn| C[Chat]
     C -->|print| J[Render]
 ```
@@ -101,14 +101,14 @@ flowchart LR
     A[Audio] -->|AudOut| B[Codec]
     B -->|EncAudOut| C[PTT]
     C -->|AudMsgOut| D[Crypto]
-    D -->|EncAudMsgOut| F[NetLink]
+    D -->|EncAudMsgOut| F[Link]
 ```
 
 ### Inbound Audio Data Flow
 
 ```mermaid
 flowchart LR
-    A[NetLink] -->|EncAudMsgIn| B[Crypto]
+    A[Link] -->|EncAudMsgIn| B[Crypto]
     B -->|AudMsgIn| C[PTT]
     C -->|EncAudIn| J[Codec]
     J -->|AudIn| K[Audio]
@@ -140,7 +140,7 @@ block-beta
       Info
       Audio
       Console
-      NetLink
+      Link
       Led
       Debug
       Battery
@@ -174,7 +174,7 @@ block-beta
     Battery --> ADC
     Console --> UART
     Buttons --> GPIO
-    NetLink --> UART
+    Link --> UART
     SPI --> ILI9341
     UART --> NetCPU
     I2C --> WM8960

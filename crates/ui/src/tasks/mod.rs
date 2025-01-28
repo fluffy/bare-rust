@@ -9,8 +9,8 @@ pub mod chat_task;
 pub mod crypto_task;
 pub mod fib_task;
 pub mod keyboard_task;
+pub mod link_task;
 pub mod metrics_task;
-pub mod net_link_task;
 pub mod render_task;
 pub mod text_edit_task;
 
@@ -45,7 +45,7 @@ pub struct TaskData {
     pub chat: chat_task::Data,
     pub render: render_task::Data,
     pub crypto: crypto_task::Data,
-    pub net_link: net_link_task::Data,
+    pub net_link: link_task::Data,
 }
 
 impl TaskData {
@@ -56,7 +56,7 @@ impl TaskData {
             chat: chat_task::Data::new(),
             render: render_task::Data::new(),
             crypto: crypto_task::Data::new(),
-            net_link: net_link_task::Data::new(),
+            net_link: link_task::Data::new(),
             junk_data: [0; JUNK_DATA_SIZE],
         }
     }
@@ -67,7 +67,6 @@ pub trait Task {
     /// Method to execute the task.
     fn run(
         &self,
-        msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
         data: &mut TaskData,
@@ -148,8 +147,7 @@ impl<'a> TaskMgr<'a> {
             }
 
             let start_time = hal::timer::current_time();
-            let msg = Msg::None;
-            t.run(&msg, self.sender, self.bsp, self.data, self.metrics);
+            t.run(self.sender, self.bsp, self.data, self.metrics);
             let end_time = hal::timer::current_time();
             let (end_stack_usage, ..) = stack::usage(false);
 

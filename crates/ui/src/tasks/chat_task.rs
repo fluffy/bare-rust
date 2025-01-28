@@ -36,7 +36,6 @@ impl Task for ChatTask {
     /// Reads the state of the chat and sends a message if the state has changed.
     fn run(
         &self,
-        _incoming_msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
         _task_data: &mut TaskData,

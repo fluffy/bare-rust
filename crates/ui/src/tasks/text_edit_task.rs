@@ -78,7 +78,6 @@ impl Task for TextEditTask {
     /// Reads the state of the textEdit and sends a message if the state has changed.
     fn run(
         &self,
-        _incoming_msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
         task_data: &mut TaskData,

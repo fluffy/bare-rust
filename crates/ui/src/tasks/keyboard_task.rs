@@ -19,7 +19,6 @@ impl Task for KeyboardTask {
     /// Reads the state of the keyboard and sends a message if the state has changed.
     fn run(
         &self,
-        _incoming_msg: &Msg,
         sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
         _task_data: &mut TaskData,

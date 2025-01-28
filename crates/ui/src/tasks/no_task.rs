@@ -22,7 +22,6 @@ impl Task for NoTask {
     /// This method should never be called and will panic if invoked.
     fn run(
         &self,
-        _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
         _task_data: &mut TaskData,

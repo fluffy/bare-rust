@@ -117,7 +117,6 @@ impl Task for RenderTask {
     /// Reads the state of the render and sends a message if the state has changed.
     fn run(
         &self,
-        _incoming_msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         bsp: &mut bsp::BSP,
         task_data: &mut TaskData,

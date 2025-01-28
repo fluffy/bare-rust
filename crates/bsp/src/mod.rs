@@ -52,7 +52,7 @@ pub mod display;
 pub mod info;
 pub mod keyboard;
 pub mod led;
-pub mod netlink;
+pub mod link;
 
 pub struct BSP {
     pub battery: battery::Battery,
@@ -63,7 +63,7 @@ pub struct BSP {
     pub info: info::Info,
     pub keyboard: keyboard::Keyboard,
     pub led: led::Led,
-    pub netlink: netlink::Netlink,
+    pub netlink: link::Link,
 }
 
 impl BSP {
@@ -77,7 +77,7 @@ impl BSP {
             info: info::Info::new(),
             keyboard: keyboard::Keyboard::new(),
             led: led::Led::new(),
-            netlink: netlink::Netlink::new(),
+            netlink: link::Link::new(),
         }
     }
 

@@ -30,7 +30,6 @@ impl Task for MetricsTask {
     /// Then resets the metrics for all tasks.
     fn run(
         &self,
-        _msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
         _task_data: &mut TaskData,

@@ -30,7 +30,6 @@ impl Task for CryptoTask {
     /// Reads the state of the crypto and sends a message if the state has changed.
     fn run(
         &self,
-        _incoming_msg: &Msg,
         _sender: &mut crate::mpsc::Sender<Msg>,
         _bsp: &mut bsp::BSP,
         _task_data: &mut TaskData,

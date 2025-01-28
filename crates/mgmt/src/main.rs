@@ -3,13 +3,9 @@
 #![no_std]
 #![no_main]
 
-//extern crate bsp;
 extern crate hal;
 
 use hal::{cpu, gpio};
-//use bsp::console::Print;
-//use bsp::led;
-//use bsp::led::Color;
 
 mod stack;
 mod startup;
@@ -40,8 +36,9 @@ fn my_main() {
     pub const NET_NRST: gpio::Pin = gpio::Pin(cpu::GPIOB, 4);
 
     pub const MCLK: gpio::Pin = gpio::Pin(cpu::GPIOA, 8);
+
     pub const MCLK_FREQ: u32 = 24_000_000;
-    pub const CLOCK_HSE_FREQ: u32 = 16_000_000; // set to 0 for simulation
+    pub const CLOCK_HSE_FREQ: u32 = 16_000_000;
 
     hal::init(CLOCK_HSE_FREQ, CONSOLE_TX, CONSOLE_RX);
 
@@ -61,7 +58,7 @@ fn my_main() {
 
     hal::clock::configure_mco(MCLK, MCLK_FREQ);
 
-    // make sur boot are low before any rest
+    // make sure that boot pins are low before any reset asserted
     UI_BOOT0.output();
     NET_BOOT0.output();
     UI_BOOT0.low();
@@ -72,6 +69,7 @@ fn my_main() {
     NET_NRST.open_drain();
     NET_NRST.pullup();
 
+    // put chips into reset
     UI_NRST.low();
     NET_NRST.low();
 
@@ -80,6 +78,7 @@ fn my_main() {
         hal::uart::write1(c);
     }
 
+    // take chips out of reset
     UI_NRST.high();
     NET_NRST.high();
 
