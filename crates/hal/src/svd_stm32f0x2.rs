@@ -583,6 +583,36 @@ pub mod FLASH {
     }
 }
 
+pub mod DBGMCU {
+    pub mod idcode {
+        pub const DEV_ID: u8 = 0;
+        pub const DIV_ID: u8 = 12;
+        pub const REV_ID: u8 = 16;
+    }
+    pub mod cr {
+        pub const DBG_STOP: u8 = 1;
+        pub const DBG_STANDBY: u8 = 2;
+    }
+    pub mod apb1_fz {
+        pub const DBG_TIM2_STOP: u8 = 0;
+        pub const DBG_TIM3_STOP: u8 = 1;
+        pub const DBG_TIM6_STOP: u8 = 4;
+        pub const DBG_TIM7_STOP: u8 = 5;
+        pub const DBG_TIM14_STOP: u8 = 8;
+        pub const DBG_RTC_STOP: u8 = 10;
+        pub const DBG_WWDG_STOP: u8 = 11;
+        pub const DBG_IWDG_STOP: u8 = 12;
+        pub const DBG_I2C1_SMBUS_TIMEOUT: u8 = 21;
+        pub const DBG_CAN_STOP: u8 = 25;
+    }
+    pub mod apb2_fz {
+        pub const DBG_TIM1_STOP: u8 = 11;
+        pub const DBG_TIM15_STOP: u8 = 16;
+        pub const DBG_TIM16_STOP: u8 = 17;
+        pub const DBG_TIM17_STOP: u8 = 18;
+    }
+}
+
 #[repr(C)]
 pub struct GpioReg {
     pub moder: u32,
@@ -651,6 +681,14 @@ pub struct FlashReg {
     pub wrpr: u32,
 }
 
+#[repr(C)]
+pub struct DbgmcuReg {
+    pub idcode: u32,
+    pub cr: u32,
+    pub apb1_fz: u32,
+    pub apb2_fz: u32,
+}
+
 pub const GPIOB: *mut GpioReg = 0x48000400 as *mut GpioReg;
 
 pub const GPIOA: *mut GpioReg = 0x48000000 as *mut GpioReg;
@@ -664,3 +702,5 @@ pub const USART1: *mut UsartReg = 0x40013800 as *mut UsartReg;
 pub const USART2: *mut UsartReg = 0x40004400 as *mut UsartReg;
 
 pub const FLASH: *mut FlashReg = 0x40022000 as *mut FlashReg;
+
+pub const DBGMCU: *mut DbgmcuReg = 0x40015800 as *mut DbgmcuReg;

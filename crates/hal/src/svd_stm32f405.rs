@@ -5,6 +5,50 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 
+pub mod DBG {
+    pub mod dbgmcu_idcode {
+        pub const DEV_ID: u8 = 0;
+        pub const REV_ID: u8 = 16;
+    }
+    pub mod dbgmcu_cr {
+        pub const DBG_SLEEP: u8 = 0;
+        pub const DBG_STOP: u8 = 1;
+        pub const DBG_STANDBY: u8 = 2;
+        pub const TRACE_IOEN: u8 = 5;
+        pub const TRACE_MODE: u8 = 6;
+        pub const DBG_I2C2_SMBUS_TIMEOUT: u8 = 16;
+        pub const DBG_TIM8_STOP: u8 = 17;
+        pub const DBG_TIM5_STOP: u8 = 18;
+        pub const DBG_TIM6_STOP: u8 = 19;
+        pub const DBG_TIM7_STOP: u8 = 20;
+    }
+    pub mod dbgmcu_apb1_fz {
+        pub const DBG_TIM2_STOP: u8 = 0;
+        pub const DBG_TIM3_STOP: u8 = 1;
+        pub const DBG_TIM4_STOP: u8 = 2;
+        pub const DBG_TIM5_STOP: u8 = 3;
+        pub const DBG_TIM6_STOP: u8 = 4;
+        pub const DBG_TIM7_STOP: u8 = 5;
+        pub const DBG_TIM12_STOP: u8 = 6;
+        pub const DBG_TIM13_STOP: u8 = 7;
+        pub const DBG_TIM14_STOP: u8 = 8;
+        pub const DBG_WWDG_STOP: u8 = 11;
+        pub const DBG_IWDEG_STOP: u8 = 12;
+        pub const DBG_J2C1_SMBUS_TIMEOUT: u8 = 21;
+        pub const DBG_J2C2_SMBUS_TIMEOUT: u8 = 22;
+        pub const DBG_J2C3SMBUS_TIMEOUT: u8 = 23;
+        pub const DBG_CAN1_STOP: u8 = 25;
+        pub const DBG_CAN2_STOP: u8 = 26;
+    }
+    pub mod dbgmcu_apb2_fz {
+        pub const DBG_TIM1_STOP: u8 = 0;
+        pub const DBG_TIM8_STOP: u8 = 1;
+        pub const DBG_TIM9_STOP: u8 = 16;
+        pub const DBG_TIM10_STOP: u8 = 17;
+        pub const DBG_TIM11_STOP: u8 = 18;
+    }
+}
+
 pub mod DMA {
     pub mod lisr {
         pub const TCIF3: u8 = 27;
@@ -1370,6 +1414,14 @@ pub mod FLASH {
 }
 
 #[repr(C)]
+pub struct DbgReg {
+    pub dbgmcu_idcode: u32,
+    pub dbgmcu_cr: u32,
+    pub dbgmcu_apb1_fz: u32,
+    pub dbgmcu_apb2_fz: u32,
+}
+
+#[repr(C)]
 pub struct DmaReg {
     pub lisr: u32,
     pub hisr: u32,
@@ -1553,6 +1605,8 @@ pub struct FlashReg {
     pub cr: u32,
     pub optcr: u32,
 }
+
+pub const DBG: *mut DbgReg = 0xE0042000 as *mut DbgReg;
 
 pub const DMA2: *mut DmaReg = 0x40026400 as *mut DmaReg;
 
