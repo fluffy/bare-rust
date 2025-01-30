@@ -79,6 +79,8 @@ pub fn init(hse_clk_freq: u32, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     uart::init1(115_200, tx_pin, rx_pin);
     // do after uart is up
 
+    watch_dog::init();
+
     // Do last as this starts timer events
     #[cfg(feature = "stm32f405")]
     timer::init2();

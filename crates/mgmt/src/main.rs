@@ -79,7 +79,7 @@ fn my_main() {
             hal::uart::write1(c);
         }
     }
-    
+
     let w = hal::watch_dog::is_enabled();
     if !w {
         let str = "MGMT: No Watchdog\r\n";
