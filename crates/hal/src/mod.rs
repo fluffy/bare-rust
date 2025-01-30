@@ -62,6 +62,7 @@ pub mod uart;
 
 pub mod svd_stm32f0x2;
 pub mod svd_stm32f405;
+pub mod watch_dog;
 
 #[inline(never)]
 /// Initializes the hardware.

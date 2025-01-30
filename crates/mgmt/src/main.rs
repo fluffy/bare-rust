@@ -73,9 +73,19 @@ fn my_main() {
     UI_NRST.low();
     NET_NRST.low();
 
-    let str = "MGMT: Starting\r\n";
-    for c in str.bytes() {
-        hal::uart::write1(c);
+    {
+        let str = "MGMT: Starting\r\n";
+        for c in str.bytes() {
+            hal::uart::write1(c);
+        }
+    }
+    
+    let w = hal::watch_dog::is_enabled();
+    if !w {
+        let str = "MGMT: No Watchdog\r\n";
+        for c in str.bytes() {
+            hal::uart::write1(c);
+        }
     }
 
     // take chips out of reset
