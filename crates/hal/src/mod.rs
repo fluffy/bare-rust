@@ -62,6 +62,7 @@ pub mod uart;
 
 pub mod svd_stm32f0x2;
 pub mod svd_stm32f405;
+pub mod watch_dog;
 
 #[inline(never)]
 /// Initializes the hardware.
@@ -77,6 +78,8 @@ pub fn init(hse_clk_freq: u32, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // do soon after clock is up so we  can use console
     uart::init1(115_200, tx_pin, rx_pin);
     // do after uart is up
+
+    watch_dog::init();
 
     // Do last as this starts timer events
     #[cfg(feature = "stm32f405")]

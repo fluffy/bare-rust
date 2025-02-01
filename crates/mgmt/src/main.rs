@@ -5,7 +5,7 @@
 
 extern crate hal;
 
-use hal::{cpu, gpio};
+use hal::{cpu, gpio, watch_dog};
 
 mod stack;
 mod startup;
@@ -73,14 +73,25 @@ fn my_main() {
     UI_NRST.low();
     NET_NRST.low();
 
-    let str = "MGMT: Starting\r\n";
-    for c in str.bytes() {
-        hal::uart::write1(c);
+    {
+        let str = "MGMT: Starting\r\n";
+        for c in str.bytes() {
+            hal::uart::write1(c);
+        }
     }
-
     // take chips out of reset
     UI_NRST.high();
     NET_NRST.high();
+
+    // TODO watch_dog::start();
+
+    let w = hal::watch_dog::is_enabled();
+    if !w {
+        let str = "MGMT: No Watchdog\r\n";
+        for c in str.bytes() {
+            hal::uart::write1(c);
+        }
+    }
 
     LED_GREEN_PIN.low(); // turn on green LED
     LED_RED_PIN.high();
@@ -90,8 +101,13 @@ fn my_main() {
     let _ = (stack_usage, stack_current, stack_reserved);
 
     loop {
-        let c: u8;
-        c = hal::uart::read2();
-        hal::uart::write1(c);
+        if !hal::uart::empty2() {
+            let c: u8;
+            c = hal::uart::read2();
+            if c != 0 {
+                hal::uart::write1(c);
+            }
+        }
+        watch_dog::alive();
     }
 }
