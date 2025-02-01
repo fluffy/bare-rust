@@ -403,8 +403,14 @@ pub fn write2(c: u8) {
 }
 
 #[cfg(feature = "stm32f072")]
-pub fn read2() -> u8 {
+pub fn empty2() -> bool {
     // Wait until transmit data register is empty
+    cpu::read!(USART2.isr[RXNE;1]) == 0
+}
+
+#[cfg(feature = "stm32f072")]
+pub fn read2() -> u8 {
+    // Wait until receive data register is empty
     while cpu::read!(USART2.isr[RXNE;1]) == 0 {}
     // Write the byte to the data register
     cpu::read!(USART2.rdr) as u8
