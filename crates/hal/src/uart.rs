@@ -186,7 +186,8 @@ pub fn write1_dma(_data: &[u8]) {}
 
 #[cfg(not(feature = "std"))]
 #[cfg(feature = "stm32f405")]
-pub unsafe fn write1_dma(data: &[u8]) {
+pub unsafe fn write1_dma_junk(data: &[u8]) {
+    // TODO remove this function
     let baud_rate: u32 = 115200;
 
     // checked
@@ -279,7 +280,7 @@ pub unsafe fn write1_dma(data: &[u8]) {
 
 #[cfg(not(feature = "std"))]
 #[cfg(feature = "stm32f405")]
-pub fn write1_dma_save(data: &[u8]) {
+pub fn write1_dma(data: &[u8]) {
     // TODO
     // DMA for USART1_TX
     // Uses DMA 2, Channel 4, Stream 7
@@ -294,8 +295,8 @@ pub fn write1_dma_save(data: &[u8]) {
     cpu::write!( USART1.cr1[UE;1], 0b0 ); // Disable USART1
 
     // Enable USART1 DMA transmission
-    cpu::write!(USART1.cr3[DMAT;1], 1); // Enable DMA transmission
-    cpu::write!(USART1.sr[TC;1], 1); // Clear the transfer complete flag
+    cpu::write!(USART1.cr3[DMAT;1], 0b1); // Enable DMA transmission
+    cpu::write!(USART1.sr[TC;1], 0b0); // TODO - write 1 or 0 , Clear the transfer complete flag
 
     cpu::write!( USART1.cr1[UE;1], 0b1 ); // enable USART1
 
@@ -307,24 +308,20 @@ pub fn write1_dma_save(data: &[u8]) {
     assert!(dest == 0x4001_1000 + 0x04); // USART1->DR
     assert!(len == 4);
 
-    cpu::write!(DMA2.s7ndtr, len);
-    cpu::write!(DMA2.s7par, dest);
-    cpu::write!(DMA2.s7m0ar, src);
-
     //  Configure DMA channel: memory-to-peripheral, increment memory, enable transfer complete interrupt
     cpu::write!( DMA2.s7cr[CHSEL;2], 0b100); // Using Channel #4
+    cpu::write!( DMA2.s7cr[DIR;2], 0b01); // Set direction as memory to peripheral
 
     cpu::write!( DMA2.s7cr[DBM;1], 0b0 ); // Disable double buffer mode
 
     cpu::write!( DMA2.s7cr[PL;2], 0b10 ); // Set priority level to low
 
-    cpu::write!( DMA2.s7cr[MSIZE;2], 0b00); // Set peripheral size to 1 byte
+    cpu::write!( DMA2.s7cr[MSIZE;2], 0b00); // Set memory size to 1 byte
     cpu::write!( DMA2.s7cr[PSIZE;2], 0b00); // Set peripheral size to 1 byte
     cpu::write!( DMA2.s7cr[PINC;1], 0b0); // Disable peripheral increment mode
     cpu::write!( DMA2.s7cr[MINC;1], 0b1); // Enable memory increment mode
 
     cpu::write!( DMA2.s7cr[CIRC;1], 0b0); // Disable circular mode
-    cpu::write!( DMA2.s7cr[DIR;2], 0b01); // Set direction as memory to peripheral
 
     cpu::write!( DMA2.s7cr[PFCTRL;1], 0b0); // disable peripheral flow controller
 
@@ -333,25 +330,34 @@ pub fn write1_dma_save(data: &[u8]) {
     cpu::write!( DMA2.hifcr[CFEIF7;1], 0b1); // clear the old FIFO error flag
     cpu::write!( DMA2.hifcr[CTCIF7;1], 0b1); // clear the old transfer complete flag
 
-    cpu::write!( DMA2.s7cr[TCIE;1], 0b1); // Enable transfer complete interrupt
-    cpu::write!( DMA2.s7cr[TEIE;1], 0b1); // Enable transfer error interrupt
-    cpu::write!( DMA2.s7cr[DMEIE;1], 0b1); // Enable transfer error interrupt
+    // enable interupt stuff
+    if true  {
+        cpu::write!( DMA2.s7cr[TCIE;1], 0b1); // Enable transfer complete interrupt
+        cpu::write!( DMA2.s7cr[TEIE;1], 0b1); // Enable transfer error interrupt
+        cpu::write!( DMA2.s7cr[DMEIE;1], 0b1); // Enable transfer error interrupt
 
-    // DMA2 Stream7 global interrupt = 70 // from SVD file
-    // NVIC interrupt enable
-    let itr = 70;
-    cpu::write!(NVIC.iser[itr / 32], 1 << (itr % 32)); // Enable DMA2 Stream 7 interrupt
-    let pri_loc = itr * 4;
-    let pri = 0b0011;
-    cpu::write!(NVIC.ipr[pri_loc / 32], pri << (pri_loc % 32)); // Enable DMA2 Stream 7 interrupt
+        // DMA2 Stream7 global interrupt = 70 // from SVD file
+        // NVIC interrupt enable
+        let itr = 70;
+        cpu::write!(NVIC.iser[itr / 32], 1 << (itr % 32)); // Enable DMA2 Stream 7 interrupt
+        let pri_loc = itr * 4;
+        let pri = 0b0011;
+        cpu::write!(NVIC.ipr[pri_loc / 32], pri << (pri_loc % 32)); // prirotyt of DMA2 Stream 7 interrupt
+    }
 
     // Clear prior events flags
+
+    // Set the peripheral address, memory address, and number of data items
+    cpu::write!(DMA2.s7par, dest);
+    cpu::write!(DMA2.s7m0ar, src);
+    cpu::write!(DMA2.s7ndtr, len);
 
     // Enable DMA2 Stream 7
     cpu::write!(DMA2.s7cr[EN;1], 1);
 
+    // TODO
     if true {
-        // Check if the transfer complete flag is set
+        // Wait for transfer to complete
         while cpu::read!(DMA2.hisr[TCIF7;1]) == 0 {
             if cpu::read!( DMA2.hisr[TEIF7; 1]) == 0b1 {
                 panic!("DMA transfer error interrupt");
@@ -368,6 +374,7 @@ pub fn write1_dma_save(data: &[u8]) {
         cpu::write!(DMA2.hifcr[CTCIF7;1], 1);
     }
 }
+
 
 #[cfg(not(feature = "std"))]
 #[cfg(feature = "stm32f405")]
