@@ -28,12 +28,15 @@ pub fn start() {
 
     cpu::write!( WWDG.cfr[EWI;1]  , 0b0 );
     cpu::write!( WWDG.cfr[WDGTB0;2]  , 0b11 );
-    cpu::write!( WWDG.cfr[W;7]  , 0x7F );
+    cpu::write!( WWDG.cfr[W;7]  , 0x7F ); // set window range
 
-    cpu::write!( WWDG.cr[T;7]  , 0x7F );
-    cpu::write!( WWDG.cr[WDGA;1] , 0b1);
+    cpu::write!( WWDG.cr[T;7]  , 0x7F ); // set counter
+    cpu::write!( WWDG.cr[WDGA;1] , 0b1); // enable
 }
 
-pub fn reset() {
-    todo!();
+
+/// Resets the WWDG (Window Watchdog) counter to prevent a system reset.
+///
+pub fn alive() {
+    cpu::write!(WWDG.cr[T;7], 0x7F);
 }
