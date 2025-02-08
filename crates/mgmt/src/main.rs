@@ -83,11 +83,16 @@ fn my_main() {
     UI_NRST.high();
     NET_NRST.high();
 
-    // TODO watch_dog::start();
+    watch_dog::start();
 
     let w = hal::watch_dog::is_enabled();
     if !w {
         let str = "MGMT: No Watchdog\r\n";
+        for c in str.bytes() {
+            hal::uart::write1(c);
+        }
+    } else {
+        let str = "MGMT: Watchdog Enabled\r\n";
         for c in str.bytes() {
             hal::uart::write1(c);
         }
