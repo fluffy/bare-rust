@@ -83,18 +83,29 @@ fn my_main() {
     UI_NRST.high();
     NET_NRST.high();
 
-    watch_dog::start();
+    // TODO this is off in debug as it stop CPU from staying in error state
+    if !cfg!(debug_assertions) {
+        watch_dog::start();
+    } else {
+        let str = "MGMT: in DEBUG mode\r\n";
+        for c in str.bytes() {
+            hal::uart::write1(c);
+            watch_dog::alive();
+        }
+    }
 
     let w = hal::watch_dog::is_enabled();
     if !w {
         let str = "MGMT: No Watchdog\r\n";
         for c in str.bytes() {
             hal::uart::write1(c);
+            watch_dog::alive();
         }
     } else {
         let str = "MGMT: Watchdog Enabled\r\n";
         for c in str.bytes() {
             hal::uart::write1(c);
+            watch_dog::alive();
         }
     }
 

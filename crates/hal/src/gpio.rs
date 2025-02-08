@@ -90,6 +90,8 @@ impl Pin {
         let gpio = self.0;
         let pin_num = self.1;
 
+        debug_assert!(pin_num < 16);
+        
         // set mode to output
         cpu::write!( gpio.moder[pin_num*2;2], 0b01);
 
