@@ -42,10 +42,9 @@ impl Display {
 
     #[inline(never)]
     pub fn init(&self) {
-
-
         board::info::DISP_NRST.output();
         board::info::DISP_NRST.low(); // put into reset 
+        board::info::DISP_NRST.high(); // take out of reset 
 
         board::info::DISP_CS.output();
         board::info::DISP_CS.low(); // chip select
@@ -56,8 +55,10 @@ impl Display {
         board::info::DISP_BL.output();
         board::info::DISP_BL.high(); // backlight on
 
+        hal::spi::init1(  board::info::DISP_SPI_FREQ,
+                         board::info::DISP_SCL,
+                         board::info::DISP_SDA );
 
-        board::info::DISP_NRST.low(); // take out of reset 
     }
 
     /// Returns the width and height of the display.
