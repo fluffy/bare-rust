@@ -956,6 +956,72 @@ pub mod GPIO {
     }
 }
 
+pub mod SPI1 {
+    pub mod cr1 {
+        pub const BIDIMODE: u8 = 15;
+        pub const BIDIOE: u8 = 14;
+        pub const CRCEN: u8 = 13;
+        pub const CRCNEXT: u8 = 12;
+        pub const DFF: u8 = 11;
+        pub const RXONLY: u8 = 10;
+        pub const SSM: u8 = 9;
+        pub const SSI: u8 = 8;
+        pub const LSBFIRST: u8 = 7;
+        pub const SPE: u8 = 6;
+        pub const BR: u8 = 3;
+        pub const MSTR: u8 = 2;
+        pub const CPOL: u8 = 1;
+        pub const CPHA: u8 = 0;
+    }
+    pub mod cr2 {
+        pub const TXEIE: u8 = 7;
+        pub const RXNEIE: u8 = 6;
+        pub const ERRIE: u8 = 5;
+        pub const FRF: u8 = 4;
+        pub const SSOE: u8 = 2;
+        pub const TXDMAEN: u8 = 1;
+        pub const RXDMAEN: u8 = 0;
+    }
+    pub mod sr {
+        pub const TIFRFE: u8 = 8;
+        pub const BSY: u8 = 7;
+        pub const OVR: u8 = 6;
+        pub const MODF: u8 = 5;
+        pub const CRCERR: u8 = 4;
+        pub const UDR: u8 = 3;
+        pub const CHSIDE: u8 = 2;
+        pub const TXE: u8 = 1;
+        pub const RXNE: u8 = 0;
+    }
+    pub mod dr {
+        pub const DR: u8 = 0;
+    }
+    pub mod crcpr {
+        pub const CRCPOLY: u8 = 0;
+    }
+    pub mod rxcrcr {
+        pub const RxCRC: u8 = 0;
+    }
+    pub mod txcrcr {
+        pub const TxCRC: u8 = 0;
+    }
+    pub mod i2scfgr {
+        pub const I2SMOD: u8 = 11;
+        pub const I2SE: u8 = 10;
+        pub const I2SCFG: u8 = 8;
+        pub const PCMSYNC: u8 = 7;
+        pub const I2SSTD: u8 = 4;
+        pub const CKPOL: u8 = 3;
+        pub const DATLEN: u8 = 1;
+        pub const CHLEN: u8 = 0;
+    }
+    pub mod i2spr {
+        pub const MCKOE: u8 = 9;
+        pub const ODD: u8 = 8;
+        pub const I2SDIV: u8 = 0;
+    }
+}
+
 pub mod USART {
     pub mod sr {
         pub const CTS: u8 = 9;
@@ -1530,6 +1596,19 @@ pub struct GpioReg {
 }
 
 #[repr(C)]
+pub struct Spi1Reg {
+    pub cr1: u32,
+    pub cr2: u32,
+    pub sr: u32,
+    pub dr: u32,
+    pub crcpr: u32,
+    pub rxcrcr: u32,
+    pub txcrcr: u32,
+    pub i2scfgr: u32,
+    pub i2spr: u32,
+}
+
+#[repr(C)]
 pub struct UsartReg {
     pub sr: u32,
     pub dr: u32,
@@ -1605,25 +1684,91 @@ pub struct FlashReg {
     pub cr: u32,
     pub optcr: u32,
 }
+// Skipped peripheral: RNG
+// Skipped peripheral: DCMI
+// Skipped peripheral: FSMC
 
 pub const DBG: *mut DbgReg = 0xE0042000 as *mut DbgReg;
 
 pub const DMA2: *mut DmaReg = 0x40026400 as *mut DmaReg;
+// Skipped peripheral: DMA1
 
 pub const RCC: *mut RccReg = 0x40023800 as *mut RccReg;
+// Skipped peripheral: GPIOI
+// Skipped peripheral: GPIOH
+// Skipped peripheral: GPIOG
+// Skipped peripheral: GPIOF
+// Skipped peripheral: GPIOE
+// Skipped peripheral: GPIOD
 
 pub const GPIOC: *mut GpioReg = 0x40020800 as *mut GpioReg;
+// Skipped peripheral: GPIOJ
+// Skipped peripheral: GPIOK
 
 pub const GPIOB: *mut GpioReg = 0x40020400 as *mut GpioReg;
 
 pub const GPIOA: *mut GpioReg = 0x40020000 as *mut GpioReg;
+// Skipped peripheral: SYSCFG
+
+pub const SPI1: *mut Spi1Reg = 0x40013000 as *mut Spi1Reg;
+// Skipped peripheral: SPI2
+// Skipped peripheral: SPI3
+// Skipped peripheral: I2S2EXT
+// Skipped peripheral: I2S3EXT
+// Skipped peripheral: SDIO
+// Skipped peripheral: ADC1
+// Skipped peripheral: ADC2
+// Skipped peripheral: ADC3
+// Skipped peripheral: USART6
 
 pub const USART1: *mut UsartReg = 0x40011000 as *mut UsartReg;
+// Skipped peripheral: USART2
+// Skipped peripheral: USART3
+// Skipped peripheral: DAC
+// Skipped peripheral: PWR
+// Skipped peripheral: I2C3
+// Skipped peripheral: I2C2
+// Skipped peripheral: I2C1
+// Skipped peripheral: IWDG
 
 pub const WWDG: *mut WwdgReg = 0x40002C00 as *mut WwdgReg;
+// Skipped peripheral: RTC
+// Skipped peripheral: UART4
+// Skipped peripheral: UART5
+// Skipped peripheral: C_ADC
 
 pub const TIM1: *mut TimAdvReg = 0x40010000 as *mut TimAdvReg;
+// Skipped peripheral: TIM8
 
 pub const TIM2: *mut TimGenReg = 0x40000000 as *mut TimGenReg;
+// Skipped peripheral: TIM3
+// Skipped peripheral: TIM4
+// Skipped peripheral: TIM5
+// Skipped peripheral: TIM9
+// Skipped peripheral: TIM12
+// Skipped peripheral: TIM10
+// Skipped peripheral: TIM13
+// Skipped peripheral: TIM14
+// Skipped peripheral: TIM11
+// Skipped peripheral: TIM6
+// Skipped peripheral: TIM7
+// Skipped peripheral: ETHERNET_MAC
+// Skipped peripheral: ETHERNET_MMC
+// Skipped peripheral: ETHERNET_PTP
+// Skipped peripheral: ETHERNET_DMA
+// Skipped peripheral: CRC
+// Skipped peripheral: OTG_FS_GLOBAL
+// Skipped peripheral: OTG_FS_HOST
+// Skipped peripheral: OTG_FS_DEVICE
+// Skipped peripheral: OTG_FS_PWRCLK
+// Skipped peripheral: CAN1
+// Skipped peripheral: CAN2
 
 pub const FLASH: *mut FlashReg = 0x40023C00 as *mut FlashReg;
+// Skipped peripheral: EXTI
+// Skipped peripheral: OTG_HS_GLOBAL
+// Skipped peripheral: OTG_HS_HOST
+// Skipped peripheral: OTG_HS_DEVICE
+// Skipped peripheral: OTG_HS_PWRCLK
+// Skipped peripheral: HASH
+// Skipped peripheral: CRYP
