@@ -58,10 +58,10 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // Enable USART1 & GPIOA clock
     cpu::write!(RCC.apb2enr[USART1EN;1], 1);
     cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
-    
+
     tx_pin.alt_fun(1, false); // AF1 work for USART1 to 3
     rx_pin.alt_fun(1, false); // AF1 work for USART1 to 3
-    
+
     // Set baud rate
     let apb_freq: u32 = 48_000_000; // APB clock frequency
     let usart_div: u32 = apb_freq / baud_rate as u32;
@@ -103,7 +103,7 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
 
     tx_pin.alt_fun(7, false); // AF7 work for USART1 to 3
     rx_pin.alt_fun(7, false); // AF7 work for USART1 to 3
-    
+
     // set baud rate
     // UART 1 is on APB2 bus, which is 84MHz
     let apb_freq: u64 = 84_000_000;

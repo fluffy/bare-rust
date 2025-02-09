@@ -91,7 +91,7 @@ impl Pin {
         let pin_num = self.1;
 
         debug_assert!(pin_num < 16);
-        
+
         // set mode to output
         cpu::write!( gpio.moder[pin_num*2;2], 0b01);
 
@@ -114,7 +114,7 @@ impl Pin {
         let pin_num = self.1;
 
         debug_assert!(pin_num < 16);
-        debug_assert!( af_mode < 16 );
+        debug_assert!(af_mode < 16);
 
         // set mode to output
         cpu::write!( gpio.moder[pin_num*2;2], 0b10);
@@ -137,12 +137,12 @@ impl Pin {
         }
 
         if pin_num < 8 {
-            cpu::write!( gpio.afrl[(pin_num)*4;4], af_mode as u32 ); 
+            cpu::write!( gpio.afrl[(pin_num)*4;4], af_mode as u32 );
         } else {
-            cpu::write!( gpio.afrh[(pin_num-8)*4;4], af_mode as u32 ); 
+            cpu::write!( gpio.afrh[(pin_num-8)*4;4], af_mode as u32 );
         }
     }
-    
+
     #[inline(never)]
     pub fn open_drain(&self) {
         let gpio = self.0;

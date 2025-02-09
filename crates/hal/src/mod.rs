@@ -58,14 +58,14 @@ pub mod gpio;
 pub mod timer;
 pub mod uart;
 
+pub mod spi;
 pub mod svd_stm32f0x2;
 pub mod svd_stm32f405;
 pub mod watch_dog;
-pub mod spi;
 
 #[inline(never)]
 /// Initializes the hardware.
-pub fn init(hse_clk_freq: u32 ) {
+pub fn init(hse_clk_freq: u32) {
     cpu::init();
 
     // always set up clocks first
@@ -74,7 +74,6 @@ pub fn init(hse_clk_freq: u32 ) {
     // Do after clock and memory is set up
     gpio::init();
 }
-
 
 #[inline(never)]
 /// Validates the hardware has been correctly initialized.

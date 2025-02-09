@@ -6,7 +6,6 @@ extern crate std;
 #[cfg(test)]
 mod tests {
 
-
     #[test]
     fn test_init() {
         let freq = 16_000_000;

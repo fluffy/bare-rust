@@ -5,7 +5,7 @@
 
 extern crate hal;
 
-use hal::{cpu, gpio,  watch_dog};
+use hal::{cpu, gpio, watch_dog};
 
 mod stack;
 mod startup;
@@ -42,12 +42,12 @@ fn my_main() {
 
     hal::init(CLOCK_HSE_FREQ);
 
-    hal::uart::init1(115_200,  CONSOLE_TX, CONSOLE_RX );
-    
+    hal::uart::init1(115_200, CONSOLE_TX, CONSOLE_RX);
+
     hal::uart::init2(115200, UI_RX, UI_TX);
 
     hal::watch_dog::init();
-    
+
     const LED_RED_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 4);
     const LED_GREEN_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 6);
     const LED_BLUE_PIN: gpio::Pin = gpio::Pin(cpu::GPIOA, 7);
