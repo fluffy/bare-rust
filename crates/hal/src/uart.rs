@@ -58,21 +58,10 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     // Enable USART1 & GPIOA clock
     cpu::write!(RCC.apb2enr[USART1EN;1], 1);
     cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
-
-    // Configure PA9 (TX) and PA10 (RX) as alternate function (AF1 for USART1)
-    assert!(tx_pin.0 == GPIOA as *mut cpu::GpioReg);
-    assert!(rx_pin.0 == GPIOA as *mut cpu::GpioReg);
-    assert!(tx_pin.1 >= 8);
-    assert!(tx_pin.1 >= 8);
-
-    let tx_pin = tx_pin.1;
-    let rx_pin = rx_pin.1;
-
-    cpu::write!(GPIOA.moder[tx_pin*2;2], 0b10); // PA9 to AF mode
-    cpu::write!(GPIOA.moder[rx_pin*2;2], 0b10); // PA10 to AF mode
-    cpu::write!(GPIOA.afrh[(tx_pin-8)*4;4], 0b0001); // PA9 to AF1
-    cpu::write!(GPIOA.afrh[(rx_pin-8)*4;4], 0b0001); // PA10 to AF1
-
+    
+    tx_pin.alt_fun(1, false); // AF1 work for USART1 to 3
+    rx_pin.alt_fun(1, false); // AF1 work for USART1 to 3
+    
     // Set baud rate
     let apb_freq: u32 = 48_000_000; // APB clock frequency
     let usart_div: u32 = apb_freq / baud_rate as u32;
@@ -91,19 +80,8 @@ pub fn init2(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::write!(RCC.apb1enr[USART2EN;1], 1);
     cpu::write!(RCC.ahbenr[IOPAEN;1], 1);
 
-    // Configure PA2 (TX) and P3 (RX) as alternate function (AF1 for USART1)
-    assert!(tx_pin.0 == GPIOA as *mut cpu::GpioReg);
-    assert!(rx_pin.0 == GPIOA as *mut cpu::GpioReg);
-    assert!(tx_pin.1 < 8);
-    assert!(tx_pin.1 < 8);
-
-    let tx_pin = tx_pin.1;
-    let rx_pin = rx_pin.1;
-
-    cpu::write!(GPIOA.moder[tx_pin*2;2], 0b10); // PA2 to AF mode // TODO
-    cpu::write!(GPIOA.moder[rx_pin*2;2], 0b10); // PA2 to AF mode
-    cpu::write!(GPIOA.afrl[(tx_pin)*4;4], 0b0001); // PA2 to AF1
-    cpu::write!(GPIOA.afrl[(rx_pin)*4;4], 0b0001); // PA3 to AF1
+    tx_pin.alt_fun(1, false); // AF1 work for USART1 to 3
+    rx_pin.alt_fun(1, false); // AF1 work for USART1 to 3
 
     // Set baud rate
     let apb_freq: u32 = 48_000_000; // APB clock frequency
@@ -123,28 +101,9 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::write!( RCC.apb2enr[USART1EN;1], 1);
     cpu::write!( RCC.ahb1enr[GPIOAEN;1], 1);
 
-    // configure pins for USART1
-    // AF7 work for USART1 to 3. afrh work pin 8 to 15
-    assert!(tx_pin.0 == GPIOA as *mut cpu::GpioReg);
-    assert!(rx_pin.0 == GPIOA as *mut cpu::GpioReg);
-
-    let tx_pin = tx_pin.1;
-    let rx_pin = rx_pin.1;
-
-    cpu::write!( GPIOA.moder[rx_pin*2;2], 0b10); // AF mode
-    cpu::write!( GPIOA.moder[tx_pin*2;2], 0b10); // AF mode
-
-    if rx_pin < 8 {
-        cpu::write!( GPIOA.afrl[(rx_pin)*4;4], 7); // AF7 mode
-    } else {
-        cpu::write!( GPIOA.afrh[(rx_pin-8)*4;4], 7); // AF7 mode
-    }
-    if tx_pin < 8 {
-        cpu::write!( GPIOA.afrl[(tx_pin)*4;4], 7); // AF7 mode
-    } else {
-        cpu::write!( GPIOA.afrh[(tx_pin-8)*4;4], 7); // AF7 mode
-    }
-
+    tx_pin.alt_fun(7, false); // AF7 work for USART1 to 3
+    rx_pin.alt_fun(7, false); // AF7 work for USART1 to 3
+    
     // set baud rate
     // UART 1 is on APB2 bus, which is 84MHz
     let apb_freq: u64 = 84_000_000;
