@@ -26,6 +26,8 @@ extern crate hal;
 #[cfg(feature = "std")]
 extern crate std;
 
+use crate::board;
+
 const WIDTH: usize = 240;
 const HEIGHT: usize = 320;
 
@@ -39,7 +41,24 @@ impl Display {
     }
 
     #[inline(never)]
-    pub fn init(&self) {}
+    pub fn init(&self) {
+
+
+        board::info::DISP_NRST.output();
+        board::info::DISP_NRST.low(); // put into reset 
+
+        board::info::DISP_CS.output();
+        board::info::DISP_CS.low(); // chip select
+
+        board::info::DISP_DC.output();
+        board::info::DISP_DC.low(); // command 
+
+        board::info::DISP_BL.output();
+        board::info::DISP_BL.high(); // backlight on
+
+
+        board::info::DISP_NRST.low(); // take out of reset 
+    }
 
     /// Returns the width and height of the display.
     pub fn size(&self) -> (u32, u32) {

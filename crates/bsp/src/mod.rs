@@ -43,6 +43,8 @@
 
 extern crate hal;
 
+use hal::{spi,timer, watch_dog};
+
 pub mod battery;
 pub mod board;
 pub mod buttons;
@@ -82,10 +84,27 @@ impl BSP {
     }
 
     pub fn init(&mut self) {
-        let tx_pin = board::info::CONSOLE_TX;
-        let rx_pin = board::info::CONSOLE_RX;
-        hal::init(board::info::CLOCK_HSE_FREQ, tx_pin, rx_pin);
+       
+        hal::init(board::info::CLOCK_HSE_FREQ );
 
+        // do soon after clock is up so we  can use console
+        hal::uart::init1(115_200,  
+                         board::info::CONSOLE_TX, 
+                         board::info::CONSOLE_RX );
+        
+        // do after uart is up
+        watch_dog::init();
+
+        // must be after GPIO is initialized
+        spi::init1(  board::info::DISP_SPI_FREQ, 
+                     board::info::DISP_SCL, 
+                     board::info::DISP_SDA
+                    );
+        
+
+        // Do last as this starts timer events
+        timer::init2();
+        
         // setup console early so other modules can use it
         self.console.init();
 
@@ -94,6 +113,8 @@ impl BSP {
         self.debug.init();
 
         self.buttons.init();
+        
+        self.display.init();
     }
 
     pub fn validate(&self) {

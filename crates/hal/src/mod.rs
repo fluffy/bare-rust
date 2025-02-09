@@ -39,11 +39,9 @@
 //! ```rust
 //!  use hal::cpu;
 //!  use hal::gpio;
-//!  
-//!  let tx = gpio::Pin(cpu::GPIOA, 9);
-//!  let rx = gpio::Pin(cpu::GPIOA, 10);
+//!
 //!  let clock_freq = 16_000_000;
-//!  hal::init(clock_freq, tx, rx);
+//!  hal::init(clock_freq);
 //!
 //!  let pin = gpio::Pin(cpu::GPIOA, 6);
 //!  pin.output(); // set pin as output
@@ -63,10 +61,11 @@ pub mod uart;
 pub mod svd_stm32f0x2;
 pub mod svd_stm32f405;
 pub mod watch_dog;
+pub mod spi;
 
 #[inline(never)]
 /// Initializes the hardware.
-pub fn init(hse_clk_freq: u32, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
+pub fn init(hse_clk_freq: u32 ) {
     cpu::init();
 
     // always set up clocks first
@@ -74,17 +73,8 @@ pub fn init(hse_clk_freq: u32, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
 
     // Do after clock and memory is set up
     gpio::init();
-
-    // do soon after clock is up so we  can use console
-    uart::init1(115_200, tx_pin, rx_pin);
-    // do after uart is up
-
-    watch_dog::init();
-
-    // Do last as this starts timer events
-    #[cfg(feature = "stm32f405")]
-    timer::init2();
 }
+
 
 #[inline(never)]
 /// Validates the hardware has been correctly initialized.
