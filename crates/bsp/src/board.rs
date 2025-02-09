@@ -86,6 +86,17 @@ pub mod info {
 
     pub const CONSOLE_TX: gpio::Pin = gpio::Pin(cpu::GPIOA, 9);
     pub const CONSOLE_RX: gpio::Pin = gpio::Pin(cpu::GPIOA, 10);
+
+    pub const HAS_DISP: bool = true;
+    pub const DISP_CS: gpio::Pin = gpio::Pin(cpu::GPIOB, 8); // Chip Select - low to select
+    pub const DISP_DC: gpio::Pin = gpio::Pin(cpu::GPIOB, 9); // Data/Command - 0 command, 1 data
+    pub const DISP_NRST: gpio::Pin = gpio::Pin(cpu::GPIOC, 13); // Reset - low to reset
+    pub const DISP_BL: gpio::Pin = gpio::Pin(cpu::GPIOC, 14); // Backlight - 1 = on
+    pub const DISP_SCL: gpio::Pin = gpio::Pin(cpu::GPIOA, 5); // Uses SPI1 CLK
+    pub const DISP_SDA: gpio::Pin = gpio::Pin(cpu::GPIOA, 7); // Uses SPI1 MOSI
+    pub const DISP_NUM_ROWS: u32 = 320;
+    pub const DISP_NUM_COLS: u32 = 240;
+    pub const DISP_SPI_FREQ: u32 = 10_000_000; // must be slower if reading 
 }
 
 #[cfg(feature = "board-blinkA")]
