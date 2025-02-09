@@ -130,7 +130,7 @@ impl Pin {
 
         if fast {
             // set speed to fast
-            cpu::write!( gpio.ospeedr[pin_num*2;2], 0b11);
+            cpu::write!( gpio.ospeedr[pin_num*2;2], 0b10);
         } else {
             // set speed to slow
             cpu::write!( gpio.ospeedr[pin_num*2;2], 0b00);
