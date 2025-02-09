@@ -688,19 +688,53 @@ pub struct DbgmcuReg {
     pub apb1_fz: u32,
     pub apb2_fz: u32,
 }
+// Skipped peripheral: CRC
+// Skipped peripheral: GPIOF
+// Skipped peripheral: GPIOD
+// Skipped peripheral: GPIOC
 
 pub const GPIOB: *mut GpioReg = 0x48000400 as *mut GpioReg;
+// Skipped peripheral: GPIOE
 
 pub const GPIOA: *mut GpioReg = 0x48000000 as *mut GpioReg;
+// Skipped peripheral: SPI1
+// Skipped peripheral: SPI2
+// Skipped peripheral: DAC
+// Skipped peripheral: PWR
+// Skipped peripheral: I2C1
+// Skipped peripheral: I2C2
+// Skipped peripheral: IWDG
 
 pub const WWDG: *mut WwdgReg = 0x40002C00 as *mut WwdgReg;
+// Skipped peripheral: TIM1
+// Skipped peripheral: TIM2
+// Skipped peripheral: TIM3
+// Skipped peripheral: TIM14
+// Skipped peripheral: TIM6
+// Skipped peripheral: TIM7
+// Skipped peripheral: EXTI
+// Skipped peripheral: NVIC
+// Skipped peripheral: DMA1
 
 pub const RCC: *mut RccReg = 0x40021000 as *mut RccReg;
+// Skipped peripheral: SYSCFG_COMP
+// Skipped peripheral: ADC
 
 pub const USART1: *mut UsartReg = 0x40013800 as *mut UsartReg;
 
 pub const USART2: *mut UsartReg = 0x40004400 as *mut UsartReg;
+// Skipped peripheral: USART3
+// Skipped peripheral: USART4
+// Skipped peripheral: RTC
+// Skipped peripheral: TIM15
+// Skipped peripheral: TIM16
+// Skipped peripheral: TIM17
+// Skipped peripheral: TSC
+// Skipped peripheral: CEC
 
 pub const FLASH: *mut FlashReg = 0x40022000 as *mut FlashReg;
 
 pub const DBGMCU: *mut DbgmcuReg = 0x40015800 as *mut DbgmcuReg;
+// Skipped peripheral: USB
+// Skipped peripheral: CRS
+// Skipped peripheral: CAN
