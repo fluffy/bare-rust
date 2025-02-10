@@ -126,11 +126,11 @@ mod ili9341 {
         DisplayFunctionCtrl = 0xB6, // Display function control
 
         PowerCtrl1 = 0xC0, // Power control 1
-        PowerCtrl2 = 0xC1, // Power control 2
-        PowerCtrlB = 0xCF, // Power control B (CFh)
-        PowerCtrlA = 0xCB, // Power control A (CBh)
+        PowerCtrl2 = 0xC1, // Power control 2 (C1h)
         VcomCtrl1 = 0xC5,  // VCOM control 1 (C5h)
         VcomCtrl2 = 0xC7,  // VCOM control 2 (C7h)
+        PowerCtrlA = 0xCB, // Power control A (CBh)
+        PowerCtrlB = 0xCF, // Power control B (CFh)
 
         PositiveGammaCorrect = 0xE0, // Positive gamma correction
         NegativeGammaCorrect = 0xE1, // Negative gamma correction
@@ -155,6 +155,7 @@ mod ili9341 {
     }
 
     pub fn setup() {
+        
         //LCD_2IN4_Write_Command(0x01); //Software reset
         command(Command::SwReset, &[]);
         let now = hal::timer::current_time();
@@ -191,7 +192,7 @@ mod ili9341 {
         command(Command::PixelFormatSet, &[0x55]);
 
         //command(Command::FrameRateCtrl, &[0x00, 0x12]); // or 18
-        command(Command::FrameRateCtrl, &[0x00, 0x18]); // or 18
+        command(Command::FrameRateCtrl, &[0x00, 0x18]);
 
         // TODO takes 4 parameters
         //command(Command::DisplayFunctionCtrl, &[0x0A, 0xA2]); // perhaps  0x08, 0x82, 0x27 ???
@@ -206,38 +207,39 @@ mod ili9341 {
         command(
             Command::PositiveGammaCorrect,
             &[
-                //0x0F, 0x22, 0x1C, 0x1B, 0x08, 0x0F, 0x48, 0xB8, 0x34, 0x05, 0x0C, 0x09, 0x0F, 0x07,
-                //0x00,
+                // 0x0F, 0x22, 0x1C, 0x1B, 0x08, 0x0F, 0x48, 0xB8, 
+                // 0x34, 0x05, 0x0C, 0x09, 0x0F, 0x07, 0x00
                 // alternative values
-                0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09,
-                0x00
+                0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 
+                0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00
             ],
         );
 
         command(
             Command::NegativeGammaCorrect,
             &[
-                //0x00, 0x23, 0x24, 0x07, 0x10, 0x07, 0x38, 0x47, 0x4B, 0x0A, 0x13, 0x06, 0x30, 0x38,
-                //0x0F,
+                // 0x00, 0x23, 0x24, 0x07, 0x10, 0x07, 0x38, 0x47,
+                // 0x4B, 0x0A, 0x13, 0x06, 0x30, 0x38, 0x0F
                 // alternative values
-                 0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36,
-                 0x0F
+                0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 
+                0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F
             ],
         );
 
         command(Command::NormalMode, &[]);
 
-        //command(Command::SleepOut, &[]);
-        //let now = hal::timer::current_time();
-        //while hal::timer::current_time().sub( now ).as_u64() < 120_000 {}
+        command(Command::SleepOut, &[]);
+        let now = hal::timer::current_time();
+        while hal::timer::current_time().sub( now ).as_u64() < 120_000 {}
 
         command(Command::DisplayOn, &[]);
 
-        loop { // if true {
+        //loop { 
+        if true {
             command(Command::ColumnAddrSet, &[0x00, 10, 0x00, 100]); // EF=239
-            command(Command::PageAddrSet, &[0x00, 10, 0x00, 100]); // 13F=319
+            command(Command::PageAddrSet, &[0x00, 10, 0x00, 60]); // 13F=319
 
-            let data = [0x55u8; 90 * 90 * 2];
+            let data = [0xFFu8; 90 * 40 * 2];
             command(Command::MemoryWrite, &data);
             command(Command::NoOp, &[]);
         }
