@@ -61,7 +61,7 @@ pub fn write1(data: &[u8]) {
     // make sure TX buffer is empty
     while cpu::read!(SPI1.sr[TXE;1]) == 0 {}
 
-    super::uart::write1(b'>');
+    //super::uart::write1(b'>');
 
     //cpu::write!(SPI1.cr1[BIDIMODE;1], 0b1); // set BIDIOE to output
     cpu::write!( SPI1.cr1[SPE;1] , 0b1 ); // enable SPI

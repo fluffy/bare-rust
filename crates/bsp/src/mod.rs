@@ -111,6 +111,7 @@ impl BSP {
 
         self.buttons.init();
 
+        // to after timer and console is up 
         self.display.init();
     }
 
