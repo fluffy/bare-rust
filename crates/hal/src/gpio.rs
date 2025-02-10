@@ -91,7 +91,7 @@ impl Pin {
         let pin_num = self.1;
 
         debug_assert!(pin_num < 16);
-        
+
         // set mode to output
         cpu::write!( gpio.moder[pin_num*2;2], 0b01);
 
@@ -106,6 +106,41 @@ impl Pin {
 
         // set speed to slow
         cpu::write!( gpio.ospeedr[pin_num*2;2], 0b00);
+    }
+
+    #[inline(never)]
+    pub fn alt_fun(&self, af_mode: u8, fast: bool) {
+        let gpio = self.0;
+        let pin_num = self.1;
+
+        debug_assert!(pin_num < 16);
+        debug_assert!(af_mode < 16);
+
+        // set mode to output
+        cpu::write!( gpio.moder[pin_num*2;2], 0b10);
+
+        // set output as low
+        cpu::write!( gpio.odr[pin_num*1;1], 0b0);
+
+        // set as push-pull
+        cpu::write!( gpio.otyper[pin_num*1;1], 0b0);
+
+        // set no pull up , no pull down
+        cpu::write!( gpio.pupdr[pin_num*2;2], 0b00);
+
+        if fast {
+            // set speed to fast
+            cpu::write!( gpio.ospeedr[pin_num*2;2], 0b10);
+        } else {
+            // set speed to slow
+            cpu::write!( gpio.ospeedr[pin_num*2;2], 0b00);
+        }
+
+        if pin_num < 8 {
+            cpu::write!( gpio.afrl[(pin_num)*4;4], af_mode as u32 );
+        } else {
+            cpu::write!( gpio.afrh[(pin_num-8)*4;4], af_mode as u32 );
+        }
     }
 
     #[inline(never)]
