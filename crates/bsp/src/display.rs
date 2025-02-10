@@ -153,6 +153,17 @@ mod ili9341 {
         hal::spi::write1(paramters);
     }
 
+    pub fn command_wide(cmd: Command, paramters: &[u16]) {
+        // Send a command to the display
+        let c: [u8; 1] = [cmd as u8];
+
+        board::info::DISP_DC.low(); // command
+        hal::spi::write1(&c);
+
+        board::info::DISP_DC.high(); // data
+        hal::spi::write1_wide(paramters);
+    }
+
     pub fn setup() {
         //LCD_2IN4_Write_Command(0x01); //Software reset
         command(Command::SwReset, &[]);
@@ -233,24 +244,26 @@ mod ili9341 {
 
         command(Command::DisplayOn, &[]);
 
-        if true { // clear to black 
-           
+        if true {
+            // clear to black
+
             for r in 0..320 {
                 command(Command::ColumnAddrSet, &[0x00, 0x00, 0x00, 0xEF]); // EF=239
-                
-                let r1 = (r>>8) as u8;
-                let r0 :u8 = (r & 0xFF) as u8;
-                
-                command(Command::PageAddrSet, &[ r1, r0, r1, r0]); // 13F=319
 
-                let data = [0x00u8; 240 * 2];
-                command(Command::MemoryWrite, &data);
+                let r1 = (r >> 8) as u8;
+                let r0: u8 = (r & 0xFF) as u8;
+
+                command(Command::PageAddrSet, &[r1, r0, r1, r0]); // 13F=319
+
+                let data = [0x0000u16; 240 ];
+                command_wide(Command::MemoryWrite, &data);
                 command(Command::NoOp, &[]);
             }
         }
-        
-        
+
         if true {
+            // test pattern 
+            
             command(Command::ColumnAddrSet, &[0x00, 10, 0x00, 100]); // EF=239
             command(Command::PageAddrSet, &[0x00, 10, 0x00, 60]); // 13F=319
 
@@ -261,8 +274,10 @@ mod ili9341 {
             command(Command::ColumnAddrSet, &[0x00, 90, 0x00, 90 + 50]); // EF=239
             command(Command::PageAddrSet, &[0x00, 40, 0x00, 40 + 50]); // 13F=319
 
-            let data = [0xF0u8; 50 * 50 * 2];
-            command(Command::MemoryWrite, &data);
+            //let data = [ 0xF800u16; 50 * 50]; // red
+            let data = [0x03E0u16; 50 * 50]; // green 
+            //let data = [0x001Fu16; 50 * 50]; // blue
+            command_wide(Command::MemoryWrite, &data);
             command(Command::NoOp, &[]);
         }
     }
