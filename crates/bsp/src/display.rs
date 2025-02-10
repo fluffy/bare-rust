@@ -255,15 +255,15 @@ mod ili9341 {
 
                 command(Command::PageAddrSet, &[r1, r0, r1, r0]); // 13F=319
 
-                let data = [0x0000u16; 240 ];
+                let data = [0x0000u16; 240];
                 command_wide(Command::MemoryWrite, &data);
                 command(Command::NoOp, &[]);
             }
         }
 
         if true {
-            // test pattern 
-            
+            // test pattern
+
             command(Command::ColumnAddrSet, &[0x00, 10, 0x00, 100]); // EF=239
             command(Command::PageAddrSet, &[0x00, 10, 0x00, 60]); // 13F=319
 
@@ -275,8 +275,8 @@ mod ili9341 {
             command(Command::PageAddrSet, &[0x00, 40, 0x00, 40 + 50]); // 13F=319
 
             //let data = [ 0xF800u16; 50 * 50]; // red
-            let data = [0x03E0u16; 50 * 50]; // green 
-            //let data = [0x001Fu16; 50 * 50]; // blue
+            let data = [0x03E0u16; 50 * 50]; // green
+                                             //let data = [0x001Fu16; 50 * 50]; // blue
             command_wide(Command::MemoryWrite, &data);
             command(Command::NoOp, &[]);
         }
