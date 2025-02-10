@@ -185,9 +185,9 @@ mod ili9341 {
 
         command(Command::FraameRateCtrl, &[0x00, 0x12]); // or 18
 
-        // TODO takes 4 parameters 
+        // TODO takes 4 parameters
         command(Command::DisplayFunctionCtrl, &[0x0A, 0xA2]); // perhaps  0x08, 0x82, 0x27 ???
-        //command(Command::DisplayFunctionCtrl, &[0x08, 0x82, 0x27]); 
+                                                              //command(Command::DisplayFunctionCtrl, &[0x08, 0x82, 0x27]);
 
         command(Command::SetTearScanline, &[0x02]);
 
