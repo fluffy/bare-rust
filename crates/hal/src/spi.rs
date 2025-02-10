@@ -41,8 +41,8 @@ pub fn init1(spi_freq: u32, scl_pin: gpio::Pin, sda_pin: gpio::Pin) {
 
     // TODO - Brett has SPI at about 2.5 Mhz not 10 MHz
     assert!(spi_freq >= 48_000_000 / 8);
-    cpu::write!( SPI1.cr1[BR;3] , 0b100 ); // set baud rate to 1/8 (0b010 )
-
+    //cpu::write!( SPI1.cr1[BR;3] , 0b100 ); // set baud rate to 2.5 Mhz (0b100 )
+    cpu::write!( SPI1.cr1[BR;3] , 0b010 ); // set baud rate to 10 Mhz (0b010 )
 
     cpu::write!( SPI1.cr1[MSTR;1] , 0b1 ); // set to master mode
     cpu::write!(SPI1.cr1[BIDIMODE;1], 0b1); // set BIDIMODE to 1 line both directions
