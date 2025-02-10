@@ -1,5 +1,8 @@
+
+#[allow(unused_imports)]
 use core::ptr;
 
+#[allow(unused_imports)]
 use super::cpu;
 pub use super::cpu::*;
 use super::gpio;
@@ -57,6 +60,8 @@ pub fn init1(spi_freq: u32, scl_pin: gpio::Pin, sda_pin: gpio::Pin) {
     cpu::write!( SPI1.cr1[SPE;1] , 0b1 ); // enable SPI
 }
 
+#[cfg(feature = "stm32f405")]
+#[inline(never)]
 pub fn write1(data: &[u8]) {
     // wait for SPI to not be busy
     while cpu::read!(SPI1.sr[BSY;1]) != 0 {}
@@ -72,6 +77,8 @@ pub fn write1(data: &[u8]) {
     while cpu::read!(SPI1.sr[BSY;1]) != 0 {}
 }
 
+#[cfg(feature = "stm32f405")]
+#[inline(never)]
 pub fn write1_wide(data: &[u16]) {
     // wait for SPI to not be busy
     while cpu::read!(SPI1.sr[BSY;1]) != 0 {}
