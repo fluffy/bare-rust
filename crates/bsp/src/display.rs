@@ -54,10 +54,10 @@ impl Display {
         board::info::DISP_NRST.output();
         board::info::DISP_NRST.low(); // put into reset
         let now = hal::timer::current_time();
-        while hal::timer::current_time().sub( now ).as_u64() < 50_000 {} // TODO needed ?
+        while hal::timer::current_time().sub(now).as_u64() < 50_000 {} // TODO needed ?
         board::info::DISP_NRST.high(); // take out of reset
         let now = hal::timer::current_time();
-        while hal::timer::current_time().sub( now ).as_u64() < 120_000 {} // TODO needed ?
+        while hal::timer::current_time().sub(now).as_u64() < 120_000 {} // TODO needed ?
 
         hal::spi::init1(
             board::info::DISP_SPI_FREQ,
@@ -98,7 +98,6 @@ impl Display {
 
 mod ili9341 {
     use crate::board;
-
 
     #[allow(dead_code)]
     pub enum Command {
@@ -155,30 +154,29 @@ mod ili9341 {
     }
 
     pub fn setup() {
-        
         //LCD_2IN4_Write_Command(0x01); //Software reset
         command(Command::SwReset, &[]);
         let now = hal::timer::current_time();
-        while hal::timer::current_time().sub( now ).as_u64() < 5_000 {}
+        while hal::timer::current_time().sub(now).as_u64() < 5_000 {}
 
         command(Command::PowerCtrlA, &[0x39, 0x2C, 0x00, 0x34, 0x02]);
 
         command(Command::PowerCtrlB, &[0x00, 0xC1, 0x30]);
-
-        //command(Command::DriverTimingCtrlA, &[0x85, 0x00, 0x79]); // 78 or 79 ???
-        command(Command::DriverTimingCtrlA, &[0x85, 0x00, 0x78]);
-
-        command(Command::DriverTimingCtrlB, &[0x00, 0x00]);
-
-        command(Command::PowerOnSeqCtrl, &[0x64, 0x03, 0x12, 0x81]);
-
-        command(Command::PumpRatioCtrl, &[0x20]);
 
         //command(Command::PowerCtrl1, &[0x1D]); // or 0x23 ???
         command(Command::PowerCtrl1, &[0x23]);
 
         //command(Command::PowerCtrl2, &[0x12]); // or 0x10 ???
         command(Command::PowerCtrl2, &[0x10]);
+
+        command(Command::PowerOnSeqCtrl, &[0x64, 0x03, 0x12, 0x81]);
+
+        command(Command::PumpRatioCtrl, &[0x20]);
+
+        //command(Command::DriverTimingCtrlA, &[0x85, 0x00, 0x79]); // 78 or 79 ???
+        command(Command::DriverTimingCtrlA, &[0x85, 0x00, 0x78]);
+
+        command(Command::DriverTimingCtrlB, &[0x00, 0x00]);
 
         //command(Command::VcomCtrl1, &[0x33, 0x3F]); // or 3e,28
         command(Command::VcomCtrl1, &[0x3e, 0x28]);
@@ -189,6 +187,7 @@ mod ili9341 {
         //command(Command::MemoryAccessCtrl, &[0x08]); // or 0x48 or 0x88
         command(Command::MemoryAccessCtrl, &[0x48]); // or 0x48 or 0x88
 
+        // set to 5-6-6 pixel format (16 bits per pixel)
         command(Command::PixelFormatSet, &[0x55]);
 
         //command(Command::FrameRateCtrl, &[0x00, 0x12]); // or 18
@@ -196,9 +195,9 @@ mod ili9341 {
 
         // TODO takes 4 parameters
         //command(Command::DisplayFunctionCtrl, &[0x0A, 0xA2]); // perhaps  0x08, 0x82, 0x27 ???
-        command(Command::DisplayFunctionCtrl, &[0x08, 0x82, 0x27]);
+        command(Command::DisplayFunctionCtrl, &[0x08, 0x82, 0x27, 0x01]);
 
-        // command(Command::SetTearScanline, &[0x02]);
+        command(Command::SetTearScanline, &[0x02]);
 
         command(Command::Enable3GammaCtrl, &[0x00]);
 
@@ -207,11 +206,11 @@ mod ili9341 {
         command(
             Command::PositiveGammaCorrect,
             &[
-                // 0x0F, 0x22, 0x1C, 0x1B, 0x08, 0x0F, 0x48, 0xB8, 
+                // 0x0F, 0x22, 0x1C, 0x1B, 0x08, 0x0F, 0x48, 0xB8,
                 // 0x34, 0x05, 0x0C, 0x09, 0x0F, 0x07, 0x00
                 // alternative values
-                0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 
-                0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00
+                0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09,
+                0x00,
             ],
         );
 
@@ -221,8 +220,8 @@ mod ili9341 {
                 // 0x00, 0x23, 0x24, 0x07, 0x10, 0x07, 0x38, 0x47,
                 // 0x4B, 0x0A, 0x13, 0x06, 0x30, 0x38, 0x0F
                 // alternative values
-                0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 
-                0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F
+                0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36,
+                0x0F,
             ],
         );
 
@@ -230,16 +229,39 @@ mod ili9341 {
 
         command(Command::SleepOut, &[]);
         let now = hal::timer::current_time();
-        while hal::timer::current_time().sub( now ).as_u64() < 120_000 {}
+        while hal::timer::current_time().sub(now).as_u64() < 120_000 {}
 
         command(Command::DisplayOn, &[]);
 
-        //loop { 
+        if true { // clear to black 
+           
+            for r in 0..320 {
+                command(Command::ColumnAddrSet, &[0x00, 0x00, 0x00, 0xEF]); // EF=239
+                
+                let r1 = (r>>8) as u8;
+                let r0 :u8 = (r & 0xFF) as u8;
+                
+                command(Command::PageAddrSet, &[ r1, r0, r1, r0]); // 13F=319
+
+                let data = [0x00u8; 240 * 2];
+                command(Command::MemoryWrite, &data);
+                command(Command::NoOp, &[]);
+            }
+        }
+        
+        
         if true {
             command(Command::ColumnAddrSet, &[0x00, 10, 0x00, 100]); // EF=239
             command(Command::PageAddrSet, &[0x00, 10, 0x00, 60]); // 13F=319
 
             let data = [0xFFu8; 90 * 40 * 2];
+            command(Command::MemoryWrite, &data);
+            command(Command::NoOp, &[]);
+
+            command(Command::ColumnAddrSet, &[0x00, 90, 0x00, 90 + 50]); // EF=239
+            command(Command::PageAddrSet, &[0x00, 40, 0x00, 40 + 50]); // 13F=319
+
+            let data = [0xF0u8; 50 * 50 * 2];
             command(Command::MemoryWrite, &data);
             command(Command::NoOp, &[]);
         }
