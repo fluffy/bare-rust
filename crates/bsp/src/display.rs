@@ -42,6 +42,9 @@ impl Display {
 
     #[inline(never)]
     pub fn init(&self) {
+        if !board::info::HAS_DISP {
+            return;
+        }
         board::info::DISP_CS.output();
         board::info::DISP_CS.low(); // chip select
 
@@ -91,6 +94,9 @@ impl Display {
         height: usize,
         stride: usize,
     ) {
+        if !board::info::HAS_DISP {
+            return;
+        }
         // Draw a bitmap at position (x, y)
         let _unused = (bitmap, x, y, width, height, stride);
     }
