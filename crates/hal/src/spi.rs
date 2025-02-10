@@ -20,7 +20,6 @@ pub fn init1(spi_freq: u32, scl_pin: gpio::Pin, sda_pin: gpio::Pin) {
     sda_pin.pullup();
     scl_pin.pulldown();
 
-
     // enable clock for SPI1
     cpu::write!(RCC.apb2enr[SPI1EN;1], 0b1);
 
@@ -62,16 +61,8 @@ pub fn write1(data: &[u8]) {
     // wait for SPI to not be busy
     while cpu::read!(SPI1.sr[BSY;1]) != 0 {}
 
-    // make sure TX buffer is empty
-    while cpu::read!(SPI1.sr[TXE;1]) == 0 {}
-
-    //super::uart::write1(b'>');
-
-    //cpu::write!(SPI1.cr1[BIDIMODE;1], 0b1); // set BIDIOE to output
-    //cpu::write!( SPI1.cr1[SPE;1] , 0b1 ); // enable SPI
-
     for &d in data {
-        cpu::write!(SPI1.dr, d as u32); // send some data
+        cpu::write!(SPI1.dr, d as u32); // send 8 buts of data
 
         // wait for transmit buffer to be empty
         while cpu::read!(SPI1.sr[TXE;1]) == 0 {}
@@ -79,6 +70,23 @@ pub fn write1(data: &[u8]) {
 
     // wait for SPI to not be busy
     while cpu::read!(SPI1.sr[BSY;1]) != 0 {}
-    
-    //cpu::write!( SPI1.cr1[SPE;1] , 0b0 ); // disable SPI
+}
+
+pub fn write1_wide(data: &[u16]) {
+    // wait for SPI to not be busy
+    while cpu::read!(SPI1.sr[BSY;1]) != 0 {}
+
+    cpu::write!(SPI1.cr1[DFF;1], 0b1); // set to 16 bit frame
+
+    for &d in data {
+        cpu::write!(SPI1.dr, d as u32); // send 16 bits of data
+
+        // wait for transmit buffer to be empty
+        while cpu::read!(SPI1.sr[TXE;1]) == 0 {}
+    }
+
+    // wait for SPI to not be busy
+    while cpu::read!(SPI1.sr[BSY;1]) != 0 {}
+
+    cpu::write!(SPI1.cr1[DFF;1], 0b0); // set to 8 bit frame
 }
