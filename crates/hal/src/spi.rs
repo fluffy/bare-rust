@@ -18,8 +18,9 @@ pub fn init1(spi_freq: u32, scl_pin: gpio::Pin, sda_pin: gpio::Pin) {
     sda_pin.output();
 
     sda_pin.pullup();
+    scl_pin.pulldown();
 
-  
+
     // enable clock for SPI1
     cpu::write!(RCC.apb2enr[SPI1EN;1], 0b1);
 
@@ -38,11 +39,11 @@ pub fn init1(spi_freq: u32, scl_pin: gpio::Pin, sda_pin: gpio::Pin) {
     cpu::write!(SPI1.cr1[RXONLY;1], 0b0); // set to full duplex
     cpu::write!(SPI1.cr1[CRCEN;1], 0b0); // disable CRC
 
-    // TODO - Brett has SPI at about 2.5 Mhz not 10 MHz 
+    // TODO - Brett has SPI at about 2.5 Mhz not 10 MHz
     assert!(spi_freq >= 48_000_000 / 8);
     cpu::write!( SPI1.cr1[BR;3] , 0b100 ); // set baud rate to 1/8 (0b010 )
- 
-    
+
+
     cpu::write!( SPI1.cr1[MSTR;1] , 0b1 ); // set to master mode
     cpu::write!(SPI1.cr1[BIDIMODE;1], 0b1); // set BIDIMODE to 1 line both directions
     cpu::write!(SPI1.cr1[BIDIOE;1], 0b1); // set BIDIOE to output
@@ -54,6 +55,7 @@ pub fn init1(spi_freq: u32, scl_pin: gpio::Pin, sda_pin: gpio::Pin) {
     cpu::write!( SPI1.cr1[CPHA;1] , 0b0 ); // sample on rising edge
 
     cpu::write!( SPI1.cr1[SPE;1] , 0b0 ); // do ot enable SPI yet
+    cpu::write!( SPI1.cr1[SPE;1] , 0b1 ); // enable SPI
 }
 
 pub fn write1(data: &[u8]) {
@@ -66,7 +68,7 @@ pub fn write1(data: &[u8]) {
     //super::uart::write1(b'>');
 
     //cpu::write!(SPI1.cr1[BIDIMODE;1], 0b1); // set BIDIOE to output
-    cpu::write!( SPI1.cr1[SPE;1] , 0b1 ); // enable SPI
+    //cpu::write!( SPI1.cr1[SPE;1] , 0b1 ); // enable SPI
 
     for &d in data {
         cpu::write!(SPI1.dr, d as u32); // send some data
@@ -75,5 +77,8 @@ pub fn write1(data: &[u8]) {
         while cpu::read!(SPI1.sr[TXE;1]) == 0 {}
     }
 
-    cpu::write!( SPI1.cr1[SPE;1] , 0b0 ); // disable SPI
+    // wait for SPI to not be busy
+    while cpu::read!(SPI1.sr[BSY;1]) != 0 {}
+    
+    //cpu::write!( SPI1.cr1[SPE;1] , 0b0 ); // disable SPI
 }
