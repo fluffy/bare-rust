@@ -15,7 +15,7 @@
 //! let display = Display::new();
 //! display.init();
 //!
-//! display.draw_bitmap( &[0xFFFF; 240 * 320/10], 0,0, 240, 320/10, 240 );
+//! display.draw_bitmap( &[0xFFFF; 240 * 320/10], 0,0, 240, 320/10 );
 //!
 //! while !display.ready() {}
 //! ```
@@ -27,9 +27,7 @@ extern crate hal;
 extern crate std;
 
 use crate::board;
-
-const WIDTH: usize = 240;
-const HEIGHT: usize = 320;
+//use crate::board::info::DISP_NUM_ROWS;
 
 /// Struct keeping track of the display state
 pub struct Display {}
@@ -73,7 +71,10 @@ impl Display {
 
     /// Returns the width and height of the display.
     pub fn size(&self) -> (u32, u32) {
-        (WIDTH as u32, HEIGHT as u32)
+        (
+            crate::board::info::DISP_NUM_COLS as u32,
+            crate::board::info::DISP_NUM_ROWS as u32,
+        )
     }
 
     /// Returns whether the display is ready to accept the next draw_bitmap command.
@@ -85,20 +86,41 @@ impl Display {
     ///
     /// This is an async call that starts a DMA transfer to the display controller and
     /// ready will return false until the transfer is complete.
-    pub fn draw_bitmap(
-        &self,
-        bitmap: &[u16],
-        x: usize,
-        y: usize,
-        width: usize,
-        height: usize,
-        stride: usize,
-    ) {
+    pub fn draw_bitmap(&self, bitmap: &[u16], x: usize, y: usize, width: usize, height: usize) {
         if !board::info::HAS_DISP {
             return;
         }
-        // Draw a bitmap at position (x, y)
-        let _unused = (bitmap, x, y, width, height, stride);
+
+        assert!(x + width <= crate::board::info::DISP_NUM_COLS);
+        assert!(y + height <= crate::board::info::DISP_NUM_ROWS);
+
+        let start_row: usize = (board::info::DISP_NUM_ROWS) - 1 - y - (height - 1);
+        let start_row_low: u8 = (start_row & 0xFF) as u8;
+        let start_row_high: u8 = ((start_row >> 8) & 0xFF) as u8;
+
+        let end_row: usize = (board::info::DISP_NUM_ROWS) - 1 - y;
+        let end_row_low: u8 = (end_row & 0xFF) as u8;
+        let end_row_high: u8 = ((end_row >> 8) & 0xFF) as u8;
+
+        let start_col: usize = x;
+        let end_col: usize = x + width - 1;
+        let start_col_low: u8 = (start_col & 0xFF) as u8;
+        let start_col_high: u8 = ((start_col >> 8) & 0xFF) as u8;
+        let end_col_low: u8 = (end_col & 0xFF) as u8;
+        let end_col_high: u8 = ((end_col >> 8) & 0xFF) as u8;
+
+        ili9341::command(
+            ili9341::Command::ColumnAddrSet,
+            &[start_col_high, start_col_low, end_col_high, end_col_low],
+        );
+
+        ili9341::command(
+            ili9341::Command::PageAddrSet,
+            &[start_row_high, start_row_low, end_row_high, end_row_low],
+        );
+
+        ili9341::command_wide(ili9341::Command::MemoryWrite, &bitmap);
+        ili9341::command(ili9341::Command::NoOp, &[]);
     }
 }
 
