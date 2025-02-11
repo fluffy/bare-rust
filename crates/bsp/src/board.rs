@@ -186,8 +186,8 @@ pub mod info {
     pub const DISP_BL: gpio::Pin = gpio::Pin(cpu::GPIOC, 14); // Backlight - 1 = on
     pub const DISP_SCL: gpio::Pin = gpio::Pin(cpu::GPIOA, 5); // Uses SPI1 CLK
     pub const DISP_SDA: gpio::Pin = gpio::Pin(cpu::GPIOA, 7); // Uses SPI1 MOSI
-    pub const DISP_NUM_ROWS: u32 = 320;
-    pub const DISP_NUM_COLS: u32 = 240;
+    pub const DISP_NUM_ROWS: usize = 320;
+    pub const DISP_NUM_COLS: usize = 240;
     pub const DISP_SPI_FREQ: u32 = 10_000_000; // must be slower if reading
 }
 

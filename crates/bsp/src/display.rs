@@ -15,7 +15,7 @@
 //! let display = Display::new();
 //! display.init();
 //!
-//! display.draw_bitmap( &[0xFFFF; 240 * 320/10], 0,0, 240, 320/10, 240 );
+//! display.draw_bitmap( &[0xFFFF; 240 * 320/10], 0,0, 240, 320/10 );
 //!
 //! while !display.ready() {}
 //! ```
