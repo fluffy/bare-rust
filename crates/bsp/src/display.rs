@@ -29,7 +29,6 @@ extern crate std;
 use crate::board;
 //use crate::board::info::DISP_NUM_ROWS;
 
-
 /// Struct keeping track of the display state
 pub struct Display {}
 
@@ -72,7 +71,10 @@ impl Display {
 
     /// Returns the width and height of the display.
     pub fn size(&self) -> (u32, u32) {
-        (crate::board::info::DISP_NUM_COLS as u32, crate::board::info::DISP_NUM_ROWS as u32)
+        (
+            crate::board::info::DISP_NUM_COLS as u32,
+            crate::board::info::DISP_NUM_ROWS as u32,
+        )
     }
 
     /// Returns whether the display is ready to accept the next draw_bitmap command.
@@ -89,9 +91,9 @@ impl Display {
             return;
         }
 
-        assert!( x + width <= crate::board::info::DISP_NUM_COLS );
-        assert!( y + height <= crate::board::info::DISP_NUM_ROWS );
-        
+        assert!(x + width <= crate::board::info::DISP_NUM_COLS);
+        assert!(y + height <= crate::board::info::DISP_NUM_ROWS);
+
         let start_row: usize = (board::info::DISP_NUM_ROWS) - 1 - y;
         let start_row_low: u8 = (start_row & 0xFF) as u8;
         let start_row_high: u8 = ((start_row >> 8) & 0xFF) as u8;
@@ -100,8 +102,8 @@ impl Display {
         let end_row_low: u8 = (end_row & 0xFF) as u8;
         let end_row_high: u8 = ((end_row >> 8) & 0xFF) as u8;
 
-        let start_col :usize = x;
-        let end_col :usize = x + width - 1;
+        let start_col: usize = x;
+        let end_col: usize = x + width - 1;
         let start_col_low: u8 = (start_col & 0xFF) as u8;
         let start_col_high: u8 = ((start_col >> 8) & 0xFF) as u8;
         let end_col_low: u8 = (end_col & 0xFF) as u8;
@@ -110,12 +112,12 @@ impl Display {
         ili9341::command(
             ili9341::Command::ColumnAddrSet,
             &[start_col_high, start_col_low, end_col_high, end_col_low],
-        ); 
+        );
 
         ili9341::command(
             ili9341::Command::PageAddrSet,
             &[start_row_high, start_row_low, end_row_high, end_row_low],
-        ); 
+        );
 
         ili9341::command_wide(ili9341::Command::MemoryWrite, &bitmap);
         ili9341::command(ili9341::Command::NoOp, &[]);

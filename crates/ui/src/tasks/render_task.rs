@@ -10,18 +10,18 @@ pub struct RenderTask {}
 const FONT_WIDTH: usize = 11;
 const FONT_HEIGHT: usize = 16;
 const DISPLAY_WIDTH: usize = board::info::DISP_NUM_COLS;
-const DISPLAY_HEIGHT: usize =  board::info::DISP_NUM_ROWS;
+const DISPLAY_HEIGHT: usize = board::info::DISP_NUM_ROWS;
 const DISPLAY_BAND_HEIGHT: usize = 320 / 10;
 const TEXT_ROWS: usize = DISPLAY_HEIGHT / FONT_HEIGHT;
 const TEXT_COLS: usize = DISPLAY_WIDTH / FONT_WIDTH;
 
 pub struct Data {
-    text: [[u8; TEXT_COLS ]; TEXT_ROWS ],
-    dirty: [bool; TEXT_ROWS ],
+    text: [[u8; TEXT_COLS]; TEXT_ROWS],
+    dirty: [bool; TEXT_ROWS],
 
-    bitmap: [u16; DISPLAY_WIDTH * DISPLAY_BAND_HEIGHT ],
+    bitmap: [u16; DISPLAY_WIDTH * DISPLAY_BAND_HEIGHT],
     current_band: usize,
-    
+
     junk: u32,
 }
 
@@ -29,11 +29,11 @@ impl Data {
     /// Creates a new `Data` instance with an empty buffer.
     pub const fn new() -> Self {
         Data {
-            text: [[0; TEXT_COLS ]; TEXT_ROWS ],
-            dirty: [true; TEXT_ROWS ],
-            bitmap: [0; (DISPLAY_WIDTH * DISPLAY_BAND_HEIGHT) ],
+            text: [[0; TEXT_COLS]; TEXT_ROWS],
+            dirty: [true; TEXT_ROWS],
+            bitmap: [0; (DISPLAY_WIDTH * DISPLAY_BAND_HEIGHT)],
             current_band: 0,
-            junk: 0 
+            junk: 0,
         }
     }
 }
@@ -59,8 +59,8 @@ pub fn recv(
         Msg::PrintMsg { text } => {
             assert!(TEXT_ROWS > 3);
             // scroll the text up
-            for r  in 0..TEXT_ROWS  - 3 {
-                for c  in 0..TEXT_COLS  {
+            for r in 0..TEXT_ROWS - 3 {
+                for c in 0..TEXT_COLS {
                     data.text[r][c] = data.text[r + 1][c];
                 }
                 data.dirty[r] = true;
@@ -73,10 +73,10 @@ pub fn recv(
                 num_cols = TEXT_COLS;
             }
             for col in 0..num_cols {
-                data.text[row ][col ] = text[col ];
+                data.text[row][col] = text[col];
             }
             for col in num_cols..TEXT_COLS {
-                data.text[row ][col ] = b' ';
+                data.text[row][col] = b' ';
             }
             data.dirty[row] = true;
         }
@@ -138,16 +138,15 @@ impl Task for RenderTask {
         if data.junk > 200 {
             data.junk = 0;
         }
-        
-        let red :u16 = (255 - data.junk as u16)  >> ( 8-5);
-        let green:u16 = 0 >> ( 8-6);
-        let blue:u16 = 0 >> ( 8-5);
-        let color:u16 = (red << 11) | (green << 5) | blue;
-        
-        
+
+        let red: u16 = (255 - data.junk as u16) >> (8 - 5);
+        let green: u16 = 0 >> (8 - 6);
+        let blue: u16 = 0 >> (8 - 5);
+        let color: u16 = (red << 11) | (green << 5) | blue;
+
         for y in 0..DISPLAY_BAND_HEIGHT {
             for x in 0..DISPLAY_WIDTH {
-                data.bitmap[y * DISPLAY_WIDTH + x] = color; // red 
+                data.bitmap[y * DISPLAY_WIDTH + x] = color; // red
             }
         }
 
@@ -156,7 +155,7 @@ impl Task for RenderTask {
             0,                                       // x
             data.current_band * DISPLAY_BAND_HEIGHT, //y
             DISPLAY_WIDTH,
-            DISPLAY_BAND_HEIGHT
+            DISPLAY_BAND_HEIGHT,
         );
     }
 
