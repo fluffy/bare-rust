@@ -94,11 +94,11 @@ impl Display {
         assert!(x + width <= crate::board::info::DISP_NUM_COLS);
         assert!(y + height <= crate::board::info::DISP_NUM_ROWS);
 
-        let start_row: usize = (board::info::DISP_NUM_ROWS) - 1 - y;
+        let start_row: usize = (board::info::DISP_NUM_ROWS) - 1 - y - (height-1);
         let start_row_low: u8 = (start_row & 0xFF) as u8;
         let start_row_high: u8 = ((start_row >> 8) & 0xFF) as u8;
 
-        let end_row: usize = (board::info::DISP_NUM_ROWS) - 1 - y + height - 1;
+        let end_row: usize = (board::info::DISP_NUM_ROWS) - 1 - y;
         let end_row_low: u8 = (end_row & 0xFF) as u8;
         let end_row_high: u8 = ((end_row >> 8) & 0xFF) as u8;
 
