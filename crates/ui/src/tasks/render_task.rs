@@ -41,8 +41,8 @@ impl Data {
 /// Information about the render task.
 const RENDER_TASK_INFO: TaskInfo = TaskInfo {
     name: b"Render__",
-    run_every_us: 100_000,
-    time_budget_us: 100_000,
+    run_every_us: 50_000,
+    time_budget_us: 15_000,
     mem_budget_bytes: 500,
 };
 
