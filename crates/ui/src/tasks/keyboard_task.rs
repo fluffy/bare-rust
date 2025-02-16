@@ -48,6 +48,22 @@ impl Task for KeyboardTask {
                 }
             }
         }
+        
+        let key = bsp.keyboard.get_key();
+        if key != 0 {
+            let keyboard_msg = Msg::Keyboard { key: key as char };
+            sender.send(keyboard_msg);
+        }
+
+        // check if key from serial port 
+        if !hal::uart::empty1() {
+            let c: u8;
+            c = hal::uart::read1();
+            let echo: bool = true; // TODO - turn off echo
+            if echo && (c != 0) {
+                hal::uart::write1(c);
+            }
+        }
     }
 
     /// Returns the information about the keyboard task.
