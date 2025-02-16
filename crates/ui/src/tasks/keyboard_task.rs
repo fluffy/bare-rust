@@ -1,3 +1,14 @@
+//! This module handles the keyboard task for the application.
+//!
+//! The keyboard task is responsible for reading the state of the keyboard and sending messages
+//! when the state changes. The keyboard is interfaced using a matrix of rows and columns.
+//!
+//! - **Keyboard Columns**: These are configured as output pins with a default state of low (pulled low).
+//! - **Keyboard Rows**: These are configured as input pins with a default state of low (pulled down).
+//!
+//! The task periodically scans the columns and checks the state of the rows to detect key presses and releases.
+//! When a key press or release is detected, a message is sent to notify other parts of the system.
+
 use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
