@@ -24,7 +24,7 @@ pub struct Data {
     bitmap: [u16; DISPLAY_WIDTH * DISPLAY_BAND_HEIGHT],
     current_band: usize,
 
-    junk: u32,
+    junk: u32, // TODO - remove this
 }
 
 impl Data {
@@ -118,6 +118,74 @@ pub fn recv(
     }
 }
 
+fn render_glyph(c: u8, x: i32, y: i32, data: &mut Data) {
+    let index = font::GLYPH_INDEX[c as usize] as usize;
+
+    if index == 255 {
+        return; // TOOO render black box.
+    }
+
+    let glyph = &font::GLYPH_METRICS[index];
+
+    let mut rle_index = glyph.rle_start as usize;
+
+    let mut row: i32 = y
+        - ( DISPLAY_HEIGHT as i32 - (data.current_band+1) as i32 * DISPLAY_BAND_HEIGHT as i32)
+        - (glyph.ymin as i32)
+        - (glyph.height as i32)
+        + 1;
+    let mut col: i32 = x + glyph.xmin as i32;
+
+    if row >= DISPLAY_BAND_HEIGHT as i32 {
+        return;
+    }
+    if (row + glyph.height as i32) < 0 {
+        return;
+    }
+    if col > DISPLAY_WIDTH as i32 {
+        return;
+    }
+    if (col + glyph.width as i32) < 0 {
+        return;
+    }
+
+    loop {
+        let (count, val) = font::RLE_DATA[rle_index];
+        if count == 0 && val == 0 {
+            break;
+        }
+
+        if count == -1 {
+            row += 1;
+
+            col = x + glyph.xmin as i32;
+        }
+
+        if count > 0 {
+            let red: u16 = (val as u16) >> (8 - 5);
+            let green: u16 = (val as u16) >> (8 - 6);
+            let blue: u16 = (val as u16) >> (8 - 5);
+            let color: u16 = (red << 11) | (green << 5) | blue;
+
+            for _ in 0..count {
+                if val < 255 {
+
+                    if (row >= 0)
+                        && (row < DISPLAY_BAND_HEIGHT as i32)
+                        && (col >= 0)
+                        && (col < DISPLAY_WIDTH as i32)
+                    {
+                        data.bitmap[(row * (DISPLAY_WIDTH as i32) + col) as usize] = color;
+                    }
+                }
+                col += 1;
+            }
+        }
+
+        rle_index += 1;
+    }
+}
+
 impl Task for RenderTask {
     /// Method to execute the render task.
     /// Reads the state of the render and sends a message if the state has changed.
@@ -152,97 +220,27 @@ impl Task for RenderTask {
             }
         }
 
-        let mut x : i32 = 5;
-        let y : i32 = font::METRICS.ascent as i32 + 1;
+        let mut x: i32 = 0;
+        let mut y: i32 = font::METRICS.ascent as i32 ;
 
         let text = "Hello, AV!";
         //let text = "Hello";
 
         for c in text.chars() {
             let index = font::GLYPH_INDEX[c as usize] as usize;
-           
-           if index == 255 {
+
+            if index == 255 {
                 continue;
             }
-           
+
             let glyph = &font::GLYPH_METRICS[index];
 
-            let rle_start = glyph.rle_start as usize;
-            let rle_end = font::RLE_DATA.len();
+            render_glyph(c as u8, x, y, data);
 
-            let width = glyph.width as i32;
-
-            let mut rle_index = rle_start;
-            let mut row: i32 = 0;
-            let mut col : i32 = 0;
-
-            let max_row = font::METRICS.ascent as i32 - font::METRICS.descent as i32;
-            let max_col = glyph.width as i32 + 1;
-
-            assert!( font::METRICS.min_width <= font::METRICS.max_width);
-            assert!( font::METRICS.rle_bytes > 0 );
-            assert!( font::METRICS.line_gap <= 2 );
-
-            assert!( glyph.xmin <= 5 );
-            assert!( glyph.xmin >= 0 );
-
-            let ymax = glyph.ymin + glyph.height as i8;
-
-            for _  in ymax ..  font::METRICS.ascent as i8 {
-                row += 1;
-                assert!( row <= max_row);
-            }
-
-            while rle_index < rle_end {
-                let (count,val) = font::RLE_DATA[rle_index];
-                if count == 0 && val == 0 {
-                    break;
-                }
-                if col == 0 {
-                    for _ in 0 .. glyph.xmin {
-                      
-                        col += 1;
-                        assert!( col <= max_col);
-                    }
-                }
-                if count == -1 {
-                    for _ in col ..width {
-                      
-                        col += 1;
-                        assert!( col <= max_col);
-                    }
-                   
-                    row += 1;
-                    assert!( row <= max_row);
-                    col = 0;
-                }
-                if  count > 0 {
-                    for _ in 0..count {
-                        if val < 255 {
-
-                            let red: u16 = (val as u16) >> (8 - 5);
-                            let green: u16 =  (val as u16)  >> (8 - 6);
-                            let blue: u16 =  (val as u16)  >> (8 - 5);
-                            let color: u16 = (red << 11) | (green << 5) | blue;
-                            
-                            data.bitmap[ ((y- (glyph.height as i32 ) +row ) * DISPLAY_WIDTH as i32 + x+col ) as usize] = color; 
-                            
-                            col += 1;
-                            assert!( col <= max_col);
-                        }
-                        else {
-                            col += 1;
-                            assert!( col <= max_col);
-                        }
-                    }
-                }
-
-                rle_index += 1;
-            }
-           
-           x += 1 + glyph.width as i32;
+            x += 1 + glyph.width as i32;
+            //y=y+10;
         }
-        
+
         bsp.display.draw_bitmap(
             &data.bitmap,
             0,                                       // x
