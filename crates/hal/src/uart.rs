@@ -88,6 +88,16 @@ pub fn init2(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     let usart_div: u32 = apb_freq / baud_rate as u32;
     cpu::write!(USART2.brr, usart_div);
 
+    cpu::write!( USART2.cr1[M;1], 0); // 8 data bits
+    let even_parity = false;
+    if even_parity {
+        cpu::write!( USART2.cr1[PCE;1], 1); // parity control enable
+        cpu::write!( USART2.cr1[PS;1], 0); // even parity
+    } else {
+        cpu::write!( USART2.cr1[PCE;1], 0); // no parity
+    }
+    cpu::write!( USART2.cr2[STOP;2], 0b00); // 1 stop bit
+    
     // Enable USART2, transmitter and receiver
     cpu::write!(USART2.cr1[UE;1], 1); // USART enable
     cpu::write!(USART2.cr1[TE;1], 1); // Transmitter enable
@@ -116,7 +126,6 @@ pub fn init1(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
     cpu::write!( USART1.brr[DIV_Fraction;4], frac as u32);
 
     cpu::write!( USART1.cr1[M;1], 0); // 8 data bits
-
     let even_parity = false;
     if even_parity {
         cpu::write!( USART1.cr1[PCE;1], 1); // parity control enable
@@ -368,12 +377,42 @@ pub fn empty2() -> bool {
 }
 
 #[cfg(feature = "stm32f072")]
+pub fn empty1() -> bool {
+    // Wait until transmit data register is empty
+    cpu::read!(USART1.isr[RXNE;1]) == 0
+}
+
+#[cfg(feature = "stm32f405")]
+pub fn empty1() -> bool {
+    // Wait until transmit data register is empty
+    cpu::read!(USART1.sr[RXNE;1]) == 0
+}
+
+
+#[cfg(feature = "stm32f072")]
 pub fn read2() -> u8 {
     // Wait until receive data register is empty
     while cpu::read!(USART2.isr[RXNE;1]) == 0 {}
     // Write the byte to the data register
     cpu::read!(USART2.rdr) as u8
 }
+
+#[cfg(feature = "stm32f072")]
+pub fn read1() -> u8 {
+    // Wait until receive data register is empty
+    while cpu::read!(USART1.isr[RXNE;1]) == 0 {}
+    // Write the byte to the data register
+    cpu::read!(USART1.rdr) as u8
+}
+
+#[cfg(feature = "stm32f405")]
+pub fn read1() -> u8 {
+    // Wait until receive data register is empty
+    while cpu::read!(USART1.sr[RXNE;1]) == 0 {}
+    // Write the byte to the data register
+    cpu::read!(USART1.dr) as u8
+}
+
 
 #[cfg(test)]
 mod tests {
