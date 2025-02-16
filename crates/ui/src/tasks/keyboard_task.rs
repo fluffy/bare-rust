@@ -63,6 +63,9 @@ impl Task for KeyboardTask {
             if echo && (c != 0) {
                 hal::uart::write1(c);
             }
+            
+            let keyboard_msg = Msg::Keyboard { key: c as char };
+            sender.send(keyboard_msg);
         }
     }
 
