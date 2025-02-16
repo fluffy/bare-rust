@@ -23,8 +23,6 @@ pub struct Data {
 
     bitmap: [u16; DISPLAY_WIDTH * DISPLAY_BAND_HEIGHT],
     current_band: usize,
-
-    junk: u32, // TODO - remove this
 }
 
 impl Data {
@@ -35,7 +33,6 @@ impl Data {
             dirty: [true; TEXT_ROWS],
             bitmap: [0; (DISPLAY_WIDTH * DISPLAY_BAND_HEIGHT)],
             current_band: 0,
-            junk: 0,
         }
     }
 }
@@ -130,7 +127,7 @@ fn render_glyph(c: u8, x: i32, y: i32, data: &mut Data) {
     let mut rle_index = glyph.rle_start as usize;
 
     let mut row: i32 = y
-        - ( DISPLAY_HEIGHT as i32 - (data.current_band+1) as i32 * DISPLAY_BAND_HEIGHT as i32)
+        - (DISPLAY_HEIGHT as i32 - (data.current_band + 1) as i32 * DISPLAY_BAND_HEIGHT as i32)
         - (glyph.ymin as i32)
         - (glyph.height as i32)
         + 1;
@@ -169,7 +166,6 @@ fn render_glyph(c: u8, x: i32, y: i32, data: &mut Data) {
 
             for _ in 0..count {
                 if val < 255 {
-
                     if (row >= 0)
                         && (row < DISPLAY_BAND_HEIGHT as i32)
                         && (col >= 0)
@@ -204,41 +200,62 @@ impl Task for RenderTask {
             data.current_band -= 1;
         }
 
-        data.junk += 32;
-        if data.junk > 200 {
-            data.junk = 0;
-        }
-
-        let red: u16 = (255 - data.junk as u16) >> (8 - 5);
-        let green: u16 = 0 >> (8 - 6);
-        let blue: u16 = 0 >> (8 - 5);
-        let color: u16 = (red << 11) | (green << 5) | blue;
-
         for y in 0..DISPLAY_BAND_HEIGHT {
             for x in 0..DISPLAY_WIDTH {
-                data.bitmap[y * DISPLAY_WIDTH + x] = 0xFFFF; // red
+                data.bitmap[y * DISPLAY_WIDTH + x] = 0xFFFF; // white
+            }
+        }
+        
+        if false {
+            for r in 0..TEXT_ROWS {
+                for c in 0..TEXT_COLS {
+                    data.text[r][c] = 0;
+                }
+                data.dirty[r] = true;
+            }
+        }
+
+        if false {
+            for r in 0..5 {
+                for c in 0..10 {
+                    data.text[r][c] = '0' as u8 + (c % 10) as u8;
+                }
+                data.dirty[r] = true;
             }
         }
 
         let mut x: i32 = 0;
-        let mut y: i32 = font::METRICS.ascent as i32 ;
+        let mut y: i32 = font::METRICS.ascent as i32;
 
-        let text = "Hello, AV!";
-        //let text = "Hello";
+        if true {
+            for row in 0..TEXT_ROWS {
+                for col in 0..TEXT_COLS {
+                    let c = data.text[row][col];
 
-        for c in text.chars() {
-            let index = font::GLYPH_INDEX[c as usize] as usize;
+                    let index = font::GLYPH_INDEX[c as usize] as usize;
 
-            if index == 255 {
-                continue;
+                    if index == 255 {
+                        continue;
+                    }
+
+                    let glyph = &font::GLYPH_METRICS[index];
+
+                    render_glyph(c as u8, x, y, data);
+
+                    x += glyph.width as i32 + 1;
+                }
+                y += font::METRICS.line_gap as i32 + font::METRICS.ascent as i32
+                    - font::METRICS.descent as i32;
+                x = 0;
             }
+        }
 
-            let glyph = &font::GLYPH_METRICS[index];
-
-            render_glyph(c as u8, x, y, data);
-
-            x += 1 + glyph.width as i32;
-            //y=y+10;
+        if false {
+            let text = "Hello, AV!";
+            for c in text.bytes() {
+                render_glyph(c, x, y, data);
+                x += 1 + font::GLYPH_METRICS[font::GLYPH_INDEX[c as usize] as usize].width as i32;
+            }
         }
 
         bsp.display.draw_bitmap(
