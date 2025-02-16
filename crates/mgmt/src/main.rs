@@ -128,6 +128,17 @@ fn my_main() {
                 hal::uart::write1(c);
             }
         }
+        if !hal::uart::empty1() {
+            let c: u8;
+            c = hal::uart::read1();
+            if c != 0 {
+                hal::uart::write2(c);
+            }
+            let local_echo = false;
+            if local_echo {
+                hal::uart::write1(c);
+            }
+        }
         watch_dog::alive();
     }
 }
