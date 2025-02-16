@@ -77,3 +77,7 @@ const SYMB_CHAR_MAP: [[u8; Q10_ROWS]; Q10_COLS] = [
     [b'+', b'"', b'-', BAK, SPK, b'.', b'\''], // col5
 ];
 
+pub fn remove_me (){
+    // TODO - remove this functions 
+    let _ = (BASE_CHAR_MAP, SYMB_CHAR_MAP, Q10_COLS, Q10_ROWS, SYM, ALT, MIC, SHF, DLR, SPK, BAK, ENT, SPC);
+}
