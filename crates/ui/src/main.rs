@@ -18,6 +18,7 @@ use bsp::led::Color;
 mod channel;
 mod dispatch;
 mod fib;
+mod font;
 mod metrics;
 mod msg;
 mod semihost;
@@ -25,7 +26,6 @@ mod stack;
 mod startup;
 mod tasks;
 mod vec;
-mod font;
 
 pub use msg::Msg;
 //use crate::tasks::text_edit_task;

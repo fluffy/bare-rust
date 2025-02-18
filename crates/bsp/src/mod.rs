@@ -55,6 +55,7 @@ pub mod info;
 pub mod keyboard;
 pub mod led;
 pub mod link;
+pub mod random;
 
 pub struct BSP {
     pub battery: battery::Battery,
@@ -66,6 +67,7 @@ pub struct BSP {
     pub keyboard: keyboard::Keyboard,
     pub led: led::Led,
     pub netlink: link::Link,
+    pub random: random::Random,
 }
 
 impl BSP {
@@ -80,6 +82,7 @@ impl BSP {
             keyboard: keyboard::Keyboard::new(),
             led: led::Led::new(),
             netlink: link::Link::new(),
+            random: random::Random::new(),
         }
     }
 
@@ -110,6 +113,8 @@ impl BSP {
         self.debug.init();
 
         self.buttons.init();
+        
+        self.random.init();
 
         // do after timer and console is up
         self.display.init();

@@ -118,16 +118,16 @@ pub fn recv(
 fn render_glyph(c: u8, x: i32, y: i32, data: &mut Data) {
     let index = font::GLYPH_INDEX[c as usize] as usize;
 
-     if index == 255 {
+    if index == 255 {
         return; // TOOO render black box.
     }
 
     let glyph = &font::GLYPH_METRICS[index];
 
-    assert!( glyph.width >= font::METRICS.min_width );
-    assert!( glyph.width <= font::METRICS.max_width );
-    
-    assert_eq!( c ,  glyph.c  as u8 );
+    assert!(glyph.width >= font::METRICS.min_width);
+    assert!(glyph.width <= font::METRICS.max_width);
+
+    assert_eq!(c, glyph.c as u8);
 
     let mut rle_index = glyph.rle_start as usize;
 
@@ -152,8 +152,8 @@ fn render_glyph(c: u8, x: i32, y: i32, data: &mut Data) {
     }
 
     loop {
-        assert!( rle_index < font::RLE_DATA.len() );
-        assert!( rle_index < font::METRICS.rle_bytes as usize );
+        assert!(rle_index < font::RLE_DATA.len());
+        assert!(rle_index < font::METRICS.rle_bytes as usize);
 
         let (count, val) = font::RLE_DATA[rle_index];
         if count == 0 && val == 0 {
@@ -213,7 +213,7 @@ impl Task for RenderTask {
                 data.bitmap[y * DISPLAY_WIDTH + x] = 0xFFFF; // white
             }
         }
-        
+
         if false {
             for r in 0..TEXT_ROWS {
                 for c in 0..TEXT_COLS {

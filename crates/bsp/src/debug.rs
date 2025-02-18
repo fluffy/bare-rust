@@ -69,7 +69,7 @@ impl Debug {
 /// ```
 ///
 pub fn set(channel: u8, state: bool) {
-    assert!(channel == 0);
+    assert!(channel < 1); // TODO - implement up to 4
 
     if board::info::NUM_DEBUG_PINS >= 1 {
         if state {
