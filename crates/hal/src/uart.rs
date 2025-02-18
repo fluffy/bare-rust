@@ -97,7 +97,7 @@ pub fn init2(baud_rate: u64, tx_pin: gpio::Pin, rx_pin: gpio::Pin) {
         cpu::write!( USART2.cr1[PCE;1], 0); // no parity
     }
     cpu::write!( USART2.cr2[STOP;2], 0b00); // 1 stop bit
-    
+
     // Enable USART2, transmitter and receiver
     cpu::write!(USART2.cr1[UE;1], 1); // USART enable
     cpu::write!(USART2.cr1[TE;1], 1); // Transmitter enable
@@ -388,7 +388,6 @@ pub fn empty1() -> bool {
     cpu::read!(USART1.sr[RXNE;1]) == 0
 }
 
-
 #[cfg(feature = "stm32f072")]
 pub fn read2() -> u8 {
     // Wait until receive data register is empty
@@ -412,7 +411,6 @@ pub fn read1() -> u8 {
     // Write the byte to the data register
     cpu::read!(USART1.dr) as u8
 }
-
 
 #[cfg(test)]
 mod tests {

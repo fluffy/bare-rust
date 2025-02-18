@@ -1,12 +1,12 @@
 //! This module handles the keyboard task for the application.
 //!
 //! The keyboard task is responsible for reading the state of the keyboard and sending messages
-//! when the state changes. 
-//! 
-//! 
+//! when the state changes.
+//!
+//!
 //! The task periodically hecks the state of the rows to detect key presses and releases.
 //! When a key press or release is detected, a message is sent to notify other parts of the system.
-//! 
+//!
 
 use super::{Task, TaskData};
 use crate::metrics::Metrics;
@@ -48,14 +48,14 @@ impl Task for KeyboardTask {
                 }
             }
         }
-        
+
         let key = bsp.keyboard.get_key();
         if key != 0 {
             let keyboard_msg = Msg::Keyboard { key: key as char };
             sender.send(keyboard_msg);
         }
 
-        // check if key from serial port 
+        // check if key from serial port
         if !hal::uart::empty1() {
             let c: u8;
             c = hal::uart::read1();
@@ -63,7 +63,7 @@ impl Task for KeyboardTask {
             if echo && (c != 0) {
                 hal::uart::write1(c);
             }
-            
+
             let keyboard_msg = Msg::Keyboard { key: c as char };
             sender.send(keyboard_msg);
         }
