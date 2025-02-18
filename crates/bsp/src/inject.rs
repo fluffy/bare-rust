@@ -46,11 +46,14 @@ impl crate::inject::Inject {
     pub fn audio_from_mic(&self, _key: &[u16]) {
         todo!();
     }
-    
+
     pub fn set_battery_percentage(&self, _percentage: u8) {
         todo!();
     }
-    
+
     // TODO - like to have some sort of trace callback that can be used to
-    //        trace data sent to speaker, sent to link, and sent to display.
+    //        trace data sent to speaker,
+    //        sent to link,
+    //        set led,
+    //        and sent to display.
 }
