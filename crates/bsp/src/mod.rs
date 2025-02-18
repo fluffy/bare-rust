@@ -52,6 +52,7 @@ pub mod console;
 pub mod debug;
 pub mod display;
 pub mod info;
+pub mod inject;
 pub mod keyboard;
 pub mod led;
 pub mod link;
@@ -68,6 +69,7 @@ pub struct BSP {
     pub led: led::Led,
     pub netlink: link::Link,
     pub random: random::Random,
+    pub inject: inject::Inject,
 }
 
 impl BSP {
@@ -83,6 +85,7 @@ impl BSP {
             led: led::Led::new(),
             netlink: link::Link::new(),
             random: random::Random::new(),
+            inject: inject::Inject::new(),
         }
     }
 
@@ -113,8 +116,10 @@ impl BSP {
         self.debug.init();
 
         self.buttons.init();
-        
+
         self.random.init();
+
+        self.inject.init();
 
         // do after timer and console is up
         self.display.init();
