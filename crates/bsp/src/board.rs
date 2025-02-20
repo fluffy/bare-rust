@@ -97,6 +97,24 @@ pub mod info {
     pub const DISP_NUM_ROWS: usize = 320;
     pub const DISP_NUM_COLS: usize = 240;
     pub const DISP_SPI_FREQ: u32 = 10_000_000; // must be slower if reading
+
+    pub const HAS_KBD: bool = true;
+    pub const KBD_ROWS: [gpio::Pin; 7] = [
+        gpio::Pin(cpu::GPIOB, 12),
+        gpio::Pin(cpu::GPIOB, 14),
+        gpio::Pin(cpu::GPIOC, 8),
+        gpio::Pin(cpu::GPIOA, 8),
+        gpio::Pin(cpu::GPIOB, 0),
+        gpio::Pin(cpu::GPIOB, 1),
+        gpio::Pin(cpu::GPIOB, 11),
+    ];
+    pub const KBD_COLS: [gpio::Pin; 5] = [
+        gpio::Pin(cpu::GPIOB, 13),
+        gpio::Pin(cpu::GPIOB, 15),
+        gpio::Pin(cpu::GPIOC, 6),
+        gpio::Pin(cpu::GPIOC, 7),
+        gpio::Pin(cpu::GPIOC, 9),
+    ];
 }
 
 #[cfg(feature = "board-blinkA")]
