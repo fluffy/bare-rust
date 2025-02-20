@@ -1,0 +1,9 @@
+[package]
+name = "cupcake"
+edition = "2021"
+authors.workspace = true
+version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
