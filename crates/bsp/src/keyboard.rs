@@ -20,6 +20,8 @@ extern crate hal;
 #[cfg(feature = "std")]
 extern crate std;
 
+use hal::gpio;
+
 pub struct Keyboard {}
 
 impl crate::keyboard::Keyboard {
@@ -29,30 +31,70 @@ impl crate::keyboard::Keyboard {
     }
 
     #[inline(never)]
-    pub fn init(&self) {}
+    pub fn init(&self, kbd_rows:[gpio::Pin; 7], kbd_cols: [gpio::Pin; 5] ) {
+        for row in kbd_rows.iter() {
+            row.input();
+            //row.pulldown();
+        }
+
+        // TODO if hardware protected multiple col connected, could make all outputs
+        for col in kbd_cols.iter() {
+            col.input();
+            col.pulldown();
+        }
+    }
 
     /// Gets the key that has been pressed. This will return just one key at a time.
     ///
     /// # Returns
     /// A `u8` representing the key pressed. Returns 0 if no key has been pressed.
 
-    pub fn get_key(&self) -> u8 {
+    pub fn get_key(&self, kbd_rows:[gpio::Pin; 7], kbd_cols: [gpio::Pin; 5] ) -> u8 {
+
+        assert_eq!( Q10_COLS, 5);
+        assert_eq!( Q10_ROWS, 7);
+
+        let mut result : u8 = 0;
+
+        for c in 0..5 {
+            let col = kbd_cols[c];
+            col.output();
+            col.fast();
+            col.high();
+            
+            let now = hal::timer::current_time();
+            while hal::timer::current_time().sub(now).as_u64() < 500 {} // TODO needed ?
+            
+            for r in 0..7 {
+                let row = kbd_rows[r];
+                if row.read() {
+                    //result = BASE_CHAR_MAP[c][r];
+                    // TODO remove
+                    result = (c*10 + r) as u8;
+                    
+                }
+            }
+            col.low();
+            col.input();
+            col.pulldown();
+        }
+
         // returns 0 if no key has been pressed
-        0
+        result
     }
 }
 
 const Q10_COLS: usize = 5;
 const Q10_ROWS: usize = 7;
 
-const SYM: u8 = 1; // Replace with the actual byte value
-const ALT: u8 = 2; // Replace with the actual byte value
-const MIC: u8 = 3; // Replace with the actual byte value
-const SHF: u8 = 4; // Replace with the actual byte value
-const DLR: u8 = 5; // Replace with the actual byte value
-const SPK: u8 = 6; // Replace with the actual byte value
-const BAK: u8 = 0x08; // Replace with the actual byte value
-const ENT: u8 = 0x0D; // Replace with the actual byte value
+const SYM: u8 = 1;
+const ALT: u8 = 2;
+const MIC: u8 = 3;
+const SHF: u8 = 4;
+const DLR: u8 = 5;
+const SPK: u8 = 6;
+const BAK: u8 = 0x08;
+const ENT: u8 = 0x0D;
 const SPC: u8 = b' '; // 32
 
 const BASE_CHAR_MAP: [[u8; Q10_ROWS]; Q10_COLS] = [

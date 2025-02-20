@@ -12,6 +12,7 @@ use super::{Task, TaskData};
 use crate::metrics::Metrics;
 use crate::msg::Msg;
 use crate::tasks::TaskInfo;
+use bsp::console::Print;
 
 /// Structure representing the keyboard task.
 pub struct KeyboardTask {}
@@ -49,12 +50,29 @@ impl Task for KeyboardTask {
             }
         }
 
-        let key = bsp.keyboard.get_key();
-        if key != 0 {
-            let keyboard_msg = Msg::Keyboard { key: key as char };
-            sender.send(keyboard_msg);
+        if bsp::board::info::HAS_KBD {
+            let key = bsp.keyboard.get_key(
+                bsp::board::info::KBD_ROWS,
+                bsp::board::info::KBD_COLS,
+            );
+            if key != 0 {
+                b"key pressed: ".print_console();
+                let mut key_char: [u8;1] = [0;1];
+                key_char[0] = key;
+                key_char.print_console();
+                b" (".print_console();
+                let key_int: u32 = key as u32;
+                key_int.print_console();
+                b")\r\n".print_console();
+                
+                // TODO turn fallowing back on 
+                if false {
+                    let keyboard_msg = Msg::Keyboard { key: key as char };
+                    sender.send(keyboard_msg);
+                }
+            }
         }
-
+        
         // check if key from serial port
         if !hal::uart::empty1() {
             let c: u8;
