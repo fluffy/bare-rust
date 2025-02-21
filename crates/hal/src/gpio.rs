@@ -212,6 +212,16 @@ impl Pin {
         cpu::write!(gpio.bsrr, 0b1 << (pin_num + 0));
     }
 
+
+    #[inline(always)]
+    pub fn fast(&self) {
+        let gpio = self.0;
+        let pin_num = self.1;
+        // set speed to fast
+        cpu::write!( gpio.ospeedr[ pin_num*2;2], 0b10);
+    }
+
+
     #[inline(always)]
     pub fn read(&self) -> bool {
         let gpio = self.0;

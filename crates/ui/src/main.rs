@@ -31,7 +31,7 @@ pub use msg::Msg;
 //use crate::tasks::text_edit_task;
 
 #[cfg(not(feature = "std"))]
-#[no_mangle]
+//#[no_mangle]
 #[export_name = "main"]
 #[inline(never)]
 /// Entry point for the application when the `std` feature is not enabled.

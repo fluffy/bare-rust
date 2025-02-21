@@ -121,6 +121,13 @@ impl BSP {
 
         self.inject.init();
 
+        if crate::board::info::HAS_KBD {
+            self.keyboard.init(
+                self::board::info::KBD_ROWS,
+                self::board::info::KBD_COLS,
+            );
+        }
+        
         // do after timer and console is up
         self.display.init();
     }
