@@ -1,5 +1,64 @@
-use std::sync::mpsc::{channel, Receiver, Sender};
-use std::time::Duration;
+#![no_std]
+#![no_main]
+
+use alloc::sync::Arc;
+use fugit::{Duration, ExtU32};
+use heapless::{mpmc, Vec};
+use panic_halt as _;
+
+// XXX(RLB) A global allocator is needed so that we can have Sender and Receiver objects in the
+// mpsc style.  Alternatives include (a) using Queues directly and exposing access to the sender
+// and receiver contexts (perhaps using static globals) or (b) using explicit references instead of
+// Arc for the sender and receiver to reference the queue.
+#[global_allocator]
+static ALLOCATOR: emballoc::Allocator<4096> = emballoc::Allocator::new();
+
+extern crate alloc;
+
+type Milliseconds = Duration<u32, 1, 1000>;
+
+type Queue<T> = mpmc::Q8<T>;
+
+struct Sender<T> {
+    queue: Arc<Queue<T>>,
+}
+
+impl<T> Clone for Sender<T> {
+    fn clone(&self) -> Self {
+        Self {
+            queue: self.queue.clone(),
+        }
+    }
+}
+
+impl<T> Sender<T> {
+    fn send(&self, t: T) {
+        let Ok(()) = self.queue.enqueue(t) else {
+            panic!("queue overflow");
+        };
+    }
+}
+
+struct Receiver<T> {
+    queue: Arc<Queue<T>>,
+}
+
+impl<T> Receiver<T> {
+    fn recv(&mut self) -> Option<T> {
+        self.queue.dequeue()
+    }
+}
+
+fn channel<T>() -> (Sender<T>, Receiver<T>) {
+    let queue = Arc::new(Queue::new());
+    let sender = Sender {
+        queue: queue.clone(),
+    };
+    let receiver = Receiver {
+        queue: queue.clone(),
+    };
+    (sender, receiver)
+}
 
 struct Peripherals;
 
@@ -16,7 +75,7 @@ trait EventSource {
 struct Timer;
 
 impl Timer {
-    fn set_interval(&mut self, _interval: Duration) {
+    fn set_interval(&mut self, _interval: Milliseconds) {
         todo!()
     }
     fn start(&mut self) {
@@ -151,8 +210,10 @@ impl Task for ButtonTask {
     }
 }
 
+const MAX_TASKS: usize = 8;
+
 struct TaskMaster<'a> {
-    tasks: Vec<&'a mut dyn Task>,
+    tasks: Vec<&'a mut dyn Task, { MAX_TASKS }>,
     board_events: Receiver<BoardEvent>,
     software_send: Sender<SoftwareEvent>,
     software_recv: Receiver<SoftwareEvent>,
@@ -170,20 +231,16 @@ impl<'a> TaskMaster<'a> {
     }
 
     fn add_task(&mut self, task: &'a mut dyn Task) {
-        self.tasks.push(task);
+        let Ok(()) = self.tasks.push(task) else {
+            panic!("task list overflow");
+        };
     }
 
     fn next_event(&mut self) -> Option<Event> {
         self.board_events
-            .try_recv()
-            .ok()
+            .recv()
             .map(|e| Event::Board(e))
-            .or_else(|| {
-                self.software_recv
-                    .try_recv()
-                    .ok()
-                    .map(|e| Event::Software(e))
-            })
+            .or_else(|| self.software_recv.recv().map(|e| Event::Software(e)))
     }
 
     fn run(&mut self) {
@@ -208,7 +265,7 @@ pub fn main() {
     let (events_from_board, events_to_tasks) = channel::<BoardEvent>();
 
     // Wire up events from the board to the app
-    board.timer.set_interval(Duration::from_millis(500));
+    board.timer.set_interval(2_u32.millis());
     board.timer.connect(events_from_board.clone());
     board.timer.start();
 

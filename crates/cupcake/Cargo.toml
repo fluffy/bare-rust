@@ -7,3 +7,7 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+emballoc = "0.3.0"
+fugit = "0.3.7"
+heapless = "0.8.0"
+panic-halt = "1.0.0"
