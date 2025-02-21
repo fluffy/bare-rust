@@ -1,11 +1,6 @@
-A Small Example of the Architecture
-===================================
+STM32 Spike
+===========
 
-The idea of this crate is to demonstrate how the whole architecture fits
-together.
-
-* Create the traits / generics we need for the critical abstractions
-* Be able to build three instantiations
-    1. On the board
-    2. On desktop
-    3. Mock for test
+This repo is intended to allow for building small programs for STM32.  The
+**main** branch should be reserved for managing the framework.  Individual
+experiments should be done on branches.
